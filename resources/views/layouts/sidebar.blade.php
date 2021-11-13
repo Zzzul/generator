@@ -36,10 +36,10 @@
 
                 <li class="sidebar-title">Account</li>
 
-                <li class="sidebar-item">
-                    <a href="/" class="sidebar-link">
+                <li class="sidebar-item{{ request()->routeIs('setting') ? ' active' : '' }}">
+                    <a href="{{ route('setting') }}" class="sidebar-link">
                         <i class="bi bi-person-badge-fill"></i>
-                        <span>{{ __('Profile') }}</span>
+                        <span>{{ __('Setting') }}</span>
                     </a>
                 </li>
 

@@ -13,11 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware('web', 'auth');
+Route::middleware(['auth', 'web'])->group(function () {
+    Route::get('/', function () {
+        return view('dashboard');
+    });
 
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('web', 'auth');
+    Route::get('/setting', function () {
+        return view('setting');
+    })->name('setting');
+});

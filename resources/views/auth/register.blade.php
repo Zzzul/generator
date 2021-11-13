@@ -11,10 +11,12 @@
 
                 @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible show fade">
+                        <ul class="ms-0 mb-0">
                         @foreach ($errors->all() as $error)
-                            <p>{{ $error }}</p>
+                            <li><p>{{ $error }}</p></li>
                         @endforeach
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </ul>
                     </div>
                 @endif
 
@@ -57,14 +59,14 @@
 
                 <div class="text-center mt-4 text-lg fs-4">
                     <p class="text-gray-600">{{ __('Already have an account') }}?
-                        <a href="/login" class="font-bold">{{ __('Log in') }}</a>.
+                        <a href="/login" class="font-bold">{{ __('Log in.') }}</a>
                     </p>
 
                     @if (Route::has('password.request'))
                         <p>
                             <a class="font-bold" href="{{ route('password.request') }}">
-                                {{ __('Forgot password') }}?
-                            </a>.
+                                {{ __('Forgot password?.') }}
+                            </a>
                         </p>
                     @endif
 

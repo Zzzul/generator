@@ -14,14 +14,16 @@
 
                 @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible show fade">
+                        <ul class="ms-0 mb-0">
                         @foreach ($errors->all() as $error)
-                            <p>{{ $error }}</p>
+                            <li><p>{{ $error }}</p></li>
                         @endforeach
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </ul>
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('login') }}" novalidate>
+                <form method="POST" action="{{ route('login') }}">
                     @csrf
 
                     <div class="form-group position-relative has-icon-left mb-4">
