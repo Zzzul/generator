@@ -13,6 +13,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('mazer') }}/css/bootstrap.css">
 
+    @stack('css')
+
     <link rel="stylesheet" href="{{ asset('mazer') }}/vendors/iconly/bold.css">
 
     <link rel="stylesheet" href="{{ asset('mazer') }}/vendors/perfect-scrollbar/perfect-scrollbar.css">

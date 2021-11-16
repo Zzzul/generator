@@ -9,12 +9,12 @@
         </div>
     </div>
 </footer> --}}
-</div>
-</div>
 <script src="{{ asset('mazer') }}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script src="{{ asset('mazer') }}/js/bootstrap.bundle.min.js"></script>
 
-<script src="{{ asset('mazer') }}/js/main.js"></script>
+@stack('js')
+
+<script src="{{ asset('mazer') }}/js/mazer.min.js"></script>
 </body>
 
 </html>

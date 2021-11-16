@@ -22,21 +22,21 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item has-sub">
+                <li class="sidebar-item has-sub{{ request()->is('master-data*') ? ' active' : '' }}">
                     <a href="#" class="sidebar-link">
                         <i class="bi bi-collection-fill"></i>
                         <span>Master Data</span>
                     </a>
                     <ul class="submenu ">
-                        <li class="submenu-item ">
-                            <a href="/user">User</a>
+                        <li class="submenu-item">
+                            <a href="{{ route('user.index') }}">User</a>
                         </li>
                     </ul>
                 </li>
 
                 <li class="sidebar-title">Account</li>
 
-                <li class="sidebar-item{{ request()->routeIs('setting') ? ' active' : '' }}">
+                <li class="sidebar-item{{ Route::is('setting') ? ' active' : '' }}">
                     <a href="{{ route('setting') }}" class="sidebar-link">
                         <i class="bi bi-person-badge-fill"></i>
                         <span>{{ __('Setting') }}</span>

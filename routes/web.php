@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Master\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +26,8 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/setting', function () {
         return view('setting');
     })->name('setting');
+
+    Route::group(['prefix' => 'master-data'], function () {
+        Route::resource('user', UserController::class);
+    });
 });

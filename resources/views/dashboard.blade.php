@@ -9,24 +9,18 @@
 
     <div class="page-content">
         <section class="row">
-            <div class="col-12 col-lg-9">
-                <div class="row">
-                    <div class="col-6 col-lg-3 col-md-4">
-                        <div class="card">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon blue">
-                                            <i class="iconly-boldProfile"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Total Users</h6>
-                                        <h6 class="font-extrabold mb-0">183.000</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="col-md-12">
+                @if (session('status'))
+                    <div class="alert alert-success alert-dismissible show fade">
+                         {{ session('status') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                <div class="card">
+                    <div class="card-body">
+                       <h4>Hi 👋, {{ auth()->user()->name }}</h4>
+                        <p>{{ __('You are logged in!') }}</p>
                     </div>
                 </div>
             </div>
