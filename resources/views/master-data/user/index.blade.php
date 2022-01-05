@@ -12,24 +12,21 @@
                         {{ __('Below is a list of all users.') }}
                     </p>
                 </div>
-                <div class="col-12 col-md-4 order-md-2 order-first">
-                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">User</li>
-                        </ol>
-                    </nav>
-                </div>
+                <x-breadcrumb>
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">User</li>
+                </x-breadcrumb>
             </div>
         </div>
 
         <section class="section">
+            <x-alert></x-alert>
+
             <div class="d-flex justify-content-end">
                 <a href="{{ route('user.create') }}" class="btn btn-primary mb-3">
                     <i class="fas fa-plus"></i>
                     Create New User
                 </a>
-
             </div>
 
             <div class="row">

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Master;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\MasterData\{StoreUserRequest, UpdateUserRequest};
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -21,7 +21,7 @@ class UserController extends Controller
 
             return Datatables::of($users)
                 ->addIndexColumn()
-                ->addColumn('action', 'master-data.user.data-table.action')
+                ->addColumn('action', 'master-data.user.include.action')
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('d/m/Y H:i');
                 })
@@ -41,7 +41,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('master-data.user.create');
     }
 
     /**
@@ -50,9 +50,17 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return redirect()
+            ->route('user.index')
+            ->with('success', trans('User created successfully.'));
     }
 
     /**
@@ -63,7 +71,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('master-data.user.show', compact('user'));
     }
 
     /**
@@ -74,7 +82,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('master-data.user.edit', compact('user'));
     }
 
     /**
@@ -84,9 +92,22 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $attr = [
+            'name' => $request->name,
+            'email' => $request->email,
+        ];
+
+        if ($request->password) {
+            $attr['password'] = bcrypt($request->password);
+        }
+
+        $user->update($attr);
+
+        return redirect()
+            ->route('user.index')
+            ->with('success', trans('User updated successfully.'));
     }
 
     /**
@@ -97,6 +118,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return redirect()
+            ->route('user.index')
+            ->with('success', trans('User deleted successfully.'));
     }
 }

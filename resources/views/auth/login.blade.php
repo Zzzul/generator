@@ -15,17 +15,19 @@
                 @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible show fade">
                         <ul class="ms-0 mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li><p>{{ $error }}</p></li>
-                        @endforeach
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            @foreach ($errors->all() as $error)
+                                <li>
+                                    <p>{{ $error }}</p>
+                                </li>
+                            @endforeach
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </ul>
                     </div>
                 @endif
 
                 @if (session('status'))
                     <div class="alert alert-success alert-dismissible show fade">
-                         {{ session('status') }}
+                        {{ session('status') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
@@ -35,8 +37,7 @@
 
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="text" class="form-control form-control-xl @error('email') is-invalid @enderror"
-                            name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email"
-                            autofocus>
+                            name="email" autocomplete="email" placeholder="Email" required autofocus>
                         <div class="form-control-icon">
                             <i class="bi bi-person"></i>
                         </div>
@@ -44,7 +45,7 @@
 
                     <div class="form-group position-relative has-icon-left mb-4">
                         <input type="password" class="form-control form-control-xl @error('password') is-invalid @enderror"
-                            placeholder="Password" name="password" required autocomplete="current-password">
+                            placeholder="Password" name="password" autocomplete="current-password" required>
                         <div class="form-control-icon">
                             <i class="bi bi-shield-lock"></i>
                         </div>
