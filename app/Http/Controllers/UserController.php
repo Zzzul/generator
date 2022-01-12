@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Master;
+namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\MasterData\{StoreUserRequest, UpdateUserRequest};
 use Yajra\DataTables\Facades\DataTables;
 use Image;
@@ -25,7 +24,7 @@ class UserController extends Controller
                 ->addColumn('action', 'master-data.user.include.action')
                 ->addColumn('photo', function ($row) {
                     if ($row->photo == null) {
-                        return 'https://www.gravatar.com/avatar/' . md5(strtolower(trim(auth()->user()->email))) . '&s=500';
+                        return 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($row->email))) . '&s=500';
                     }
 
                     return asset('uploads/images/' . $row->photo);
@@ -80,7 +79,7 @@ class UserController extends Controller
         ]);
 
         return redirect()
-            ->route('user.index')
+            ->route('users.index')
             ->with('success', trans('User created successfully.'));
     }
 
@@ -152,7 +151,7 @@ class UserController extends Controller
         $user->update($attr);
 
         return redirect()
-            ->route('user.index')
+            ->route('users.index')
             ->with('success', trans('User updated successfully.'));
     }
 
@@ -164,10 +163,14 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($user->photo != null && file_exists(public_path("/uploads/images/$user->photo"))) {
+            unlink(public_path("/uploads/images/$user->photo"));
+        }
+
         $user->delete();
 
         return redirect()
-            ->route('user.index')
+            ->route('users.index')
             ->with('success', trans('User deleted successfully.'));
     }
 }

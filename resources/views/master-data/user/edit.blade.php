@@ -18,7 +18,7 @@
                         <a href="/">{{ __('Dashboard') }}</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('user.index') }}">{{ __('User') }}</a>
+                        <a href="{{ route('users.index') }}">{{ __('User') }}</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                         {{ __('Edit') }}
@@ -32,7 +32,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('user.update', $user->id) }}" method="POST"
+                            <form action="{{ route('users.update', $user->id) }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')

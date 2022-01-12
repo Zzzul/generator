@@ -29,12 +29,19 @@
                     </a>
                     <ul class="submenu ">
                         <li class="submenu-item">
-                            <a href="{{ route('user.index') }}">User</a>
+                            <a href="#">{{ __('Product') }}</a>
                         </li>
                     </ul>
                 </li>
 
                 <li class="sidebar-title">Account</li>
+
+                <li class="sidebar-item{{ request()->is('users*') ? ' active' : '' }}">
+                    <a href="{{ route('users.index') }}" class="sidebar-link">
+                        <i class="bi bi-people-fill"></i>
+                        <span>{{ __('Users') }}</span>
+                    </a>
+                </li>
 
                 <li class="sidebar-item{{ request()->is('profile*') ? ' active' : '' }}">
                     <a href="{{ route('profile') }}" class="sidebar-link">

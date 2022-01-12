@@ -18,7 +18,7 @@
                         <a href="/">{{ __('Dashboard') }}</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('user.index') }}">{{ __('User') }}</a>
+                        <a href="{{ route('users.index') }}">{{ __('User') }}</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                         {{ __('Detail') }}
@@ -35,6 +35,18 @@
                             <div class="table-responsive">
                                 <table class="table table-hover table-striped">
                                     <tr>
+                                        <td colspan="2" class="text-center">
+                                            <div class="avatar avatar-xl">
+                                                @if ($user->photo == null)
+                                                    <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim($user->email))) }}&s=500"
+                                                        alt="Photo">
+                                                @else
+                                                    <img src="{{ asset('uploads/images/' . $user->photo) }}" alt="Photo">
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td class="fw-bold">{{ __('Name') }}</td>
                                         <td>{{ $user->name }}</td>
                                     </tr>
@@ -49,11 +61,11 @@
                                     </tr>
                                     <tr>
                                         <td class="fw-bold">{{ __('Created at') }}</td>
-                                        <td>{{ $user->created_at->format('d/m/Y H:i') }}</td>
+                                        <td>{{ $user->created_at }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold">{{ __('Updated at') }}</td>
-                                        <td>{{ $user->updated_at->format('d/m/Y H:i') }}</td>
+                                        <td>{{ $user->updated_at }}</td>
                                     </tr>
                                 </table>
                             </div>

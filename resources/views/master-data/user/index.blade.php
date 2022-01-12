@@ -23,7 +23,7 @@
             <x-alert></x-alert>
 
             <div class="d-flex justify-content-end">
-                <a href="{{ route('user.create') }}" class="btn btn-primary mb-3">
+                <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">
                     <i class="fas fa-plus"></i>
                     Create New User
                 </a>
@@ -70,7 +70,7 @@
         $('#data-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('user.index') }}",
+            ajax: "{{ route('users.index') }}",
             columns: [
                 // {
                 //     data: 'DT_RowIndex',
