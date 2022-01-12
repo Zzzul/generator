@@ -31,7 +31,7 @@
             <label for="password">{{ __('Password') }}</label>
             <input type="password" name="password" id="password"
                 class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}"
-                {{ isset($user) ? 'required' : '' }}>
+                {{ empty($user) ? 'required' : '' }}>
             @error('password')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -44,7 +44,50 @@
         <div class="form-group">
             <label for="password-confirmation">{{ __('Password Confirmation') }}</label>
             <input type="password" name="password_confirmation" id="password-confirmation" class="form-control"
-                placeholder="{{ __('Password Confirmation') }}" {{ isset($user) ? 'required' : '' }}>
+                placeholder="{{ __('Password Confirmation') }}" {{ empty($user) ? 'required' : '' }}>
         </div>
     </div>
+
+    @empty($user)
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="photo">{{ __('Photo') }}</label>
+                <input type="file" name="photo" id="photo" class="form-control @error('photo') is-invalid @enderror">
+                @error('photo')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+        </div>
+    @endempty
+
+    @isset($user)
+        <div class="row">
+            <div class="col-md-1 text-center">
+                <div class="avatar avatar-xl">
+                    @if ($user->photo == null)
+                        <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim($user->email))) }}&s=500"
+                            alt="Photo">
+                    @else
+                        <img src="{{ asset('uploads/images/' . $user->photo) }}" alt="Photo">
+                    @endif
+                </div>
+            </div>
+
+            <div class="col-md-5 me-0 pe-0">
+                <div class="form-group">
+                    <label for="photo">{{ __('Photo') }}</label>
+                    <input type="file" name="photo" class="form-control @error('photo') is-invalid @enderror" id="photo">
+
+                    @error('photo')
+                        <div class="invalid-feedback">
+                            <i class="bx bx-radio-circle"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+        </div>
+    @endisset
 </div>

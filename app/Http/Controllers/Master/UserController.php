@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MasterData\{StoreUserRequest, UpdateUserRequest};
 use Yajra\DataTables\Facades\DataTables;
+use Image;
 
 class UserController extends Controller
 {
@@ -22,11 +23,12 @@ class UserController extends Controller
             return Datatables::of($users)
                 ->addIndexColumn()
                 ->addColumn('action', 'master-data.user.include.action')
-                ->addColumn('created_at', function ($row) {
-                    return $row->created_at->format('d/m/Y H:i');
-                })
-                ->addColumn('updated_at', function ($row) {
-                    return $row->updated_at->format('d/m/Y H:i');
+                ->addColumn('photo', function ($row) {
+                    if ($row->photo == null) {
+                        return 'https://www.gravatar.com/avatar/' . md5(strtolower(trim(auth()->user()->email))) . '&s=500';
+                    }
+
+                    return asset('uploads/images/' . $row->photo);
                 })
                 ->toJson();
         }
@@ -52,10 +54,29 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        $filename = null;
+
+        if ($request->file('photo') && $request->file('photo')->isValid()) {
+
+            $filename = time() . '.' . $request->file('photo')->getClientOriginalExtension();
+
+            $destination = 'uploads/images/';
+
+            if (!file_exists($path = public_path($destination))) {
+                mkdir($path, 0777, true);
+            }
+
+            Image::make($request->file('photo')->getRealPath())->resize(500, 500, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save($destination . $filename);
+        }
+
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'photo' => $filename
         ]);
 
         return redirect()
@@ -98,6 +119,31 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
         ];
+
+        if ($request->file('photo') && $request->file('photo')->isValid()) {
+
+            $filename = time() . '.' .  $request->file('photo')->getClientOriginalExtension();
+
+            $destination = 'uploads/images/';
+
+            // if folder dont exist, then create folder
+            if (!file_exists($path = public_path($destination))) {
+                mkdir($path, 0777, true);
+            }
+
+            // Intervention Image
+            Image::make($request->file('photo')->getRealPath())->resize(500, 500, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save($destination . $filename);
+
+            // delete old photo from storage
+            if ($user->photo != null && file_exists(public_path("/uploads/images/$user->photo"))) {
+                unlink(public_path("/uploads/images/$user->photo"));
+            }
+
+            $attr['photo'] = $filename;
+        }
 
         if ($request->password) {
             $attr['password'] = bcrypt($request->password);

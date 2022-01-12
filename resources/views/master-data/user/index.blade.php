@@ -38,6 +38,7 @@
                                     <thead>
                                         <tr>
                                             {{-- <th>No</th> --}}
+                                            <th>{{ __('Photo') }}</th>
                                             <th>{{ __('Email') }}</th>
                                             <th>{{ __('Name') }}</th>
                                             <th>{{ __('Created At') }}</th>
@@ -77,6 +78,17 @@
                 //     orderable: false,
                 //     searchable: false
                 // },
+                {
+                    data: 'photo',
+                    name: 'photo',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, full, meta) {
+                        return `<div class="avatar">
+                            <img src="${data}" alt="Photo">
+                        </div>`;
+                    }
+                },
                 {
                     data: 'name',
                     name: 'name'
