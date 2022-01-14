@@ -22,26 +22,41 @@
                     </a>
                 </li>
 
+                {{-- @canany(['view something', 'view something']) --}}
                 <li class="sidebar-item has-sub{{ request()->is('master-data*') ? ' active' : '' }}">
                     <a href="#" class="sidebar-link">
                         <i class="bi bi-collection-fill"></i>
                         <span>Master Data</span>
                     </a>
                     <ul class="submenu ">
+                        {{-- @can('view something') --}}
                         <li class="submenu-item">
                             <a href="#">{{ __('Product') }}</a>
                         </li>
+                        {{-- @endcan --}}
                     </ul>
                 </li>
+                {{-- @endcanany --}}
 
                 <li class="sidebar-title">Account</li>
 
-                <li class="sidebar-item{{ request()->is('users*') ? ' active' : '' }}">
-                    <a href="{{ route('users.index') }}" class="sidebar-link">
-                        <i class="bi bi-people-fill"></i>
-                        <span>{{ __('Users') }}</span>
-                    </a>
-                </li>
+                @can('view user')
+                    <li class="sidebar-item{{ request()->is('users*') ? ' active' : '' }}">
+                        <a href="{{ route('users.index') }}" class="sidebar-link">
+                            <i class="bi bi-people-fill"></i>
+                            <span>{{ __('Users') }}</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('view role')
+                    <li class="sidebar-item{{ request()->is('roles*') ? ' active' : '' }}">
+                        <a href="{{ route('roles.index') }}" class="sidebar-link">
+                            <i class="bi bi-person-check-fill"></i>
+                            <span>{{ __('Roles & Permissions') }}</span>
+                        </a>
+                    </li>
+                @endcan
 
                 <li class="sidebar-item{{ request()->is('profile*') ? ' active' : '' }}">
                     <a href="{{ route('profile') }}" class="sidebar-link">

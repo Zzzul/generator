@@ -51,6 +51,18 @@
     @empty($user)
         <div class="col-md-6">
             <div class="form-group">
+                <label for="role">{{ __('Role') }}</label>
+                <select class="form-select" name="role" id="role" class="form-control">
+                    <option value="" selected disabled>-- Select role --</option>
+                    @foreach ($roles as $role)
+                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
                 <label for="photo">{{ __('Photo') }}</label>
                 <input type="file" name="photo" id="photo" class="form-control @error('photo') is-invalid @enderror">
                 @error('photo')
@@ -64,6 +76,18 @@
 
     @isset($user)
         <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="role">{{ __('Role') }}</label>
+                    <select class="form-select" name="role" id="role" class="form-control">
+                        <option value="" selected disabled>-- Select role --</option>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
             <div class="col-md-1 text-center">
                 <div class="avatar avatar-xl">
                     @if ($user->photo == null)

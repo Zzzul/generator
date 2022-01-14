@@ -9,10 +9,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -42,16 +43,18 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime:d/m/Y H:i',
+        'created_at' => 'datetime:d/m/Y H:i',
+        'updated_at' => 'datetime:d/m/Y H:i',
     ];
 
-    public function getCreatedAtAttribute($value)
-    {
-        return Carbon::createFromTimeString($value)->format('d/m/Y H:i');
-    }
+    // public function getCreatedAtAttribute($value)
+    // {
+    //     return Carbon::createFromTimeString($value)->format('d/m/Y H:i');
+    // }
 
-    public function getUpdatedAtAttribute($value)
-    {
-        return Carbon::createFromTimeString($value)->format('d/m/Y H:i');
-    }
+    // public function getUpdatedAtAttribute($value)
+    // {
+    //     return Carbon::createFromTimeString($value)->format('d/m/Y H:i');
+    // }
 }

@@ -9,6 +9,14 @@ use Image;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view user')->only('index', 'show');
+        $this->middleware('permission:create user')->only('create', 'store');
+        $this->middleware('permission:edit user')->only('edit', 'update');
+        $this->middleware('permission:delete user')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +29,7 @@ class UserController extends Controller
 
             return Datatables::of($users)
                 ->addIndexColumn()
-                ->addColumn('action', 'master-data.user.include.action')
+                ->addColumn('action', 'users.include.action')
                 ->addColumn('photo', function ($row) {
                     if ($row->photo == null) {
                         return 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($row->email))) . '&s=500';
@@ -32,7 +40,7 @@ class UserController extends Controller
                 ->toJson();
         }
 
-        return view('master-data.user.index');
+        return view('users.index');
     }
 
     /**
@@ -42,7 +50,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('master-data.user.create');
+        return view('users.create');
     }
 
     /**
@@ -53,7 +61,11 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $filename = null;
+        $attr = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ];
 
         if ($request->file('photo') && $request->file('photo')->isValid()) {
 
@@ -69,14 +81,13 @@ class UserController extends Controller
                 $constraint->aspectRatio();
                 $constraint->upsize();
             })->save($destination . $filename);
+
+            $attr['photo'] = $filename;
         }
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'photo' => $filename
-        ]);
+        $user = User::create($attr);
+
+        $user->assignRole($request->role);
 
         return redirect()
             ->route('users.index')
@@ -91,7 +102,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('master-data.user.show', compact('user'));
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -102,7 +113,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('master-data.user.edit', compact('user'));
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -149,6 +160,8 @@ class UserController extends Controller
         }
 
         $user->update($attr);
+
+        $user->syncRoles($request->role);
 
         return redirect()
             ->route('users.index')

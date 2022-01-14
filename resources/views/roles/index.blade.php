@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
-@section('title', trans('User'))
+@section('title', trans('Roles'))
 
 @section('content')
     <div class="page-heading">
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-8 order-md-1 order-last">
-                    <h3>{{ __('User') }}</h3>
+                    <h3>{{ __('Roles') }}</h3>
                     <p class="text-subtitle text-muted">
-                        {{ __('Below is a list of all users.') }}
+                        {{ __('Below is a list of all roles.') }}
                     </p>
                 </div>
                 <x-breadcrumb>
-                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">User</li>
+                    <li class="breadcrumb-item"><a href="/">{{ __('Dashboard') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('Role') }}</li>
                 </x-breadcrumb>
             </div>
         </div>
@@ -22,12 +22,14 @@
         <section class="section">
             <x-alert></x-alert>
 
-            <div class="d-flex justify-content-end">
-                <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">
-                    <i class="fas fa-plus"></i>
-                    Create New User
-                </a>
-            </div>
+            @can('create role')
+                <div class="d-flex justify-content-end">
+                    <a href="{{ route('roles.create') }}" class="btn btn-primary mb-3">
+                        <i class="fas fa-plus"></i>
+                        {{ __('Create a new role') }}
+                    </a>
+                </div>
+            @endcan
 
             <div class="row">
                 <div class="col-md-12">
@@ -37,9 +39,6 @@
                                 <table class="table table-striped" id="data-table" width="100%">
                                     <thead>
                                         <tr>
-                                            {{-- <th>No</th> --}}
-                                            <th>{{ __('Photo') }}</th>
-                                            <th>{{ __('Email') }}</th>
                                             <th>{{ __('Name') }}</th>
                                             <th>{{ __('Created At') }}</th>
                                             <th>{{ __('Updated At') }}</th>
@@ -70,32 +69,10 @@
         $('#data-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('users.index') }}",
-            columns: [
-                // {
-                //     data: 'DT_RowIndex',
-                //     name: 'DT_RowIndex',
-                //     orderable: false,
-                //     searchable: false
-                // },
-                {
-                    data: 'photo',
-                    name: 'photo',
-                    orderable: false,
-                    searchable: false,
-                    render: function(data, type, full, meta) {
-                        return `<div class="avatar">
-                            <img src="${data}" alt="Photo">
-                        </div>`;
-                    }
-                },
-                {
+            ajax: "{{ route('roles.index') }}",
+            columns: [{
                     data: 'name',
                     name: 'name'
-                },
-                {
-                    data: 'email',
-                    name: 'email'
                 },
                 {
                     data: 'created_at',
