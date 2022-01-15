@@ -1,0 +1,99 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\{{modelNameUppercase}};
+use App\Http\Requests\{Store{{modelNameUppercase}}Request, Update{{modelNameUppercase}}Request};
+
+class {{modelNameUppercase}}Controller extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        ${{modelNamePluralLowercase}} = {{modelNameUppercase}}::get();
+
+        return view('{{modelNamePluralLowercase}}.index', compact('{{modelNamePluralLowercase}}'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('{{modelNamePluralLowercase}}.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Store{{modelNameUppercase}}Request $request)
+    {
+        {{modelNameUppercase}}::create($request->validated());
+
+        return redirect()
+            ->route('{{modelNamePluralLowercase}}.index')
+            ->with('success', trans('{{modelNameLowercase}} created successfully.'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\{{modelNameUppercase}}  ${{modelNameLowercase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function show({{modelNameUppercase}} ${{modelNameLowercase}})
+    {
+        return view('{{modelNamePluralLowercase}}.show', compact('{{modelNameLowercase}}'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\{{modelNameUppercase}}  ${{modelNameLowercase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function edit({{modelNameUppercase}} ${{modelNameLowercase}})
+    {
+        return view('{{modelNamePluralLowercase}}.edit', compact('{{modelNameLowercase}}'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\{{modelNameUppercase}}  ${{modelNameLowercase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Update{{modelNameUppercase}}Request $request, {{modelNameUppercase}} ${{modelNameLowercase}})
+    {
+        ${{modelNameLowercase}}->update($request->validated());
+
+        return redirect()
+            ->route('{{modelNamePluralLowercase}}.index')
+            ->with('success', trans('{{modelNameLowercase}} updated successfully.'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\{{modelNameUppercase}}  ${{modelNameLowercase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy({{modelNameUppercase}} ${{modelNameLowercase}})
+    {
+        ${{modelNameLowercase}}->delete();
+
+        return redirect()
+            ->route('{{modelNamePluralLowercase}}.index')
+            ->with('success', trans('{{modelNameLowercase}} delete successfully.'));
+    }
+}

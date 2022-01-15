@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{UserController, ProfileController, RoleAndPermissionController};
+use App\Http\Controllers\{GeneratorController, UserController, ProfileController, RoleAndPermissionController};
 
 Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/', function () {
@@ -15,8 +15,11 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleAndPermissionController::class);
 
-    Route::get('profile', ProfileController::class)->name('profile');
+    Route::get('/profile', ProfileController::class)->name('profile');
+
+    Route::resource('/generators', GeneratorController::class)->only('create', 'store');
 
     Route::group(['prefix' => 'master-data'], function () {
+        //
     });
 });

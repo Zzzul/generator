@@ -17,15 +17,22 @@
 
                 <li class="sidebar-item{{ request()->is('dashboard') || request()->is('/') ? ' active' : '' }}">
                     <a href="/" class="sidebar-link">
-                        <i class="bi bi-grid-fill"></i>
-                        <span>Dashboard</span>
+                        <i class="bi bi-speedometer2"></i>
+                        <span>{{ __('Dashboard') }}</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item{{ request()->is('generators*') ? ' active' : '' }}">
+                    <a href="{{ route('generators.create') }}" class="sidebar-link">
+                        <i class="bi bi-grid"></i>
+                        <span>{{ __('Generators') }}</span>
                     </a>
                 </li>
 
                 {{-- @canany(['view something', 'view something']) --}}
                 <li class="sidebar-item has-sub{{ request()->is('master-data*') ? ' active' : '' }}">
                     <a href="#" class="sidebar-link">
-                        <i class="bi bi-collection-fill"></i>
+                        <i class="bi bi-collection"></i>
                         <span>Master Data</span>
                     </a>
                     <ul class="submenu ">
@@ -43,7 +50,7 @@
                 @can('view user')
                     <li class="sidebar-item{{ request()->is('users*') ? ' active' : '' }}">
                         <a href="{{ route('users.index') }}" class="sidebar-link">
-                            <i class="bi bi-people-fill"></i>
+                            <i class="bi bi-people"></i>
                             <span>{{ __('Users') }}</span>
                         </a>
                     </li>
@@ -52,7 +59,7 @@
                 @can('view role')
                     <li class="sidebar-item{{ request()->is('roles*') ? ' active' : '' }}">
                         <a href="{{ route('roles.index') }}" class="sidebar-link">
-                            <i class="bi bi-person-check-fill"></i>
+                            <i class="bi bi-person-check"></i>
                             <span>{{ __('Roles & Permissions') }}</span>
                         </a>
                     </li>
@@ -60,7 +67,7 @@
 
                 <li class="sidebar-item{{ request()->is('profile*') ? ' active' : '' }}">
                     <a href="{{ route('profile') }}" class="sidebar-link">
-                        <i class="bi bi-person-badge-fill"></i>
+                        <i class="bi bi-person-badge"></i>
                         <span>{{ __('Profile') }}</span>
                     </a>
                 </li>
@@ -68,7 +75,7 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('logout') }}"
                         onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                        <i class="bi bi-door-open-fill"></i>
+                        <i class="bi bi-door-open"></i>
                         <span> {{ __('Logout') }}</span>
                     </a>
 
