@@ -45,6 +45,9 @@
                 </li>
                 {{-- @endcanany --}}
 
+                {{-- don`t remove comment below, to generate a sidebar menu --}}
+                {{-- sidebarTemplate --}}
+
                 <li class="sidebar-title">Account</li>
 
                 @can('view user')

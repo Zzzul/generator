@@ -1,0 +1,12 @@
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="{{fieldLowercase}}">{{ __('{{fieldUppercase}}') }}</label>
+            <input type="{{type}}" name="{{fieldLowercase}}" id="{{fieldLowercase}}" class="form-control @error('{{fieldLowercase}}') is-invalid @enderror" value="{{ isset(${{modelName}}) ? ${{modelName}}->{{fieldLowercase}} : old('{{fieldLowercase}}') }}" placeholder="{{ __('{{fieldUppercase}}') }}"{{nullable}} />
+            @error('{{fieldLowercase}}')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+    </div>

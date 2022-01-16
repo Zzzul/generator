@@ -128,8 +128,8 @@
                         <input type="hidden" name="lengths[]" value="30">
                     </td>
                     <td>
-                        <i class="fas fa-check"></i>
-                        <input type="hidden" name="nullables[]" value="yes">
+                        <i class="fas fa-times"></i>
+                        <input type="hidden" name="nullables[]" value="no">
                     </td>
                     <td>
                         <button class="btn btn-outline-primary btn-sm btn-edit m-0">
@@ -157,6 +157,60 @@
                     <td>
                         <i class="fas fa-times"></i>
                         <input type="hidden" name="nullables[]" value="no">
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-primary btn-sm btn-edit m-0">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm btn-delete m-0">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        price
+                        <input type="hidden" name="fields[]" value="price">
+                    </td>
+                    <td>
+                        integer
+                        <input type="hidden" name="types[]" value="integer">
+                    </td>
+                    <td>
+                        -
+                        <input type="hidden" name="lengths[]" value="">
+                    </td>
+                    <td>
+                        <i class="fas fa-times"></i>
+                        <input type="hidden" name="nullables[]" value="no">
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-primary btn-sm btn-edit m-0">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm btn-delete m-0">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>
+                        description
+                        <input type="hidden" name="fields[]" value="description">
+                    </td>
+                    <td>
+                        text
+                        <input type="hidden" name="types[]" value="text">
+                    </td>
+                    <td>
+                        -
+                        <input type="hidden" name="lengths[]" value="">
+                    </td>
+                    <td>
+                        <i class="fas fa-check"></i>
+                        <input type="hidden" name="nullables[]" value="yes">
                     </td>
                     <td>
                         <button class="btn btn-outline-primary btn-sm btn-edit m-0">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\{{modelNameUppercase}};
 use App\Http\Requests\{Store{{modelNameUppercase}}Request, Update{{modelNameUppercase}}Request};
+use Yajra\DataTables\Facades\DataTables;
 
 class {{modelNameUppercase}}Controller extends Controller
 {
@@ -14,9 +15,16 @@ class {{modelNameUppercase}}Controller extends Controller
      */
     public function index()
     {
-        ${{modelNamePluralLowercase}} = {{modelNameUppercase}}::get();
+        if (request()->ajax()) {
+            ${{modelNamePluralLowercase}} = {{modelNameUppercase}}::query();
 
-        return view('{{modelNamePluralLowercase}}.index', compact('{{modelNamePluralLowercase}}'));
+            return DataTables::of(${{modelNamePluralLowercase}})
+                ->addIndexColumn()
+                ->addColumn('action', '{{modelNamePluralLowercase}}.include.action')
+                ->toJson();
+        }
+
+        return view('{{modelNamePluralLowercase}}.index');
     }
 
     /**
