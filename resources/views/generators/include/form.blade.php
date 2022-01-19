@@ -1,5 +1,5 @@
 <div class="row mb-2">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="form-group">
             <label for="model">{{ __('Model') }}</label>
             <input type="text" name="model" id="model" class="form-control @error('model') is-invalid @enderror"
@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="col-md-4">
+    {{-- <div class="col-md-4">
         <div class="form-group">
             <label for="table">{{ __('Table') }}</label>
             <input type="text" name="table" id="table" class="form-control @error('table') is-invalid @enderror"
@@ -37,78 +37,21 @@
                 </div>
             @enderror
         </div>
-    </div>
+    </div> --}}
 
-    <hr class="my-4">
+    {{-- <hr class="my-4"> --}}
 
-    {{-- <h6>{{ __('Table Field') }}</h6> --}}
-
-    <div class="col-md-3">
-        <div class="form-group">
-            <label for="field">{{ __('Field') }}</label>
-            <input type="text" name="field" id="field" class="form-control @error('field') is-invalid @enderror"
-                placeholder="{{ __('Field Name') }}" value="{{ old('field') }}">
-            @error('field')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="form-group">
-            <label for="type">{{ __('Type') }}</label>
-            <select name="type" id="type" class="form-select @error('type') is-invalid @enderror">
-                <option value="" disabled selected>{{ __('--Select type--') }}</option>
-                @foreach (config('generator.types') as $type)
-                    <option value="{{ $type }}">{{ ucwords($type) }}</option>
-                @endforeach
-            </select>
-            @error('type')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-    </div>
-
-    <div class="col-md-2">
-        <div class="form-group">
-            <label for="length">{{ __('Length') }}</label>
-            <input type="number" name="length" id="length" class="form-control @error('length') is-invalid @enderror"
-                min="1" placeholder="{{ __('Length') }}" value="{{ old('length') }}">
-            @error('length')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-    </div>
-
-    <div class="col-md-2">
-        <div class="form-check mt-4">
-            <label class="form-check-label" for="nullable">Nullable</label>
-            <input class="form-check-input" type="checkbox" id="nullable" name="nullable" value="yes" />
-        </div>
-    </div>
-
-    <div class="col-md-2">
-        <label></label>
-        <button class="btn btn-primary btn-block" id="btn-add">{{ __('Add') }}</button>
-        <button class="btn btn-info btn-block" id="btn-update" style="display: none;">{{ __('Update') }}</button>
-
-    </div>
+    <h6 class="mt-3">{{ __('Table Field') }}</h6>
 
     <div class="col-md-12">
-        <table class="table table-striped table-hover table-sm mt-3" id="table-field">
+        <table class="table table-striped table-hover table-sm" id="tbl-field">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th width="30">#</th>
                     <th>{{ __('Field name') }}</th>
                     <th>{{ __('Type') }}</th>
                     <th>{{ __('Length') }}</th>
-                    <th>{{ __('Nullable') }}</th>
+                    <th>{{ __('Required') }}</th>
                     <th>{{ __('Action') }}</th>
                 </tr>
             </thead>
@@ -116,108 +59,33 @@
                 <tr>
                     <td>1</td>
                     <td>
-                        name
-                        <input type="hidden" name="fields[]" value="name">
+                        <div class="form-group">
+                            <input type="text" name="fields[]" class="form-control" placeholder="Field Name">
+                        </div>
                     </td>
                     <td>
-                        string
-                        <input type="hidden" name="types[]" value="string">
+                        <div class="form-group">
+                            <select name="types[]" class="form-select">
+                                <option value="" disabled selected>--Select type--</option>
+                                @foreach (config('generator.types') as $type)
+                                    <option value="{{ $type }}">{{ ucwords($type) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </td>
                     <td>
-                        30
-                        <input type="hidden" name="lengths[]" value="30">
+                        <div class="form-group">
+                            <input type="number" name="lengths[]" class="form-control" min="1" placeholder="Length">
+                        </div>
                     </td>
                     <td>
-                        <i class="fas fa-times"></i>
-                        <input type="hidden" name="nullables[]" value="no">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="requireds[]" checked />
+                        </div>
                     </td>
                     <td>
-                        <button class="btn btn-outline-primary btn-sm btn-edit m-0">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm btn-delete m-0">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>
-                        stock
-                        <input type="hidden" name="fields[]" value="stock">
-                    </td>
-                    <td>
-                        integer
-                        <input type="hidden" name="types[]" value="integer">
-                    </td>
-                    <td>
-                        -
-                        <input type="hidden" name="lengths[]" value="">
-                    </td>
-                    <td>
-                        <i class="fas fa-times"></i>
-                        <input type="hidden" name="nullables[]" value="no">
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-primary btn-sm btn-edit m-0">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm btn-delete m-0">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>
-                        price
-                        <input type="hidden" name="fields[]" value="price">
-                    </td>
-                    <td>
-                        integer
-                        <input type="hidden" name="types[]" value="integer">
-                    </td>
-                    <td>
-                        -
-                        <input type="hidden" name="lengths[]" value="">
-                    </td>
-                    <td>
-                        <i class="fas fa-times"></i>
-                        <input type="hidden" name="nullables[]" value="no">
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-primary btn-sm btn-edit m-0">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm btn-delete m-0">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>
-                        description
-                        <input type="hidden" name="fields[]" value="description">
-                    </td>
-                    <td>
-                        text
-                        <input type="hidden" name="types[]" value="text">
-                    </td>
-                    <td>
-                        -
-                        <input type="hidden" name="lengths[]" value="">
-                    </td>
-                    <td>
-                        <i class="fas fa-check"></i>
-                        <input type="hidden" name="nullables[]" value="yes">
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-primary btn-sm btn-edit m-0">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm btn-delete m-0">
-                            <i class="fas fa-trash-alt"></i>
+                        <button type="button" class="btn btn-outline-danger btn-sm btn-delete disabled" disabled>
+                            <i class="fa fa-trash-alt"></i>
                         </button>
                     </td>
                 </tr>
@@ -233,4 +101,78 @@
 @push('js')
     <script src="{{ asset('mazer') }}/vendors/jquery/jquery.min.js"></script>
     <script src="{{ asset('mazer') }}/vendors/fontawesome/all.min.js"></script>
+
+    <script>
+        const types = {!! json_encode(config('generator.types')) !!}
+
+        $('#btn-add').click(function() {
+            let table = $('#tbl-field tbody')
+
+            let list = renderTypes()
+
+            let tr = `
+                <tr>
+                    <td>${table.find('tr').length + 1}</td>
+                    <td>
+                        <div class="form-group m-0 p-0">
+                            <input type="text" name="fields[]" class="form-control" placeholder="Field Name">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group m-0 p-0">
+                            <select name="types[]" class="form-select select-types">
+                                <option value="" disabled selected>--Select type--</option>
+                                ${list}
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group m-0 p-0">
+                            <input type="number" name="lengths[]" class="form-control" min="1" placeholder="Length">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="requireds[]"  checked/>
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-outline-danger btn-sm btn-delete">
+                            <i class="fa fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                `
+
+            table.append(tr)
+        })
+
+        $(document).on('change', '.select-types', function() {
+            if ($(this).val() == 'enum') {
+                console.log('enum - select');
+            }
+        })
+
+        $(document).on('click', '.btn-delete', function() {
+            let table = $('#tbl-field tbody tr')
+
+            if (table.length > 1) {
+                $(this).parent().parent().remove()
+            }
+        })
+
+        function renderTypes() {
+            let optionTypes = ''
+
+            $(types).each(function(i, val) {
+                optionTypes += `<option value="${val}">${capitalizeFirstLetter(val)}</option>`
+            })
+
+            return optionTypes
+        }
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+    </script>
 @endpush

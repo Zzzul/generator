@@ -16,27 +16,38 @@ class GeneratorController extends Controller
 
     public function store(Request $request)
     {
-        $this->generateModel($request);
-        $this->generateMigration($request);
-        $this->generateController($request);
-        $this->generateRequest($request);
-        $this->generateRoute($request);
-        $this->generateIndexView($request);
-        $this->generateCreateView($request);
-        $this->generateEditView($request);
-        $this->generateActionView($request);
-        $this->generateFormView($request);
-        $this->generateSidebar($request);
-        $this->migrateTable();
+        // return $request;
 
-        return redirect()
-            ->route('generators.create')
-            ->with('success', trans('Module created successfully.'));
+        $this->generateModel($request);
+        // $this->generateMigration($request);
+        // $this->generateController($request);
+        // $this->generateRequest($request);
+        // $this->generateRoute($request);
+        // $this->generateIndexView($request);
+        // $this->generateCreateView($request);
+        // $this->generateEditView($request);
+        // $this->generateActionView($request);
+        // $this->generateFormView($request);
+        // $this->generateSidebar($request);
+        // $this->migrateTable();
+
+        // return redirect()
+        //     ->route('generators.create')
+        //     ->with('success', trans('Module created successfully.'));
     }
 
     protected function generateModel($request)
     {
-        $name = Str::singular(ucfirst($request->model));
+        $name = ucfirst(Str::camel(Str::singular($request->model)));
+
+        dd($name);
+
+
+        $fields = [];
+
+        foreach ($request->fields as $field) {
+            $fields[] = Str::snake(strtolower($field));
+        }
 
         $template = str_replace(
             [
@@ -45,7 +56,7 @@ class GeneratorController extends Controller
             ],
             [
                 $name,
-                json_encode($request->fields)
+                json_encode($fields)
             ],
             $this->getStub('model')
         );
@@ -84,34 +95,34 @@ class GeneratorController extends Controller
 
             if ($i + 1 != $totalFields) {
 
-                if ($request->nullables[$i] == 'yes') {
-                    /**
-                     * will generate like:
-                     * $table->string('name', 30)->nullable(); or $table->string('name')->nullable();
-                     * with new line and 3x tab
-                     */
-                    $setFields .= "->nullable();\n\t\t\t";
-                } else {
+                if (isset($request->requireds[$i])) {
                     /**
                      * will generate like:
                      * $table->string('name', 30); or $table->string('name');
                      * with new line and 3x tab
                      */
                     $setFields .= ";\n\t\t\t";
-                }
-            } else {
-                if ($request->nullables[$i] == 'yes') {
+                } else {
                     /**
                      * will generate like:
                      * $table->string('name', 30)->nullable(); or $table->string('name')->nullable();
+                     * with new line and 3x tab
                      */
-                    $setFields .= "->nullable();";
-                } else {
+                    $setFields .= "->nullable();\n\t\t\t";
+                }
+            } else {
+                if (isset($request->requireds[$i])) {
                     /**
                      * will generate like:
                      * $table->string('name', 30); or $table->string('name');
                      */
                     $setFields .= ";";
+                } else {
+                    /**
+                     * will generate like:
+                     * $table->string('name', 30)->nullable(); or $table->string('name')->nullable();
+                     */
+                    $setFields .= "->nullable();";
                 }
             }
         }
@@ -170,16 +181,16 @@ class GeneratorController extends Controller
              * will generate like:
              * 'name' =>
              */
-            $validations .= "'" . Str::snake($field) . "' => ";
+            $validations .= "'" . Str::snake(strtolower($field)) . "' => ";
 
             /**
              * will generate like:
              * 'name' => 'required
              */
-            if ($request->nullables[$i] == 'yes') {
-                $validations .= "'nullable";
-            } else {
+            if (isset($request->requireds[$i])) {
                 $validations .= "'required";
+            } else {
+                $validations .= "'nullable";
             }
 
             if ($i + 1 != $totalFields) {
@@ -273,7 +284,19 @@ class GeneratorController extends Controller
         $totalFields = count($request->fields);
 
         foreach ($request->fields as $i => $field) {
-            $thColums .= "<th>{{ __('" . ucfirst($field) . "') }}</th>";
+            /**
+             * will generate like:
+             * <th>{{ __('Price') }}</th>
+             */
+            $thColums .= "<th>{{ __('" . ucwords(Str::replace('_', ' ', $field)) . "') }}</th>";
+
+            /**
+             * will generate like:
+             * {
+                    data: 'price',
+                    name: 'price'
+                }
+             */
 
             $tdColumns .= "{
                     data: '" . Str::snake(strtolower($field)) . "',
@@ -281,6 +304,7 @@ class GeneratorController extends Controller
                 },";
 
             if ($i + 1 != $totalFields) {
+                // add new line and tab
                 $thColums .= "\n\t\t\t\t\t\t\t\t\t\t\t";
                 $tdColumns .= "\n\t\t\t\t";
             }
@@ -406,7 +430,7 @@ class GeneratorController extends Controller
 
         foreach ($request->fields as $i => $field) {
 
-            if ($request->types[$i] == 'integer' || $request->types[$i] == 'string' || $request->types[$i] == 'char' || $request->types[$i] == 'varchar') {
+            if (!Str::contains($request->types[$i], 'text')) {
 
                 $template .= str_replace(
                     [
@@ -418,14 +442,14 @@ class GeneratorController extends Controller
                     ],
                     [
                         Str::snake(strtolower($field)),
-                        ucwords($field),
+                        ucwords(Str::replace('_', ' ', $field)),
                         $nameSingularLowercase,
                         $this->setInputType($request->types[$i]),
-                        $request->nullables[$i] != 'yes' ? ' required' : '',
+                        isset($request->requireds[$i]) ? ' required' : '',
                     ],
                     $this->getStub('views/forms/input')
                 );
-            } else if ($request->types[$i] == 'text') {
+            } else {
 
                 // textarea
                 $template .= str_replace(
@@ -439,7 +463,7 @@ class GeneratorController extends Controller
                         Str::snake(strtolower($field)),
                         ucwords($field),
                         $nameSingularLowercase,
-                        $request->nullables[$i] != 'yes' ? ' required' : '',
+                        isset($request->requireds[$i]) ? ' required' : '',
                     ],
                     $this->getStub('views/forms/textarea')
                 );
@@ -465,7 +489,7 @@ class GeneratorController extends Controller
 
         $sidebarPath = resource_path("/views/layouts/sidebar.blade.php");
 
-        $sidebarTemplade = '{{-- sidebarTemplate --}}
+        $sidebarTemplade = '{{-- sidebarTemplate --}}' . "\n" . '
                 {{-- @can(\'view ' . $nameSingularLowercase . '\') --}}
                 <li class="sidebar-item{{ request()->is(\'' . $namePluralLowercase . '*\') ? \' active\' : \'\' }}">
                     <a href="{{ route(\'' . $namePluralLowercase . '.index\') }}" class="sidebar-link">
@@ -496,12 +520,20 @@ class GeneratorController extends Controller
 
     protected function setInputType($type)
     {
-        if ($type == 'integer' || $type == 'tinyInt' || $type == 'float') {
+        if (
+            Str::contains($type, 'integer') ||
+            $type == 'float' ||
+            $type == 'double' ||
+            $type == 'decimal' ||
+            $type == 'boolean'
+        ) {
             return 'number';
-        } elseif ($type == 'string' || $type == 'char' || $type == 'varchar') {
-            return 'text';
         } elseif ($type == 'date') {
             return 'date';
+        } elseif ($type == 'email') {
+            return 'email';
+        } elseif ($type == 'time') {
+            return 'time';
         } elseif ($type == 'datetime') {
             return 'datetime-local';
         } else {

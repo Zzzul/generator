@@ -8,6 +8,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class {{modelNameUppercase}}Controller extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view {{modelNameLowercase}}')->only('index', 'show');
+        $this->middleware('permission:create {{modelNameLowercase}}')->only('create', 'store');
+        $this->middleware('permission:edit {{modelNameLowercase}}')->only('edit', 'update');
+        $this->middleware('permission:delete {{modelNameLowercase}}')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      *

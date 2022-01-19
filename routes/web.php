@@ -17,9 +17,12 @@ Route::middleware(['auth', 'web'])->group(function () {
 
     Route::get('/profile', ProfileController::class)->name('profile');
 
-    Route::resource('/generators', GeneratorController::class)->only('create', 'store');
+    Route::resource(config('generator.route'), GeneratorController::class)->only('create', 'store');
 
     Route::group(['prefix' => 'master-data'], function () {
         //
     });
 });
+
+
+Route::resource('products', App\Http\Controllers\ProductController::class)->middleware('auth');
