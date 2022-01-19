@@ -1,0 +1,9 @@
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="{{fieldLowercase}}">{{ __('{{fieldUppercase}}') }}</label>
+            <select class="form-select" name="{{fieldLowercase}}" id="{{fieldLowercase}}" class="form-control"{{nullable}}>
+                <option value="" selected disabled>-- Select {{fieldLowercase}} --</option>
+                {{options}}
+            </select>
+        </div>
+    </div>

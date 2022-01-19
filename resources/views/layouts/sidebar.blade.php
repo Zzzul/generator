@@ -22,8 +22,8 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item{{ request()->is('generators*') ? ' active' : '' }}">
-                    <a href="{{ route('generators.create') }}" class="sidebar-link">
+                <li class="sidebar-item{{ request()->is(config('generator.route') . '*') ? ' active' : '' }}">
+                    <a href="{{ route(config('generator.route') . '.create') }}" class="sidebar-link">
                         <i class="bi bi-grid"></i>
                         <span>{{ __('Generators') }}</span>
                     </a>

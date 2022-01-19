@@ -16,32 +16,27 @@ class GeneratorController extends Controller
 
     public function store(Request $request)
     {
-        // return $request;
-
         $this->generateModel($request);
-        // $this->generateMigration($request);
-        // $this->generateController($request);
-        // $this->generateRequest($request);
-        // $this->generateRoute($request);
-        // $this->generateIndexView($request);
-        // $this->generateCreateView($request);
-        // $this->generateEditView($request);
-        // $this->generateActionView($request);
-        // $this->generateFormView($request);
-        // $this->generateSidebar($request);
-        // $this->migrateTable();
+        $this->generateMigration($request);
+        $this->generateController($request);
+        $this->generateRequest($request);
+        $this->generateRoute($request);
+        $this->generateIndexView($request);
+        $this->generateCreateView($request);
+        $this->generateEditView($request);
+        $this->generateActionView($request);
+        $this->generateFormView($request);
+        $this->generateSidebar($request);
+        $this->migrateTable();
 
-        // return redirect()
-        //     ->route('generators.create')
-        //     ->with('success', trans('Module created successfully.'));
+        return redirect()
+            ->route('generators.create')
+            ->with('success', trans('Module created successfully.'));
     }
 
     protected function generateModel($request)
     {
         $name = ucfirst(Str::camel(Str::singular($request->model)));
-
-        dd($name);
-
 
         $fields = [];
 
@@ -79,18 +74,42 @@ class GeneratorController extends Controller
              */
             $setFields .= "\$table->" . $request->types[$i] . "('" . Str::snake(strtolower($field));
 
+            if ($request->types[$i] == 'enum') {
+                /**
+                 * will generate like:
+                 * $table->string('name', ['water', 'fire']
+                 */
+                $setFields .= "', " .  json_encode(explode(';', $request->select_options[$i]));
+            }
+
             if ($request->lengths[$i] && $request->lengths[$i] >= 0) {
-                /**
-                 * will generate like:
-                 * $table->string('name', 30)
-                 */
-                $setFields .=  "', " . $request->lengths[$i] . ")";
+                if ($request->types[$i] == 'enum') {
+                    /**
+                     * will generate like:
+                     * $table->string('name', ['water', 'fire'])
+                     */
+                    $setFields .=  ")";
+                } else {
+                    /**
+                     * will generate like:
+                     * $table->string('name', 30)
+                     */
+                    $setFields .=  "', " . $request->lengths[$i] . ")";
+                }
             } else {
-                /**
-                 * will generate like:
-                 * $table->string('name')
-                 */
-                $setFields .= "')";
+                if ($request->types[$i] == 'enum') {
+                    /**
+                     * will generate like:
+                     * $table->string('name', ['water', 'fire'])
+                     */
+                    $setFields .=  ")";
+                } else {
+                    /**
+                     * will generate like:
+                     * $table->string('name')
+                     */
+                    $setFields .= "')";
+                }
             }
 
             if ($i + 1 != $totalFields) {
@@ -191,6 +210,28 @@ class GeneratorController extends Controller
                 $validations .= "'required";
             } else {
                 $validations .= "'nullable";
+            }
+
+            if ($request->types[$i] == 'enum') {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|in:water,fire',
+                 */
+                $in = "|in:";
+
+                $options = explode(';', $request->select_options[$i]);
+
+                $totalOptions = count($options);
+
+                foreach ($options as $key => $option) {
+                    if ($key + 1 != $totalOptions) {
+                        $in .= $option . ",";
+                    } else {
+                        $in .= $option;
+                    }
+                }
+
+                $validations .= $in;
             }
 
             if ($i + 1 != $totalFields) {
@@ -430,26 +471,38 @@ class GeneratorController extends Controller
 
         foreach ($request->fields as $i => $field) {
 
-            if (!Str::contains($request->types[$i], 'text')) {
+            if ($request->types[$i] == 'enum') {
+                $lists = "";
 
+                $options = explode(';', $request->select_options[$i]);
+
+                $totalOptions = count($options);
+
+                foreach ($options as $key => $value) {
+                    if ($key + 1 != $totalOptions) {
+                        $lists .= "<option value=\"$value\">$value</option>\n\t\t\t\t";
+                    } else {
+                        $lists .= "<option value=\"$value\">$value</option>\t\t\t\t";
+                    }
+                }
+
+                // select
                 $template .= str_replace(
                     [
                         '{{fieldLowercase}}',
                         '{{fieldUppercase}}',
-                        '{{modelName}}',
-                        '{{type}}',
+                        '{{options}}',
                         '{{nullable}}'
                     ],
                     [
                         Str::snake(strtolower($field)),
-                        ucwords(Str::replace('_', ' ', $field)),
-                        $nameSingularLowercase,
-                        $this->setInputType($request->types[$i]),
+                        ucwords($field),
+                        $lists,
                         isset($request->requireds[$i]) ? ' required' : '',
                     ],
-                    $this->getStub('views/forms/input')
+                    $this->getStub('views/forms/select')
                 );
-            } else {
+            } else if (Str::contains($request->types[$i], 'text')) {
 
                 // textarea
                 $template .= str_replace(
@@ -466,6 +519,26 @@ class GeneratorController extends Controller
                         isset($request->requireds[$i]) ? ' required' : '',
                     ],
                     $this->getStub('views/forms/textarea')
+                );
+            } else {
+
+                // input
+                $template .= str_replace(
+                    [
+                        '{{fieldLowercase}}',
+                        '{{fieldUppercase}}',
+                        '{{modelName}}',
+                        '{{type}}',
+                        '{{nullable}}'
+                    ],
+                    [
+                        Str::snake(strtolower($field)),
+                        ucwords(Str::replace('_', ' ', $field)),
+                        $nameSingularLowercase,
+                        $this->setInputType($request->types[$i]),
+                        isset($request->requireds[$i]) ? ' required' : '',
+                    ],
+                    $this->getStub('views/forms/input')
                 );
             }
         }

@@ -15,11 +15,9 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
+            $table->string('name', 75);
 			$table->integer('price');
-			$table->integer('stock');
-			$table->date('exp_date');
-			$table->text('description')->nullable();
+			$table->enum('currency', ["Rp","USD"]);
             $table->timestamps();
         });
     }

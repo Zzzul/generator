@@ -65,12 +65,13 @@
                     </td>
                     <td>
                         <div class="form-group">
-                            <select name="types[]" class="form-select">
+                            <select name="types[]" class="form-select select-types">
                                 <option value="" disabled selected>--Select type--</option>
                                 @foreach (config('generator.types') as $type)
                                     <option value="{{ $type }}">{{ ucwords($type) }}</option>
                                 @endforeach
                             </select>
+                            <input type="hidden" name="select_options[]" class="form-option-null">
                         </div>
                     </td>
                     <td>
@@ -114,20 +115,21 @@
                 <tr>
                     <td>${table.find('tr').length + 1}</td>
                     <td>
-                        <div class="form-group m-0 p-0">
+                        <div class="form-group">
                             <input type="text" name="fields[]" class="form-control" placeholder="Field Name">
                         </div>
                     </td>
                     <td>
-                        <div class="form-group m-0 p-0">
+                        <div class="form-group">
                             <select name="types[]" class="form-select select-types">
                                 <option value="" disabled selected>--Select type--</option>
                                 ${list}
                             </select>
+                            <input type="hidden" name="select_options[]" class="form-option-null">
                         </div>
                     </td>
                     <td>
-                        <div class="form-group m-0 p-0">
+                        <div class="form-group">
                             <input type="number" name="lengths[]" class="form-control" min="1" placeholder="Length">
                         </div>
                     </td>
@@ -148,8 +150,18 @@
         })
 
         $(document).on('change', '.select-types', function() {
+            let index = $(this).parent().parent().parent().index()
+
             if ($(this).val() == 'enum') {
-                console.log('enum - select');
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option-null`).remove()
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
+                <div class="form-group form-options mt-2">
+                    <input type="text" name="select_options[]" class="form-control" placeholder="Seperate with ';' eg: water;fire">
+                </div>
+                `)
+            } else {
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-options`).remove()
             }
         })
 

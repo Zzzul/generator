@@ -41,9 +41,7 @@
                                         <tr>
                                             <th>{{ __('Name') }}</th>
 											<th>{{ __('Price') }}</th>
-											<th>{{ __('Stock') }}</th>
-											<th>{{ __('Exp Date') }}</th>
-											<th>{{ __('Description') }}</th>
+											<th>{{ __('Currency') }}</th>
                                             <th>{{ __('Created At') }}</th>
                                             <th>{{ __('Updated At') }}</th>
                                             <th>{{ __('Action') }}</th>
@@ -84,16 +82,8 @@
                     name: 'price'
                 },
 				{
-                    data: 'stock',
-                    name: 'stock'
-                },
-				{
-                    data: 'exp_date',
-                    name: 'exp_date'
-                },
-				{
-                    data: 'description',
-                    name: 'description'
+                    data: 'currency',
+                    name: 'currency'
                 },
                 {
                     data: 'created_at',

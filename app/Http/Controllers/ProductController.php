@@ -8,6 +8,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view product')->only('index', 'show');
+    //     $this->middleware('permission:create product')->only('create', 'store');
+    //     $this->middleware('permission:edit product')->only('edit', 'update');
+    //     $this->middleware('permission:delete product')->only('destroy');
+    // }
+
     /**
      * Display a listing of the resource.
      *
