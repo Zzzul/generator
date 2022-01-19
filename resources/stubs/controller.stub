@@ -28,6 +28,11 @@ class {{modelNameUppercase}}Controller extends Controller
 
             return DataTables::of(${{modelNamePluralLowercase}})
                 ->addIndexColumn()
+                ->addColumn('created_at', function ($row) {
+                    return $row->created_at->format('d/m/Y H:i');
+                })->addColumn('updated_at', function ($row) {
+                    return $row->updated_at->format('d/m/Y H:i');
+                })
                 ->addColumn('action', '{{modelNamePluralLowercase}}.include.action')
                 ->toJson();
         }
@@ -110,6 +115,6 @@ class {{modelNameUppercase}}Controller extends Controller
 
         return redirect()
             ->route('{{modelNamePluralLowercase}}.index')
-            ->with('success', trans('{{modelNameLowercase}} delete successfully.'));
+            ->with('success', trans('{{modelNameLowercase}} deleted successfully.'));
     }
 }

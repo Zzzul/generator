@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\File;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\{Artisan, File};
 
 class GeneratorController extends Controller
 {
@@ -24,6 +23,7 @@ class GeneratorController extends Controller
         $this->generateIndexView($request);
         $this->generateCreateView($request);
         $this->generateEditView($request);
+        $this->generateShowView($request);
         $this->generateActionView($request);
         $this->generateFormView($request);
         $this->generateSidebar($request);
@@ -329,7 +329,7 @@ class GeneratorController extends Controller
              * will generate like:
              * <th>{{ __('Price') }}</th>
              */
-            $thColums .= "<th>{{ __('" . ucwords(Str::replace('_', ' ', $field)) . "') }}</th>";
+            $thColums .= "<th>{{ __('" .  ucwords(str_replace('_', ' ', $field)) . "') }}</th>";
 
             /**
              * will generate like:
@@ -462,6 +462,57 @@ class GeneratorController extends Controller
         file_put_contents(resource_path("/views/$namePluralLowercase/edit.blade.php"), $template);
     }
 
+    protected function generateShowView($request)
+    {
+        $namePluralUppercase = Str::plural(ucfirst($request->model), 2);
+
+        $namePluralLowercase = Str::plural(strtolower($request->model), 2);
+        $nameSingularLowercase = Str::singular(strtolower($request->model));
+
+        $trs = "";
+        $totalFields = count($request->fields);
+
+        foreach ($request->fields as $i => $field) {
+            if ($i >= 1) {
+                $trs .= "\t\t\t\t\t\t\t\t\t";
+            }
+
+            $trs .= "<tr>
+                                        <td class=\"fw-bold\">{{ __('" . ucwords(str_replace('_', ' ', $field)) . "') }}</td>
+                                        <td>{{ $" . $nameSingularLowercase . "->" . Str::snake(strtolower($field)) . " }}</td>
+                                    </tr>";
+
+            if ($i + 1 != $totalFields) {
+                $trs .= "\n";
+            }
+        }
+
+        $template = str_replace(
+            [
+                '{{modelNamePluralUppercase}}',
+                '{{modelNameSingularLowercase}}',
+                '{{modelNamePluralLowercase}}',
+                '{{trs}}'
+            ],
+            [
+                $namePluralUppercase,
+                $nameSingularLowercase,
+                $namePluralLowercase,
+                $trs
+            ],
+            $this->getStub('views/show')
+        );
+
+        // dd($template);
+
+        // make folder
+        if (!file_exists($path = resource_path("/views/$namePluralLowercase"))) {
+            mkdir($path, 0777, true);
+        }
+
+        file_put_contents(resource_path("/views/$namePluralLowercase/show.blade.php"), $template);
+    }
+
     protected function generateFormView($request)
     {
         $nameSingularLowercase = Str::singular(strtolower($request->model));
@@ -496,7 +547,7 @@ class GeneratorController extends Controller
                     ],
                     [
                         Str::snake(strtolower($field)),
-                        ucwords($field),
+                        ucwords(str_replace('_', ' ', $field)),
                         $lists,
                         isset($request->requireds[$i]) ? ' required' : '',
                     ],

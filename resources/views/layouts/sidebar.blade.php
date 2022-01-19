@@ -48,15 +48,6 @@
                 {{-- don`t remove comment below "sidebarTemplate", to generate a sidebar menu --}}
                 {{-- sidebarTemplate --}}
 
-                {{-- @can('view product') --}}
-                <li class="sidebar-item{{ request()->is('products*') ? ' active' : '' }}">
-                    <a href="{{ route('products.index') }}" class="sidebar-link">
-                        <i class="bi bi-patch-question"></i>
-                        <span>{{ __('Products') }}</span>
-                    </a>
-                </li>
-                {{-- @endcan --}}
-
                 <li class="sidebar-title">Account</li>
 
                 @can('view user')

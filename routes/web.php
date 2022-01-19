@@ -23,6 +23,3 @@ Route::middleware(['auth', 'web'])->group(function () {
         //
     });
 });
-
-
-Route::resource('products', App\Http\Controllers\ProductController::class)->middleware('auth');
