@@ -2,14 +2,12 @@
 
 namespace App\Generators;
 
-use Illuminate\Support\Str;
-
 class GenerateMigration
 {
     public function execute(array $request)
     {
-        $tableNamePluralUppercase = Str::plural(ucfirst($request['model']), 2);
-        $tableNamePluralLowercase = Str::plural(strtolower($request['model']), 2);
+        $tableNamePluralUppercase = GeneratorUtils::pluralPascalCase($request['model']);
+        $tableNamePluralLowercase = GeneratorUtils::pluralSnakeCase($request['model']);
 
         $setFields = '';
         $totalFields = count($request['fields']);
@@ -19,7 +17,7 @@ class GenerateMigration
              * will generate like:
              * $table->string('name
              */
-            $setFields .= "\$table->" . $request['types'][$i] . "('" . Str::snake(strtolower($field));
+            $setFields .= "\$table->" . $request['types'][$i] . "('" . GeneratorUtils::singularSnakeCase($field);
 
             if ($request['types'][$i] == 'enum') {
                 /**
@@ -109,6 +107,6 @@ class GenerateMigration
 
         $migrationName = date('Y') . '_' . date('m') . '_' . date('d')  . '_' . date('h') .  date('i') . date('s') . '_create_' . $tableNamePluralLowercase . '_table.php';
 
-        GeneratorUtils::generateTemplate(database_path("/migrations/$migrationName.php"), $template);
+        GeneratorUtils::generateTemplate(database_path("/migrations/$migrationName"), $template);
     }
 }

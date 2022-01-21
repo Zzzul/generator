@@ -1,0 +1,120 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\{{modelNameUppercase}};
+use App\Http\Requests\{Store{{modelNameUppercase}}Request, Update{{modelNameUppercase}}Request};
+use Yajra\DataTables\Facades\DataTables;
+
+class {{modelNameUppercase}}Controller extends Controller
+{
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view {{modelNameSpaceLowercase}}')->only('index', 'show');
+    //     $this->middleware('permission:create {{modelNameSpaceLowercase}}')->only('create', 'store');
+    //     $this->middleware('permission:edit {{modelNameSpaceLowercase}}')->only('edit', 'update');
+    //     $this->middleware('permission:delete {{modelNameSpaceLowercase}}')->only('destroy');
+    // }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        if (request()->ajax()) {
+            ${{modelNamePluralCamleCase}} = {{modelNameUppercase}}::query();
+
+            return DataTables::of(${{modelNamePluralCamleCase}})
+                ->addIndexColumn()
+                ->addColumn('created_at', function ($row) {
+                    return $row->created_at->format('d/m/Y H:i');
+                })->addColumn('updated_at', function ($row) {
+                    return $row->updated_at->format('d/m/Y H:i');
+                })
+                ->addColumn('action', '{{modelNamePluralKebabCase}}.include.action')
+                ->toJson();
+        }
+
+        return view('{{modelNamePluralKebabCase}}.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('{{modelNamePluralKebabCase}}.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Store{{modelNameUppercase}}Request $request)
+    {
+        {{modelNameUppercase}}::create($request->validated());
+
+        return redirect()
+            ->route('{{modelNamePluralKebabCase}}.index')
+            ->with('success', trans('{{modelNameSpaceLowercase}} created successfully.'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\{{modelNameUppercase}}  ${{modelNameSingularCamelCase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function show({{modelNameUppercase}} ${{modelNameSingularCamelCase}})
+    {
+        return view('{{modelNamePluralKebabCase}}.show', compact('{{modelNameSpaceLowercase}}'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\{{modelNameUppercase}}  ${{modelNameSingularCamelCase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function edit({{modelNameUppercase}} ${{modelNameSingularCamelCase}})
+    {
+        return view('{{modelNamePluralKebabCase}}.edit', compact('{{modelNameSpaceLowercase}}'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\{{modelNameUppercase}}  ${{modelNameSingularCamelCase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Update{{modelNameUppercase}}Request $request, {{modelNameUppercase}} ${{modelNameSingularCamelCase}})
+    {
+        ${{modelNameSingularCamelCase}}->update($request->validated());
+
+        return redirect()
+            ->route('{{modelNamePluralKebabCase}}.index')
+            ->with('success', trans('{{modelNameSpaceLowercase}} updated successfully.'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\{{modelNameUppercase}}  ${{modelNameSingularCamelCase}}
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy({{modelNameUppercase}} ${{modelNameSingularCamelCase}})
+    {
+        ${{modelNameSingularCamelCase}}->delete();
+
+        return redirect()
+            ->route('{{modelNamePluralKebabCase}}.index')
+            ->with('success', trans('{{modelNameSpaceLowercase}} deleted successfully.'));
+    }
+}

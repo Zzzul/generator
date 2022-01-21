@@ -2,26 +2,30 @@
 
 namespace App\Generators;
 
-use Illuminate\Support\Str;
-
 class GenerateController
 {
     public function execute($request)
     {
-        $modelNameUppercase = Str::singular(ucwords($request['model']));
-        $modelNameLowercase = Str::singular(strtolower($request['model']));
-        $modelNamePluralLowerCase = Str::plural(strtolower($request['model']), 2);
+        $modelNameUppercase = GeneratorUtils::singularPascalCase($request['model']);
+        $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($request['model']);
+        $modelNamePluralCamelCase = GeneratorUtils::pluralCamelCase($request['model']);
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
+        $modelNameSpaceLowercase = GeneratorUtils::cleanSingularLowerCase($request['model']);
 
         $template = str_replace(
             [
                 '{{modelNameUppercase}}',
-                '{{modelNameLowercase}}',
-                '{{modelNamePluralLowercase}}'
+                '{{modelNameSingularCamelCase}}',
+                '{{modelNamePluralCamleCase}}',
+                '{{modelNamePluralKebabCase}}',
+                '{{modelNameSpaceLowercase}}'
             ],
             [
                 $modelNameUppercase,
-                $modelNameLowercase,
-                $modelNamePluralLowerCase
+                $modelNameSingularCamelCase,
+                $modelNamePluralCamelCase,
+                $modelNamePluralKebabCase,
+                $modelNameSpaceLowercase
             ],
             GeneratorUtils::getTemplate('controller')
         );

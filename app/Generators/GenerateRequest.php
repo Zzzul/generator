@@ -2,13 +2,11 @@
 
 namespace App\Generators;
 
-use Illuminate\Support\Str;
-
 class GenerateRequest
 {
     public function execute($request)
     {
-        $model = Str::singular(ucwords($request['model']));
+        $model = GeneratorUtils::singularPascalCase($request['model']);
 
         $validations = '';
         $totalFields = count($request['fields']);
@@ -18,7 +16,7 @@ class GenerateRequest
              * will generate like:
              * 'name' =>
              */
-            $validations .= "'" . Str::snake(strtolower($field)) . "' => ";
+            $validations .= "'" . GeneratorUtils::singularSnakeCase($field) . "' => ";
 
             /**
              * will generate like:
@@ -88,7 +86,7 @@ class GenerateRequest
 
         $storeRequestTemplate = str_replace(
             [
-                '{{modelNameUppercase}}',
+                '{{modelNamePascalCase}}',
                 '{{fields}}'
             ],
             [
@@ -100,7 +98,7 @@ class GenerateRequest
 
         $updateRequestTemplate = str_replace(
             [
-                '{{modelNameUppercase}}',
+                '{{modelNamePascalCase}}',
                 '{{fields}}'
             ],
             [

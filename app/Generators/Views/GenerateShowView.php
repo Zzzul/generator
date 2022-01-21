@@ -3,16 +3,16 @@
 namespace App\Generators\Views;
 
 use App\Generators\GeneratorUtils;
-use Illuminate\Support\Str;
 
 class GenerateShowView
 {
     public function execute(array $request)
     {
-        $modelNamePluralUppercase = Str::plural(ucfirst($request['model']), 2);
+        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
+        $modelNameSingularLowerCase = GeneratorUtils::cleanSingularLowerCase($request['model']);
 
-        $modelNamePluralLowercase = Str::plural(strtolower($request['model']), 2);
-        $modelNameSingularLowercase = Str::singular(strtolower($request['model']));
+        $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($request['model']);
 
         $trs = "";
         $totalFields = count($request['fields']);
@@ -23,8 +23,8 @@ class GenerateShowView
             }
 
             $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('" . ucwords(str_replace('_', ' ', $field)) . "') }}</td>
-                                        <td>{{ $" . $modelNameSingularLowercase . "->" . Str::snake(strtolower($field)) . " }}</td>
+                                        <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($field) . "') }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($field) . " }}</td>
                                     </tr>";
 
             if ($i + 1 != $totalFields) {
@@ -34,22 +34,24 @@ class GenerateShowView
 
         $template = str_replace(
             [
-                '{{modelNamePluralUppercase}}',
-                '{{modelNameSingularLowercase}}',
-                '{{modelNamePluralLowercase}}',
+                '{{modelNamePluralUcWords}}',
+                '{{modelNameSingularLowerCase}}',
+                '{{modelNamePluralKebabCase}}',
+                '{{modelNameSingularCamelCase}}',
                 '{{trs}}'
             ],
             [
-                $modelNamePluralUppercase,
-                $modelNameSingularLowercase,
-                $modelNamePluralLowercase,
+                $modelNamePluralUcWords,
+                $modelNameSingularLowerCase,
+                $modelNamePluralKebabCase,
+                $modelNameSingularCamelCase,
                 $trs
             ],
             GeneratorUtils::getTemplate('views/show')
         );
 
-        GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralLowercase"));
+        GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
 
-        GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralLowercase/show.blade.php"), $template);
+        GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/show.blade.php"), $template);
     }
 }

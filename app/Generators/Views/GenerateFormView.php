@@ -9,8 +9,8 @@ class GenerateFormView
 {
     public function execute(array $request)
     {
-        $modelNameSingularLowercase = Str::singular(strtolower($request['model']));
-        $modelNamePluralLowercase = Str::plural(strtolower($request['model']), 2);
+        $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($request['model']);
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
 
         $template = '<div class="row mb-2">';
 
@@ -24,7 +24,7 @@ class GenerateFormView
                 $totalOptions = count($options);
 
                 foreach ($options as $key => $value) {
-                    $lists .= "<option value=\"$value\" {{ isset($" . $modelNameSingularLowercase . ") && $" . $modelNameSingularLowercase . "->$field == '$value' ? 'selected' : '' }}>$value</option>";
+                    $lists .= "<option value=\"$value\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$field == '$value' ? 'selected' : '' }}>$value</option>";
 
                     if ($key + 1 != $totalOptions) {
                         $lists .= "\n\t\t\t\t";
@@ -42,8 +42,8 @@ class GenerateFormView
                         '{{nullable}}'
                     ],
                     [
-                        Str::snake(strtolower($field)),
-                        ucwords(str_replace('_', ' ', $field)),
+                        GeneratorUtils::singularSnakeCase($field),
+                        GeneratorUtils::cleanSingularUcWords($field),
                         $lists,
                         isset($request['requireds'][$i]) ? ' required' : '',
                     ],
@@ -60,9 +60,9 @@ class GenerateFormView
                         '{{nullable}}'
                     ],
                     [
-                        Str::snake(strtolower($field)),
-                        ucwords($field),
-                        $modelNameSingularLowercase,
+                        GeneratorUtils::singularSnakeCase($field),
+                        GeneratorUtils::cleanSingularUcWords($field),
+                        $modelNameSingularCamelCase,
                         isset($request['requireds'][$i]) ? ' required' : '',
                     ],
                     GeneratorUtils::getTemplate('views/forms/textarea')
@@ -79,10 +79,10 @@ class GenerateFormView
                         '{{nullable}}'
                     ],
                     [
-                        Str::snake(strtolower($field)),
-                        ucwords(Str::replace('_', ' ', $field)),
-                        $modelNameSingularLowercase,
-                        GeneratorUtils::setInputType($request['types'][$i]),
+                        GeneratorUtils::singularSnakeCase($field),
+                        GeneratorUtils::cleanSingularUcWords($field),
+                        $modelNameSingularCamelCase,
+                        GeneratorUtils::setInputType($request['types'][$i], $request['fields'][$i]),
                         isset($request['requireds'][$i]) ? ' required' : '',
                     ],
                     GeneratorUtils::getTemplate('views/forms/input')
@@ -92,8 +92,8 @@ class GenerateFormView
 
         $template .= "</div>";
 
-        GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralLowercase/include"));
+        GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
 
-        GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralLowercase/include/form.blade.php"), $template);
+        GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/include/form.blade.php"), $template);
     }
 }

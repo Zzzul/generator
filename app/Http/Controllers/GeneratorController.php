@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{Artisan, File};
+use Illuminate\Support\Facades\Artisan;
 use App\Generators\{
     GenerateController,
     GenerateModel,
@@ -142,6 +141,7 @@ class GeneratorController extends Controller
         $this->generateActionView->execute($request->all());
         $this->generateFormView->execute($request->all());
         $this->generateSidebarView->execute($request->all());
+        $this->clearCache();
         $this->migrateTable();
 
         return redirect()
@@ -152,5 +152,10 @@ class GeneratorController extends Controller
     protected function migrateTable(): void
     {
         Artisan::call('migrate');
+    }
+
+    protected function clearCache(): void
+    {
+        Artisan::call('optimize:clear');
     }
 }

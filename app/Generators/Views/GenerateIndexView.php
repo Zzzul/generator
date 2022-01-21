@@ -3,17 +3,18 @@
 namespace App\Generators\Views;
 
 use App\Generators\GeneratorUtils;
-use Illuminate\Support\Str;
 
 class GenerateIndexView
 {
     public function execute($request)
     {
-        $modelNamePluralUppercase = Str::plural(ucfirst($request['model']), 2);
-        $modelNameSingularUppercase = Str::singular(ucfirst($request['model']));
+        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
 
-        $modelNamePluralLowercase = Str::plural(strtolower($request['model']), 2);
-        $modelNameSingularLowercase = Str::singular(strtolower($request['model']));
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
+
+        $modelNamePluralLowerCase = GeneratorUtils::cleanPluralLowerCase($request['model']);
+
+        $modelNameSingularLowercase = GeneratorUtils::cleanSingularLowerCase($request['model']);
 
         $thColums = '';
         $tdColumns = '';
@@ -24,7 +25,7 @@ class GenerateIndexView
              * will generate like:
              * <th>{{ __('Price') }}</th>
              */
-            $thColums .= "<th>{{ __('" .  ucwords(str_replace('_', ' ', $field)) . "') }}</th>";
+            $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($field) . "') }}</th>";
 
             /**
              * will generate like:
@@ -35,8 +36,8 @@ class GenerateIndexView
              */
 
             $tdColumns .= "{
-                    data: '" . Str::snake(strtolower($field)) . "',
-                    name: '" . Str::snake(strtolower($field)) . "'
+                    data: '" . GeneratorUtils::singularSnakeCase($field) . "',
+                    name: '" . GeneratorUtils::singularSnakeCase($field) . "'
                 },";
 
             if ($i + 1 != $totalFields) {
@@ -48,26 +49,26 @@ class GenerateIndexView
 
         $template = str_replace(
             [
-                '{{modelNamePluralUppercase}}',
-                '{{modelNamePluralLowercase}}',
-                '{{modelNameSingularLowercase}}',
-                '{{modelNameSingularUppercase}}',
+                '{{modelNamePluralUcWords}}',
+                '{{modelNamePluralKebabCase}}',
+                '{{modelNameSingularLowerCase}}',
+                '{{modelNamePluralLowerCase}}',
                 '{{thColumns}}',
                 '{{tdColumns}}'
             ],
             [
-                $modelNamePluralUppercase,
-                $modelNamePluralLowercase,
+                $modelNamePluralUcWords,
+                $modelNamePluralKebabCase,
                 $modelNameSingularLowercase,
-                $modelNameSingularUppercase,
+                $modelNamePluralLowerCase,
                 $thColums,
                 $tdColumns
             ],
             GeneratorUtils::getTemplate('views/index')
         );
 
-        GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralLowercase"));
+        GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
 
-        GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralLowercase/index.blade.php"), $template);
+        GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/index.blade.php"), $template);
     }
 }

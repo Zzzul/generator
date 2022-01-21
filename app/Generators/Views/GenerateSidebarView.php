@@ -3,25 +3,24 @@
 namespace App\Generators\Views;
 
 use App\Generators\GeneratorUtils;
-use Illuminate\Support\Str;
 
 class GenerateSidebarView
 {
     public function execute(array $request)
     {
-        $modelNamePluralUppercase = Str::plural(ucfirst($request['model']), 2);
+        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
 
-        $modelNamePluralLowercase = Str::plural(strtolower($request['model']), 2);
-        $modelNameSingularLowercase = Str::singular(strtolower($request['model']));
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
+        $modelNameSingularLowercase = GeneratorUtils::cleanSingularUcWords($request['model']);
 
         $sidebarPath = resource_path("/views/layouts/sidebar.blade.php");
 
         $sidebarTemplade = '{{-- sidebarTemplate --}}' . "\n" . '
                 {{-- @can(\'view ' . $modelNameSingularLowercase . '\') --}}
-                <li class="sidebar-item{{ request()->is(\'' . $modelNamePluralLowercase . '*\') ? \' active\' : \'\' }}">
-                    <a href="{{ route(\'' . $modelNamePluralLowercase . '.index\') }}" class="sidebar-link">
+                <li class="sidebar-item{{ request()->is(\'' . $modelNamePluralKebabCase . '*\') ? \' active\' : \'\' }}">
+                    <a href="{{ route(\'' . $modelNamePluralKebabCase . '.index\') }}" class="sidebar-link">
                         <i class="bi bi-patch-question"></i>
-                        <span>{{ __(\'' . $modelNamePluralUppercase . '\') }}</span>
+                        <span>{{ __(\'' . $modelNamePluralUcWords . '\') }}</span>
                     </a>
                 </li>
                 {{-- @endcan --}}';
