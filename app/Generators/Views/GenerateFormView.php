@@ -12,9 +12,12 @@ class GenerateFormView
         $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($request['model']);
         $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
 
-        $template = '<div class="row mb-2">';
+        $template = "<div class=\"row mb-2\">\n";
 
         foreach ($request['fields'] as $i => $field) {
+
+            $fieldSnakeCase = GeneratorUtils::singularSnakeCase($field);
+            $fieldUcWords = GeneratorUtils::cleanSingularUcWords($field);
 
             if ($request['types'][$i] == 'enum') {
                 $lists = "";
@@ -24,7 +27,7 @@ class GenerateFormView
                 $totalOptions = count($options);
 
                 foreach ($options as $key => $value) {
-                    $lists .= "<option value=\"$value\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$field == '$value' ? 'selected' : '' }}>$value</option>";
+                    $lists .= "<option value=\"$value\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$field == '$value' ? 'selected' : (old('$field') == '$value' ? 'selected' : '') }}>$value</option>";
 
                     if ($key + 1 != $totalOptions) {
                         $lists .= "\n\t\t\t\t";
@@ -42,8 +45,8 @@ class GenerateFormView
                         '{{nullable}}'
                     ],
                     [
-                        GeneratorUtils::singularSnakeCase($field),
-                        GeneratorUtils::cleanSingularUcWords($field),
+                        $fieldSnakeCase,
+                        $fieldUcWords,
                         $lists,
                         isset($request['requireds'][$i]) ? ' required' : '',
                     ],
@@ -60,8 +63,8 @@ class GenerateFormView
                         '{{nullable}}'
                     ],
                     [
-                        GeneratorUtils::singularSnakeCase($field),
-                        GeneratorUtils::cleanSingularUcWords($field),
+                        $fieldSnakeCase,
+                        $fieldUcWords,
                         $modelNameSingularCamelCase,
                         isset($request['requireds'][$i]) ? ' required' : '',
                     ],
@@ -70,19 +73,35 @@ class GenerateFormView
             } else {
 
                 // input
+                $fieldSnakeCase = $fieldSnakeCase;
+
+                $formatValue = "{{ isset($$modelNameSingularCamelCase) ? $$modelNameSingularCamelCase->$fieldSnakeCase : old('$fieldSnakeCase') }}";
+
+                if ($request['types'][$i] == 'dateTime') {
+                    $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? date('Y-m-d\TH:i', strtotime($" . $modelNameSingularCamelCase . "->$fieldSnakeCase)) : old('$fieldSnakeCase') }}";
+                } elseif ($request['types'][$i] == 'date') {
+                    $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? date(\"d-m-Y\", strtotime($" . $modelNameSingularCamelCase . "->$fieldSnakeCase)) : old('$fieldSnakeCase') }}";
+                }
+
                 $template .= str_replace(
                     [
-                        '{{fieldLowercase}}',
-                        '{{fieldUppercase}}',
+                        '{{fieldKebabCase}}',
+                        '{{fieldUcWords}}',
+                        '{{fieldSnakeCase}}',
+                        '{{fieldCamelCase}}',
                         '{{modelName}}',
                         '{{type}}',
+                        '{{value}}',
                         '{{nullable}}'
                     ],
                     [
-                        GeneratorUtils::singularSnakeCase($field),
-                        GeneratorUtils::cleanSingularUcWords($field),
+                        GeneratorUtils::singularKebabCase($field),
+                        $fieldUcWords,
+                        $fieldSnakeCase,
+                        GeneratorUtils::singularCamelCase($field),
                         $modelNameSingularCamelCase,
                         GeneratorUtils::setInputType($request['types'][$i], $request['fields'][$i]),
+                        $formatValue,
                         isset($request['requireds'][$i]) ? ' required' : '',
                     ],
                     GeneratorUtils::getTemplate('views/forms/input')

@@ -9,8 +9,8 @@ class GeneratorUtils
     /**
      * Get template/stub file
      *
-     * @param String $path
-     * @return String
+     * @param string $path
+     * @return string
      */
     public static function getTemplate(string $path)
     {
@@ -20,9 +20,9 @@ class GeneratorUtils
     /**
      * Generate template to php file
      *
-     * @param String $destination
-     * @param String $template
-     * @return Bool
+     * @param string $destination
+     * @param string $template
+     * @return bool
      */
     public static function generateTemplate(string $destination, string $template)
     {
@@ -32,8 +32,8 @@ class GeneratorUtils
     /**
      * Check folder if doesnt exist, then make folder
      *
-     * @param String $path
-     * @return Bool
+     * @param string $path
+     * @return bool
      */
     public static function checkFolder(string $path)
     {
@@ -47,8 +47,8 @@ class GeneratorUtils
     /**
      * Set input type by table field data type
      *
-     * @param String $dataType
-     * @return String
+     * @param string $dataType
+     * @return string
      */
     public static function setInputType(string $dataType, string $field = null)
     {
@@ -78,8 +78,8 @@ class GeneratorUtils
     /**
      * Convert string to singular pascal case
      *
-     * @param String $string
-     * @return String
+     * @param string $string
+     * @return string
      */
     public static function singularPascalCase(string $string)
     {
@@ -89,8 +89,8 @@ class GeneratorUtils
     /**
      * Convert string to plural pascal case
      *
-     * @param String $string
-     * @return String
+     * @param string $string
+     * @return string
      */
     public static function pluralPascalCase(string $string)
     {
@@ -100,8 +100,8 @@ class GeneratorUtils
     /**
      * Convert string to plural snake case
      *
-     * @param String $string
-     * @return String
+     * @param string $string
+     * @return string
      */
     public static function pluralSnakeCase(string $string)
     {
@@ -111,8 +111,8 @@ class GeneratorUtils
     /**
      * Convert string to singular snake case
      *
-     * @param String $string
-     * @return String
+     * @param string $string
+     * @return string
      */
     public static function singularSnakeCase(string $string)
     {
@@ -122,8 +122,8 @@ class GeneratorUtils
     /**
      * Convert string to plural pascal case
      *
-     * @param String $string
-     * @return String
+     * @param string $string
+     * @return string
      */
     public static function pluralCamelCase(string $string)
     {
@@ -133,8 +133,8 @@ class GeneratorUtils
     /**
      * Convert string to singular pascal case
      *
-     * @param String $string
-     * @return String
+     * @param string $string
+     * @return string
      */
     public static function singularCamelCase(string $string)
     {
@@ -144,8 +144,8 @@ class GeneratorUtils
     /**
      * Convert string to plural, kebab case, and lowercase
      *
-     * @param String $string
-     * @return String
+     * @param string $string
+     * @return string
      */
     public static function pluralKebabCase(string $string)
     {
@@ -153,32 +153,43 @@ class GeneratorUtils
     }
 
     /**
+     * Convert string to singular, kebab case, and lowercase
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function singularKebabCase(string $string)
+    {
+        return trim(Str::kebab(Str::singular($string)));
+    }
+
+    /**
      * Convert string to singular, remove special caracters, and lowercase
      *
-     * @param String $string
-     * @return String
+     * @param string $string
+     * @return string
      */
     public static function cleanSingularLowerCase(string $string)
     {
-        return Str::singular(trim(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string)));
+        return Str::singular(trim(preg_replace('/[^A-Za-z0-9() -]/', ' ', strtolower($string))));
     }
 
     /**
      * Convert string to plural, remove special caracters, and uppercase every first letters
      *
-     * @param String $string
-     * @return String
+     * @param string $string
+     * @return string
      */
     public static function cleanPluralUcWords(string $string)
     {
-        return trim(ucwords(Str::plural(trim(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string)), 2)));
+        return ucwords(Str::plural(trim(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string)), 2));
     }
 
     /**
      * Convert string to singular, remove special caracters, and uppercase every first letters
      *
-     * @param String $string
-     * @return String
+     * @param string $string
+     * @return string
      */
     public static function cleanSingularUcWords(string $string)
     {
@@ -188,8 +199,8 @@ class GeneratorUtils
     /**
      * Convert string to plural, remove special caracters, and lowercase
      *
-     * @param String $string
-     * @return String
+     * @param string $string
+     * @return string
      */
     public static function cleanPluralLowerCase(string $string)
     {

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\{StoreUserRequest, UpdateUserRequest};
 use App\Models\User;
-use App\Http\Requests\MasterData\{StoreUserRequest, UpdateUserRequest};
 use Yajra\DataTables\Facades\DataTables;
 use Image;
 
