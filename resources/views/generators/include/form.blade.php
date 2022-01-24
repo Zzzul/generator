@@ -12,35 +12,6 @@
         </div>
     </div>
 
-    {{-- <div class="col-md-4">
-        <div class="form-group">
-            <label for="table">{{ __('Table') }}</label>
-            <input type="text" name="table" id="table" class="form-control @error('table') is-invalid @enderror"
-                placeholder="{{ __('Table Name') }}" value="{{ old('table') }}" required>
-            @error('table')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="form-group">
-            <label for="controller">{{ __('Controller') }}</label>
-            <input type="text" name="controller" id="controller"
-                class="form-control @error('controller') is-invalid @enderror"
-                placeholder="{{ __('Controller Name') }}" value="{{ old('controller') }}" required>
-            @error('controller')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-    </div> --}}
-
-    {{-- <hr class="my-4"> --}}
-
     <h6 class="mt-3">{{ __('Table Field') }}</h6>
 
     <div class="col-md-12">
@@ -49,8 +20,9 @@
                 <tr>
                     <th width="30">#</th>
                     <th>{{ __('Field name') }}</th>
-                    <th>{{ __('Type') }}</th>
+                    <th>{{ __('Data Type') }}</th>
                     <th>{{ __('Length') }}</th>
+                    <th>{{ __('Input Type') }}</th>
                     <th>{{ __('Required') }}</th>
                     <th>{{ __('Action') }}</th>
                 </tr>
@@ -60,28 +32,45 @@
                     <td>1</td>
                     <td>
                         <div class="form-group">
-                            <input type="text" name="fields[]" class="form-control" placeholder="Field Name">
+                            <input type="text" name="fields[]" class="form-control" placeholder="Field Name" required>
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
-                            <select name="types[]" class="form-select select-types">
-                                <option value="" disabled selected>--Select type--</option>
+                            <select name="data_types[]" class="form-select data-types" required>
+                                <option value="" disabled selected>--Select data type--</option>
                                 @foreach (config('generator.types') as $type)
                                     <option value="{{ $type }}">{{ ucwords($type) }}</option>
                                 @endforeach
                             </select>
-                            <input type="hidden" name="select_options[]" class="form-option-null">
+                            <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
-                            <input type="number" name="lengths[]" class="form-control" min="1" placeholder="Length">
+                            <input type="number" name="min_lengths[]" class="form-control" min="1"
+                                placeholder="Min Length">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" name="max_lengths[]" class="form-control" min="1"
+                                placeholder="Max Length">
                         </div>
                     </td>
                     <td>
+                        <div class="form-group">
+                            <select name="input_types[]" class="form-select input-types" required>
+                                <option value="" disabled selected>-- Select input type --</option>
+                                <option value="" disabled>Select data type first</option>
+                            </select>
+                        </div>
+                        <input type="text" placeholder="form-mimes" name="mimes[]" class="form-mimes">
+                        <input type="text" placeholder="form-file-type" name="file_types[]" class="form-file-type">
+                        <input type="text" placeholder="form-file-size" name="files_sizes[]" class="form-file-size">
+                    </td>
+                    <td>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="requireds[]" checked />
+                            <input class="form-check-input" type="checkbox" name="requireds[]" value="required"
+                                checked />
                         </div>
                     </td>
                     <td>
@@ -116,26 +105,42 @@
                     <td>${table.find('tr').length + 1}</td>
                     <td>
                         <div class="form-group">
-                            <input type="text" name="fields[]" class="form-control" placeholder="Field Name">
+                            <input type="text" name="fields[]" class="form-control" placeholder="Field Name" required>
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
-                            <select name="types[]" class="form-select select-types">
+                            <select name="data_types[]" class="form-select data-types" required>
                                 <option value="" disabled selected>--Select type--</option>
                                 ${list}
                             </select>
-                            <input type="hidden" name="select_options[]" class="form-option-null">
+                            <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
-                            <input type="number" name="lengths[]" class="form-control" min="1" placeholder="Length">
+                            <input type="number" name="min_lengths[]" class="form-control" min="1"
+                                placeholder="Min Length">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" name="max_lengths[]" class="form-control" min="1"
+                                placeholder="Max Length">
                         </div>
                     </td>
                     <td>
+                        <div class="form-group">
+                            <select name="input_types[]" class="form-select input-types" required>
+                                <option value="" disabled selected>-- Select input type --</option>
+                                <option value="" disabled>Select data type first</option>
+                            </select>
+                        </div>
+                        <input type="text" placeholder="form-mimes" name="mimes[]" class="form-mimes">
+                        <input type="text" placeholder="form-file-type" name="file_types[]" class="form-file-type">
+                        <input type="text" placeholder="form-file-size" name="files_sizes[]" class="form-file-size">
+                    </td>
+                    <td>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="requireds[]"  checked/>
+                            <input class="form-check-input" type="checkbox" name="requireds[]" value="required" checked/>
                         </div>
                     </td>
                     <td>
@@ -149,19 +154,163 @@
             table.append(tr)
         })
 
-        $(document).on('change', '.select-types', function() {
+        $(document).on('change', '.data-types', function() {
             let index = $(this).parent().parent().parent().index()
 
             if ($(this).val() == 'enum') {
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option-null`).remove()
+                removeInputHidden(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                <div class="form-group form-options mt-2">
-                    <input type="text" name="select_options[]" class="form-control" placeholder="Seperate with ';' eg: water;fire">
+                <div class="form-group form-option mt-2">
+                    <input type="text" name="select_options[]" class="form-control" placeholder="Seperate with '|', eg: water|fire">
+                </div>
+                `)
+
+                $(`.input-types:eq(${index})`).html(`
+                    <option value="" disabled selected>-- Select input type --</option>
+                    <option value="select">Select</option>
+                    <option value="radio">Radio</option>
+                `)
+            } else if ($(this).val() == 'date') {
+                removeInputHidden(index)
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
+                    <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                `)
+
+                $(`.input-types:eq(${index})`).html(`
+                    <option value="" disabled selected>-- Select input type --</option>
+                    <option value="date">Date</option>
+                `)
+            } else if ($(this).val() == 'time') {
+                removeInputHidden(index)
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
+                    <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                `)
+
+                $(`.input-types:eq(${index})`).html(`
+                    <option value="" disabled selected>-- Select input type --</option>
+                    <option value="time">Time</option>
+                `)
+            } else if ($(this).val() == 'dateTime') {
+                removeInputHidden(index)
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
+                    <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                `)
+
+                $(`.input-types:eq(${index})`).html(`
+                    <option value="" disabled selected>-- Select input type --</option>
+                    <option value="datetime-local">Datetime local</option>
+                `)
+            } else if (
+                $(this).val() == 'text' ||
+                $(this).val() == 'longText' ||
+                $(this).val() == 'tinyText'
+            ) {
+                removeInputHidden(index)
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
+                    <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                `)
+
+                $(`.input-types:eq(${index})`).html(`
+                    <option value="" disabled selected>-- Select input type --</option>
+                    <option value="text">Text</option>
+                    <option value="textarea">Textarea</option>
+                `)
+            } else if (
+                $(this).val() == 'integer' ||
+                $(this).val() == 'bigInteger' ||
+                $(this).val() == 'boolean' ||
+                $(this).val() == 'decimal' ||
+                $(this).val() == 'double' ||
+                $(this).val() == 'float' ||
+                $(this).val() == 'tinyInteger'
+            ) {
+                removeInputHidden(index)
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
+                    <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                `)
+
+                $(`.input-types:eq(${index})`).html(`
+                    <option value="" disabled selected>-- Select input type --</option>
+                    <option value="number">Number</option>
+                `)
+            } else {
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
+                    <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                `)
+
+                $(`.input-types:eq(${index})`).html(`
+                    <option value="" disabled selected>-- Select input type --</option>
+                    <option value="text">Text</option>
+                    <option value="email">Email</option>
+                    <option value="file">File</option>
+                `)
+            }
+        })
+
+        $(document).on('change', '.input-types', function() {
+            let index = $(this).parent().parent().parent().index()
+
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-type`).remove()
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-size`).remove()
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-mimes`).remove()
+
+            if ($(this).val() == 'file') {
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(`
+                <div class="form-group mt-2 form-file">
+                    <select  name="file_types[]" class="form-select file-types" required>
+                        <option value="" disabled selected>-- Select file type --</option>
+                        <option value="image">Image</option>
+                        <option value="mimes">Mimes</option>
+                    </select>
+                </div>
+                <div class="form-group form-file-size">
+                    <input type="number" name="files_sizes[]" class="form-control" placeholder="Max size, eg: 1024" required>
                 </div>
                 `)
             } else {
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-options`).remove()
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-type`).remove()
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-size`).remove()
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-mimes`).remove()
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
+                    `<input type="text" placeholder="form-file-type" name="file_types[]" class="form-file-type">`
+                )
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
+                    `<input type="text" placeholder="form-file-size" name="files_sizes[]" class="form-file-size">`
+                )
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
+                    `<input type="text" placeholder="form-mimes" name="mimes[]" class="form-mimes">`
+                )
+            }
+        })
+
+        $(document).on('change', '.file-types', function() {
+            let index = $(this).parent().parent().parent().index()
+
+            if ($(this).val() == 'mimes') {
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-mimes`).remove()
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(`
+                <div class="form-group mt-2 form-mimes">
+                    <input type="text" name="mimes[]" class="form-control" placeholder="File type, seperate with ','. eg: pdf,docx" required>
+                </div>
+                `)
+            } else {
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-mimes`).remove()
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
+                    `<input type="text" placeholder="form-mimes" name="mimes[]" class="form-mimes">`
+                )
             }
         })
 
@@ -172,6 +321,13 @@
                 $(this).parent().parent().remove()
             }
         })
+
+        function removeInputHidden(index) {
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-type`).remove()
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-size`).remove()
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-mimes`).remove()
+        }
 
         function renderTypes() {
             let optionTypes = ''

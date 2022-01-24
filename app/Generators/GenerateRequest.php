@@ -4,7 +4,7 @@ namespace App\Generators;
 
 class GenerateRequest
 {
-    public function execute($request)
+    public function execute(array $request)
     {
         $model = GeneratorUtils::singularPascalCase($request['model']);
 
@@ -28,7 +28,7 @@ class GenerateRequest
                 $validations .= "'nullable";
             }
 
-            if ($request['types'][$i] == 'enum') {
+            if ($request['data_types'][$i] == 'enum') {
                 /**
                  * will generate like:
                  * 'name' => 'required|in:water,fire',
@@ -50,15 +50,68 @@ class GenerateRequest
                 $validations .= $in;
             }
 
-            if ($i + 1 != $totalFields) {
+            if ($request['input_types'][$i] == 'email') {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|email',
+                 */
+                $validations .= "|email";
+            }
 
-                if ($request['lengths'][$i] && $request['lengths'][$i] >= 0) {
+            if ($request['input_types'][$i] == 'string') {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|string',
+                 */
+                $validations .= "|string";
+            }
+
+            if ($request['input_types'][$i] == 'number') {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|numeric',
+                 */
+                $validations .= "|numeric";
+            }
+
+            if ($request['input_types'][$i] == 'date') {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|date',
+                 */
+                $validations .= "|date";
+            }
+
+            if ($request['input_types'][$i] == 'file' && $request['file_types'][$i] == 'image') {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|image|size:1024',
+                 */
+                $validations .= "|image|size:" . $request['files_sizes'][$i];
+            } elseif ($request['input_types'][$i] == 'file' && $request['file_types'][$i] == 'mimes') {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|mimes|size:1024',
+                 */
+                $validations .= "|mimes:" . $request['mimes'][$i] . "|size:" . $request['files_sizes'][$i];
+            }
+
+            if ($request['min_lengths'][$i] && $request['min_lengths'][$i] >= 0) {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|min:5',
+                 */
+                $validations .= "|min:" . $request['min_lengths'][$i];
+            }
+
+            if ($i + 1 != $totalFields) {
+                if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0) {
                     /**
                      * will generate like:
                      * 'name' => 'required|max:30',
                      * with new line and 3x tab
                      */
-                    $validations .= "|max:" . $request['lengths'][$i] . "',\n\t\t\t";
+                    $validations .= "|max:" . $request['max_lengths'][$i] . "',\n\t\t\t";
                 } else {
                     /**
                      * will generate like:
@@ -68,12 +121,12 @@ class GenerateRequest
                     $validations .= "',\n\t\t\t";
                 }
             } else {
-                if ($request['lengths'][$i] && $request['lengths'][$i] >= 0) {
+                if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0) {
                     /**
                      * will generate like:
                      * 'name' => 'required|max:30',
                      */
-                    $validations .= "|max:" . $request['lengths'][$i] . "',";
+                    $validations .= "|max:" . $request['max_lengths'][$i] . "',";
                 } else {
                     /**
                      * will generate like:
