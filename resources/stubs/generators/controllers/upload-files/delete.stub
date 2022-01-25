@@ -1,0 +1,3 @@
+        if (${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}} != null && file_exists(public_path("/uploads/{{fieldPluralKebabCase}}/${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}}"))) {
+            unlink(public_path("/uploads/{{fieldPluralKebabCase}}/${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}}"));
+        }

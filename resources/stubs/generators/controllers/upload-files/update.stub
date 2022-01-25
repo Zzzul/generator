@@ -1,0 +1,24 @@
+        if ($request->file('{{fieldSingularSnakeCase}}') && $request->file('{{fieldSingularSnakeCase}}')->isValid()) {
+
+            $filename = time() . '.' .  $request->file('{{fieldSingularSnakeCase}}')->getClientOriginalExtension();
+
+            $destination = 'uploads/{{fieldPluralKebabCase}}/';
+
+            // if folder dont exist, then create folder
+            if (!file_exists($path = public_path($destination))) {
+                mkdir($path, 0777, true);
+            }
+
+            // Intervention Image
+            Image::make($request->file('{{fieldSingularSnakeCase}}')->getRealPath())->resize(500, 500, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save($destination . $filename);
+
+            // delete old {{fieldSingularSnakeCase}} from storage
+            if (${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}} != null && file_exists(public_path("/uploads/{{fieldPluralKebabCase}}/${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}}"))) {
+                unlink(public_path("/uploads/{{fieldPluralKebabCase}}/${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}}"));
+            }
+
+            $attr['{{fieldSingularSnakeCase}}'] = $filename;
+        }

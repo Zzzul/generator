@@ -35,7 +35,7 @@ class GenerateRequest
                  */
                 $in = "|in:";
 
-                $options = explode(';', $request['select_options'][$i]);
+                $options = explode('|', $request['select_options'][$i]);
 
                 $totalOptions = count($options);
 

@@ -1,0 +1,17 @@
+        if ($request->file('{{fieldSingularSnakeCase}}') && $request->file('{{fieldSingularSnakeCase}}')->isValid()) {
+
+            $filename = time() . '.' . $request->file('{{fieldSingularSnakeCase}}')->getClientOriginalExtension();
+
+            $destination = 'uploads/{{fieldPluralKebabCase}}/';
+
+            if (!file_exists($path = public_path($destination))) {
+                mkdir($path, 0777, true);
+            }
+
+            Image::make($request->file('{{fieldSingularSnakeCase}}')->getRealPath())->resize(500, 500, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save($destination . $filename);
+
+            $attr['{{fieldSingularSnakeCase}}'] = $filename;
+        }

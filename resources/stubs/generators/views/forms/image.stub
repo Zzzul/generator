@@ -1,0 +1,44 @@
+    @isset(${{modelCamelCase}})
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-1 text-center">
+                    <div class="avatar avatar-xl">
+                        @if (${{modelCamelCase}}->{{fieldSingularSnakeCase}} == null)
+                            <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim(${{modelCamelCase}}->{{fieldSingularSnakeCase}}))) }}&s=500" alt="{{fieldSingularSnakeCase}}">
+                        @else
+                            <img src="{{ asset('uploads/{{fieldPluralSnakeCase}}/' . ${{modelCamelCase}}->{{fieldSingularSnakeCase}}) }}" alt="{{fieldUcWords}}">
+                        @endif
+                    </div>
+                </div>
+
+                <div class="col-md-5 me-0 pe-0">
+                    <div class="form-group">
+                        <label for="{{fieldSingularSnakeCase}}">{{ __('{{fieldUcWords}}') }}</label>
+                        <input type="file" name="{{fieldSingularSnakeCase}}" class="form-control @error('{{fieldSingularSnakeCase}}') is-invalid @enderror"
+                                id="{{fieldSingularSnakeCase}}">
+
+                        @error('{{fieldSingularSnakeCase}}')
+                            <div class="invalid-feedback">
+                                <i class="bx bx-radio-circle"></i>
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+    @else
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="{{fieldSingularSnakeCase}}">{{ __('{{fieldUcWords}}') }}</label>
+                <input type="file" name="{{fieldSingularSnakeCase}}" class="form-control @error('{{fieldSingularSnakeCase}}') is-invalid @enderror" id="{{fieldSingularSnakeCase}}"{{nullable}}>
+
+                @error('{{fieldSingularSnakeCase}}')
+                    <div class="invalid-feedback">
+                        <i class="bx bx-radio-circle"></i>
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+        </div>
+    @endisset

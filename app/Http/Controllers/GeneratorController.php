@@ -133,8 +133,8 @@ class GeneratorController extends Controller
 
         // $this->generateModel->execute($request->all());
         // $this->generateMigration->execute($request->all());
-        // $this->generateController->execute($request->all());
-        $this->generateRequest->execute($request->all());
+        $this->generateController->execute($request->all());
+        // $this->generateRequest->execute($request->all());
         // $this->generateRoute->execute($request->all());
         // $this->generateIndexView->execute($request->all());
         // $this->generateCreateView->execute($request->all());
@@ -150,7 +150,7 @@ class GeneratorController extends Controller
         //     ->route('generators.create')
         //     ->with('success', trans('Module created successfully.'));
 
-        return $request;
+        dd('success');
     }
 
     protected function migrateTable(): void

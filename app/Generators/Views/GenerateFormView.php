@@ -3,7 +3,6 @@
 namespace App\Generators\Views;
 
 use App\Generators\GeneratorUtils;
-use Illuminate\Support\Str;
 
 class GenerateFormView
 {
@@ -19,42 +18,78 @@ class GenerateFormView
             $fieldSnakeCase = GeneratorUtils::singularSnakeCase($field);
             $fieldUcWords = GeneratorUtils::cleanSingularUcWords($field);
 
-            if ($request['types'][$i] == 'enum') {
+            if ($request['data_types'][$i] == 'enum') {
                 $lists = "";
 
-                $options = explode(';', $request['select_options'][$i]);
+                $options = explode('|', $request['select_options'][$i]);
 
                 $totalOptions = count($options);
 
-                foreach ($options as $key => $value) {
-                    $lists .= "<option value=\"$value\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$field == '$value' ? 'selected' : (old('$field') == '$value' ? 'selected' : '') }}>$value</option>";
+                if ($request['input_types'][$i] == 'select') {
+                    foreach ($options as $key => $value) {
+                        $lists .= "<option value=\"" . GeneratorUtils::cleanSingularLowerCase($value) . "\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '" . GeneratorUtils::cleanSingularLowerCase($field) . "' ? 'selected' : (old('$fieldSnakeCase') == '" . GeneratorUtils::cleanSingularLowerCase($field) . "' ? 'selected' : '') }}>" . GeneratorUtils::cleanSingularUcWords($value) . "</option>";
 
-                    if ($key + 1 != $totalOptions) {
-                        $lists .= "\n\t\t\t\t";
-                    } else {
-                        $lists .= "\t\t\t\t";
+                        if ($key + 1 != $totalOptions) {
+                            $lists .= "\n\t\t";
+                        } else {
+                            $lists .= "\t\t\t";
+                        }
                     }
+
+                    // select
+                    $template .= str_replace(
+                        [
+                            '{{fieldLowercase}}',
+                            '{{fieldUppercase}}',
+                            '{{options}}',
+                            '{{nullable}}'
+                        ],
+                        [
+                            $fieldSnakeCase,
+                            $fieldUcWords,
+                            $lists,
+                            isset($request['requireds'][$i]) ? ' required' : '',
+                        ],
+                        GeneratorUtils::getTemplate('views/forms/select')
+                    );
+                } else {
+                    $lists .= "\t<div class=\"col-md-6\">\n";
+
+                    foreach ($options as $key => $value) {
+                        // $lists .= "
+                        // <div class=\"form-check\">
+                        //     <input class=\"form-check-input\" type=\"radio\" name=\"$field\" id=\"$value\">
+                        //     <label class=\"form-check-label\" for=\"$value\">
+                        //     $value
+                        //     </label>
+                        // </div>";
+
+                        // radio
+                        $lists .= str_replace(
+                            [
+                                '{{fieldSnakeCase}}',
+                                '{{optionKebabCase}}',
+                                '{{optionUcWords}}',
+                                '{{optionLowerCase}}',
+                                '{{checked}}'
+                            ],
+                            [
+                                $fieldSnakeCase,
+                                GeneratorUtils::singularKebabCase($value),
+                                GeneratorUtils::cleanSingularUcWords($value),
+                                GeneratorUtils::cleanSingularLowerCase($value),
+                                "{{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$field == '$value' ? 'checked' : (old('$field') == '$value' ? 'checked' : '') }}"
+                            ],
+                            GeneratorUtils::getTemplate('views/forms/radio')
+                        );
+                    }
+
+                    $lists .= "\t</div>\n";
+
+                    $template .= $lists;
                 }
+            } else if ($request['input_types'][$i] == 'textarea') {
 
-                // select
-                $template .= str_replace(
-                    [
-                        '{{fieldLowercase}}',
-                        '{{fieldUppercase}}',
-                        '{{options}}',
-                        '{{nullable}}'
-                    ],
-                    [
-                        $fieldSnakeCase,
-                        $fieldUcWords,
-                        $lists,
-                        isset($request['requireds'][$i]) ? ' required' : '',
-                    ],
-                    GeneratorUtils::getTemplate('views/forms/select')
-                );
-            } else if (Str::contains($request['types'][$i], 'text')) {
-
-                // textarea
                 $template .= str_replace(
                     [
                         '{{fieldLowercase}}',
@@ -70,6 +105,25 @@ class GenerateFormView
                     ],
                     GeneratorUtils::getTemplate('views/forms/textarea')
                 );
+            } else if ($request['input_types'][$i] == 'file') {
+
+                $template .= str_replace(
+                    [
+                        '{{modelCamelCase}}',
+                        '{{fieldPluralSnakeCase}}',
+                        '{{fieldSingularSnakeCase}}',
+                        '{{fieldUcWords}}',
+                        '{{nullable}}'
+                    ],
+                    [
+                        $modelNameSingularCamelCase,
+                        GeneratorUtils::pluralSnakeCase($field),
+                        GeneratorUtils::singularSnakeCase($field),
+                        $fieldUcWords,
+                        isset($request['requireds'][$i]) ? ' required' : '',
+                    ],
+                    GeneratorUtils::getTemplate('views/forms/image')
+                );
             } else {
 
                 // input
@@ -77,9 +131,9 @@ class GenerateFormView
 
                 $formatValue = "{{ isset($$modelNameSingularCamelCase) ? $$modelNameSingularCamelCase->$fieldSnakeCase : old('$fieldSnakeCase') }}";
 
-                if ($request['types'][$i] == 'dateTime') {
+                if ($request['data_types'][$i] == 'dateTime') {
                     $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? date('Y-m-d\TH:i', strtotime($" . $modelNameSingularCamelCase . "->$fieldSnakeCase)) : old('$fieldSnakeCase') }}";
-                } elseif ($request['types'][$i] == 'date') {
+                } elseif ($request['data_types'][$i] == 'date') {
                     $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? date(\"d-m-Y\", strtotime($" . $modelNameSingularCamelCase . "->$fieldSnakeCase)) : old('$fieldSnakeCase') }}";
                 }
 
@@ -100,7 +154,7 @@ class GenerateFormView
                         $fieldSnakeCase,
                         GeneratorUtils::singularCamelCase($field),
                         $modelNameSingularCamelCase,
-                        GeneratorUtils::setInputType($request['types'][$i], $request['fields'][$i]),
+                        $request['input_types'][$i],
                         $formatValue,
                         isset($request['requireds'][$i]) ? ' required' : '',
                     ],
@@ -110,6 +164,8 @@ class GenerateFormView
         }
 
         $template .= "</div>";
+
+        // dd($template);
 
         GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
 

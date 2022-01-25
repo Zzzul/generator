@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{{modelNameUppercase}};
-use App\Http\Requests\{Store{{modelNameUppercase}}Request, Update{{modelNameUppercase}}Request};
+use App\Models\{{modelNameSingularPascalCase}};
+use App\Http\Requests\{Store{{modelNameSingularPascalCase}}Request, Update{{modelNameSingularPascalCase}}Request};
 use Yajra\DataTables\Facades\DataTables;
 
-class {{modelNameUppercase}}Controller extends Controller
+class {{modelNameSingularPascalCase}}Controller extends Controller
 {
     // public function __construct()
     // {
@@ -24,7 +24,7 @@ class {{modelNameUppercase}}Controller extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            ${{modelNamePluralCamleCase}} = {{modelNameUppercase}}::query();
+            ${{modelNamePluralCamleCase}} = {{modelNameSingularPascalCase}}::query();
 
             return DataTables::of(${{modelNamePluralCamleCase}})
                 ->addIndexColumn()
@@ -56,9 +56,9 @@ class {{modelNameUppercase}}Controller extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Store{{modelNameUppercase}}Request $request)
+    public function store(Store{{modelNameSingularPascalCase}}Request $request)
     {
-        {{modelNameUppercase}}::create($request->validated());
+        {{modelNameSingularPascalCase}}::create($request->validated());
 
         return redirect()
             ->route('{{modelNamePluralKebabCase}}.index')
@@ -68,10 +68,10 @@ class {{modelNameUppercase}}Controller extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\{{modelNameUppercase}}  ${{modelNameSingularCamelCase}}
+     * @param  \App\Models\{{modelNameSingularPascalCase}}  ${{modelNameSingularCamelCase}}
      * @return \Illuminate\Http\Response
      */
-    public function show({{modelNameUppercase}} ${{modelNameSingularCamelCase}})
+    public function show({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
         return view('{{modelNamePluralKebabCase}}.show', compact('{{modelNameSpaceLowercase}}'));
     }
@@ -79,10 +79,10 @@ class {{modelNameUppercase}}Controller extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\{{modelNameUppercase}}  ${{modelNameSingularCamelCase}}
+     * @param  \App\Models\{{modelNameSingularPascalCase}}  ${{modelNameSingularCamelCase}}
      * @return \Illuminate\Http\Response
      */
-    public function edit({{modelNameUppercase}} ${{modelNameSingularCamelCase}})
+    public function edit({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
         return view('{{modelNamePluralKebabCase}}.edit', compact('{{modelNameSpaceLowercase}}'));
     }
@@ -91,10 +91,10 @@ class {{modelNameUppercase}}Controller extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\{{modelNameUppercase}}  ${{modelNameSingularCamelCase}}
+     * @param  \App\Models\{{modelNameSingularPascalCase}}  ${{modelNameSingularCamelCase}}
      * @return \Illuminate\Http\Response
      */
-    public function update(Update{{modelNameUppercase}}Request $request, {{modelNameUppercase}} ${{modelNameSingularCamelCase}})
+    public function update(Update{{modelNameSingularPascalCase}}Request $request, {{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
         ${{modelNameSingularCamelCase}}->update($request->validated());
 
@@ -106,10 +106,10 @@ class {{modelNameUppercase}}Controller extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\{{modelNameUppercase}}  ${{modelNameSingularCamelCase}}
+     * @param  \App\Models\{{modelNameSingularPascalCase}}  ${{modelNameSingularCamelCase}}
      * @return \Illuminate\Http\Response
      */
-    public function destroy({{modelNameUppercase}} ${{modelNameSingularCamelCase}})
+    public function destroy({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
         ${{modelNameSingularCamelCase}}->delete();
 
