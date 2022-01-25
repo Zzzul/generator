@@ -1,21 +1,18 @@
     @isset(${{modelCamelCase}})
         <div class="col-md-6">
             <div class="row">
-                <div class="col-md-1 text-center">
-                    <div class="avatar avatar-xl">
-                        @if (${{modelCamelCase}}->{{fieldSingularSnakeCase}} == null)
-                            <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim(${{modelCamelCase}}->{{fieldSingularSnakeCase}}))) }}&s=500" alt="{{fieldSingularSnakeCase}}">
-                        @else
-                            <img src="{{ asset('uploads/{{fieldPluralSnakeCase}}/' . ${{modelCamelCase}}->{{fieldSingularSnakeCase}}) }}" alt="{{fieldUcWords}}">
-                        @endif
-                    </div>
+                <div class="col-md-4 text-center">
+                    @if (${{modelCamelCase}}->{{fieldSingularSnakeCase}} == null)
+                        <img src="https://via.placeholder.com/150" alt="{{fieldUcWords}}" class="rounded" >
+                    @else
+                        <img src="{{ asset('uploads/{{fieldPluralSnakeCase}}/' . ${{modelCamelCase}}->{{fieldSingularSnakeCase}}) }}" alt="{{fieldUcWords}}" class="rounded mb-2" alt="Photo" width="200" style="object-fit: cover">
+                    @endif
                 </div>
 
-                <div class="col-md-5 me-0 pe-0">
+                <div class="col-md-8">
                     <div class="form-group">
                         <label for="{{fieldSingularSnakeCase}}">{{ __('{{fieldUcWords}}') }}</label>
-                        <input type="file" name="{{fieldSingularSnakeCase}}" class="form-control @error('{{fieldSingularSnakeCase}}') is-invalid @enderror"
-                                id="{{fieldSingularSnakeCase}}">
+                        <input type="file" name="{{fieldSingularSnakeCase}}" class="form-control @error('{{fieldSingularSnakeCase}}') is-invalid @enderror" id="{{fieldSingularSnakeCase}}">
 
                         @error('{{fieldSingularSnakeCase}}')
                             <div class="invalid-feedback">

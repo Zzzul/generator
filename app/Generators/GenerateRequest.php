@@ -4,6 +4,11 @@ namespace App\Generators;
 
 class GenerateRequest
 {
+    /**
+     * Generate a request validation class file
+     * @param array $request
+     * @return void
+     */
     public function execute(array $request)
     {
         $model = GeneratorUtils::singularPascalCase($request['model']);
@@ -87,7 +92,7 @@ class GenerateRequest
                  * will generate like:
                  * 'name' => 'required|image|size:1024',
                  */
-                $validations .= "|image|size:" . $request['files_sizes'][$i];
+                $validations .= "|image|max:" . $request['files_sizes'][$i];
             } elseif ($request['input_types'][$i] == 'file' && $request['file_types'][$i] == 'mimes') {
                 /**
                  * will generate like:
@@ -105,7 +110,7 @@ class GenerateRequest
             }
 
             if ($i + 1 != $totalFields) {
-                if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0) {
+                if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0 && $request['input_types'][$i] != 'file') {
                     /**
                      * will generate like:
                      * 'name' => 'required|max:30',
@@ -149,6 +154,15 @@ class GenerateRequest
             GeneratorUtils::getTemplate('request')
         );
 
+        /**
+         * on update request if any image, then set 'required' to nullbale
+         */
+        if (\Str::contains($validations, "'required|image")) {
+            $updateValidations = str_replace("'required|image", "'nullable|image", $validations);
+        } else {
+            $updateValidations = $validations;
+        }
+
         $updateRequestTemplate = str_replace(
             [
                 '{{modelNamePascalCase}}',
@@ -156,7 +170,7 @@ class GenerateRequest
             ],
             [
                 "Update$model",
-                $validations
+                $updateValidations
             ],
             GeneratorUtils::getTemplate('request')
         );

@@ -1,5 +1,5 @@
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="{{fieldSnakeCase}}" id="{{optionKebabCase}}" value="{{optionLowerCase}}" {{checked}}>
+            <input class="form-check-input" type="radio" name="{{fieldSnakeCase}}" id="{{optionKebabCase}}" value="{{optionUcWords}}" {{checked}}>
             <label class="form-check-label" for="{{optionKebabCase}}">
                 {{optionUcWords}}
             </label>

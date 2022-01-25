@@ -4,6 +4,11 @@ namespace App\Generators;
 
 class GenerateMigration
 {
+    /**
+     * Generate a migration file
+     * @param array $request
+     * @return void
+     */
     public function execute(array $request)
     {
         $tableNamePluralUppercase = GeneratorUtils::pluralPascalCase($request['model']);
@@ -17,18 +22,35 @@ class GenerateMigration
              * will generate like:
              * $table->string('name
              */
-            $setFields .= "\$table->" . $request['types'][$i] . "('" . GeneratorUtils::singularSnakeCase($field);
+            $setFields .= "\$table->" . $request['data_types'][$i] . "('" . GeneratorUtils::singularSnakeCase($field);
 
-            if ($request['types'][$i] == 'enum') {
+            /**
+             * will generate like:
+             * $table->string('name
+             */
+            if ($request['data_types'][$i] == 'enum') {
+                $options = explode('|', $request['select_options'][$i]);
+                $totalOptions = count($options);
+
+                $enum = "[";
+
+                foreach ($options as $key => $value) {
+                    if ($key + 1 != $totalOptions) {
+                        $enum .= "'" . GeneratorUtils::cleanSingularUcWords($value) . "', ";
+                    } else {
+                        $enum .= "'" . GeneratorUtils::cleanSingularUcWords($value) . "']";
+                    }
+                }
+
                 /**
                  * will generate like:
                  * $table->string('name', ['water', 'fire']
                  */
-                $setFields .= "', " .  json_encode(explode(';', $request['select_options'][$i]));
+                $setFields .= "', " . $enum;
             }
 
-            if ($request['lengths'][$i] && $request['lengths'][$i] >= 0) {
-                if ($request['types'][$i] == 'enum') {
+            if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0) {
+                if ($request['data_types'][$i] == 'enum') {
                     /**
                      * will generate like:
                      * $table->string('name', ['water', 'fire'])
@@ -39,10 +61,10 @@ class GenerateMigration
                      * will generate like:
                      * $table->string('name', 30)
                      */
-                    $setFields .=  "', " . $request['lengths'][$i] . ")";
+                    $setFields .=  "', " . $request['max_lengths'][$i] . ")";
                 }
             } else {
-                if ($request['types'][$i] == 'enum') {
+                if ($request['data_types'][$i] == 'enum') {
                     /**
                      * will generate like:
                      * $table->string('name', ['water', 'fire'])

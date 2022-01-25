@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\File;
 
 class GenerateRoute
 {
+    /**
+     * Generate a route on web.php
+     * @param array $request
+     * @return void
+     */
     public function execute($request)
     {
         $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($request['model']);

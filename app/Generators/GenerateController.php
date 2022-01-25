@@ -4,6 +4,11 @@ namespace App\Generators;
 
 class GenerateController
 {
+    /**
+     * Generate a controller file
+     * @param array $request
+     * @return void
+     */
     public function execute(array $request)
     {
         $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($request['model']);
@@ -18,7 +23,6 @@ class GenerateController
         $updateTemplate = "";
         $deleteTemplate = "";
 
-
         foreach ($request['input_types'] as $i => $input) {
             if ($input == 'file') {
                 $indexTemplate .= $this->uploadFileCode($request['fields'][$i], 'index');
@@ -31,14 +35,10 @@ class GenerateController
             }
         }
 
-        // dump($index);
-        // dump($store);
-        // dump($update);
-        // dump($delete);
-
-        // dd('end');
-
         if (in_array('file', $request['input_types'])) {
+            /**
+             * with upload file controller file
+             */
             $template = str_replace(
                 [
                     '{{modelNameSingularPascalCase}}',
@@ -65,6 +65,9 @@ class GenerateController
                 GeneratorUtils::getTemplate('controllers/controller-with-upload-file')
             );
         } else {
+            /**
+             * default controller
+             */
             $template = str_replace(
                 [
                     '{{modelNameSingularPascalCase}}',
@@ -84,12 +87,17 @@ class GenerateController
             );
         }
 
-        // dd($template);
-
         GeneratorUtils::generateTemplate(app_path("/Http/Controllers/{$modelNameSingularPascalCase}Controller.php"), $template);
     }
 
-    protected function uploadFileCode($field, $path, $model = null)
+    /**
+     * Generate upload file code
+     * @param string $field,
+     * @param string $path,
+     * @param string $model,
+     * @return string
+     */
+    protected function uploadFileCode(string $field, string $path, string $model = null): string
     {
         $replaceString = [
             '{{fieldSingularSnakeCase}}',

@@ -6,6 +6,11 @@ use App\Generators\GeneratorUtils;
 
 class GenerateSidebarView
 {
+    /**
+     * Generate a sidebar menu
+     * @param array $request
+     * @return void
+     */
     public function execute(array $request)
     {
         $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);

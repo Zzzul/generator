@@ -1,6 +1,6 @@
                 ->addColumn('{{fieldSingularSnakeCase}}', function ($row) {
                     if ($row->{{fieldSingularSnakeCase}} == null) {
-                        return 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($row->email))) . '&s=500';
+                        return 'https://via.placeholder.com/150';
                     }
 
                     return asset('uploads/{{fieldPluralKebabCase}}/' . $row->{{fieldSingularSnakeCase}});

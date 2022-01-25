@@ -43,7 +43,7 @@
                                     <option value="{{ $type }}">{{ ucwords($type) }}</option>
                                 @endforeach
                             </select>
-                            <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                            <input type="hidden" option" name="select_options[]" class="form-option">
                         </div>
                     </td>
                     <td>
@@ -63,9 +63,9 @@
                                 <option value="" disabled>Select data type first</option>
                             </select>
                         </div>
-                        <input type="text" placeholder="form-mimes" name="mimes[]" class="form-mimes">
-                        <input type="text" placeholder="form-file-type" name="file_types[]" class="form-file-type">
-                        <input type="text" placeholder="form-file-size" name="files_sizes[]" class="form-file-size">
+                        <input type="hidden" name="mimes[]" class="form-mimes">
+                        <input type="hidden" name="file_types[]" class="form-file-type">
+                        <input type="hidden" name="files_sizes[]" class="form-file-size">
                     </td>
                     <td>
                         <div class="form-check">
@@ -114,7 +114,7 @@
                                 <option value="" disabled selected>--Select type--</option>
                                 ${list}
                             </select>
-                            <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                            <input type="hidden" option" name="select_options[]" class="form-option">
                         </div>
                     </td>
                     <td>
@@ -134,9 +134,9 @@
                                 <option value="" disabled>Select data type first</option>
                             </select>
                         </div>
-                        <input type="text" placeholder="form-mimes" name="mimes[]" class="form-mimes">
-                        <input type="text" placeholder="form-file-type" name="file_types[]" class="form-file-type">
-                        <input type="text" placeholder="form-file-size" name="files_sizes[]" class="form-file-size">
+                        <input type="hidden" name="mimes[]" class="form-mimes">
+                        <input type="hidden" name="file_types[]" class="form-file-type">
+                        <input type="hidden" name="files_sizes[]" class="form-file-size">
                     </td>
                     <td>
                         <div class="form-check">
@@ -175,7 +175,7 @@
                 removeInputHidden(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                    <input type="hidden" option" name="select_options[]" class="form-option">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -186,7 +186,7 @@
                 removeInputHidden(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                    <input type="hidden" option" name="select_options[]" class="form-option">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -197,7 +197,7 @@
                 removeInputHidden(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                    <input type="hidden" option" name="select_options[]" class="form-option">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -212,7 +212,7 @@
                 removeInputHidden(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                    <input type="hidden" option" name="select_options[]" class="form-option">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -232,7 +232,7 @@
                 removeInputHidden(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                    <input type="hidden" option" name="select_options[]" class="form-option">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -243,7 +243,7 @@
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="text" placeholder="form-option" name="select_options[]" class="form-option">
+                    <input type="hidden" option" name="select_options[]" class="form-option">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -281,15 +281,15 @@
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-mimes`).remove()
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
-                    `<input type="text" placeholder="form-file-type" name="file_types[]" class="form-file-type">`
+                    `<input type="hidden" name="file_types[]" class="form-file-type">`
                 )
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
-                    `<input type="text" placeholder="form-file-size" name="files_sizes[]" class="form-file-size">`
+                    `<input type="hidden" name="files_sizes[]" class="form-file-size">`
                 )
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
-                    `<input type="text" placeholder="form-mimes" name="mimes[]" class="form-mimes">`
+                    `<input type="hidden" name="mimes[]" class="form-mimes">`
                 )
             }
         })
@@ -309,7 +309,7 @@
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-mimes`).remove()
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
-                    `<input type="text" placeholder="form-mimes" name="mimes[]" class="form-mimes">`
+                    `<input type="hidden" name="mimes[]" class="form-mimes">`
                 )
             }
         })

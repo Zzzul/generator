@@ -6,7 +6,12 @@ use App\Generators\GeneratorUtils;
 
 class GenerateActionView
 {
-    public function execute($request)
+    /**
+     * Generate a action(table) view
+     * @param array $request
+     * @return void
+     */
+    public function execute(array $request)
     {
         $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
         $modelNameSingularLowercase = GeneratorUtils::cleanSingularLowerCase($request['model']);

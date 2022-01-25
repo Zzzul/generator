@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\{Store{{modelNameSingularPascalCase}}Request, Update{{modelNameSingularPascalCase}}Request};
-use App\Models\{{modelNameSingularPascalCase}};
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\{{modelNameSingularPascalCase}};
 use Image;
 
 class {{modelNameSingularPascalCase}}Controller extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:view {{modelNameSpaceLowercase}}')->only('index', 'show');
-        $this->middleware('permission:create {{modelNameSpaceLowercase}}')->only('create', 'store');
-        $this->middleware('permission:edit {{modelNameSpaceLowercase}}')->only('edit', 'update');
-        $this->middleware('permission:delete {{modelNameSpaceLowercase}}')->only('destroy');
-    }
+    // public function __construct()
+    // {
+    //    $this->middleware('permission:view {{modelNameSpaceLowercase}}')->only('index', 'show');
+    //    $this->middleware('permission:create {{modelNameSpaceLowercase}}')->only('create', 'store');
+    //    $this->middleware('permission:edit {{modelNameSpaceLowercase}}')->only('edit', 'update')//;
+    //    $this->middleware('permission:delete {{modelNameSpaceLowercase}}')->only('destroy');
+    //}
 
     /**
      * Display a listing of the resource.
@@ -30,7 +30,12 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
             return Datatables::of(${{modelNamePluralCamleCase}})
                 ->addIndexColumn()
                 ->addColumn('action', '{{modelNamePluralKebabCase}}.include.action')
-{{indexFile}}                ->toJson();
+{{indexFile}}                 ->addColumn('created_at', function ($row) {
+                    return $row->created_at->format('d/m/Y H:i');
+                })->addColumn('updated_at', function ($row) {
+                    return $row->updated_at->format('d/m/Y H:i');
+                })
+                ->toJson();
         }
 
         return view('{{modelNamePluralKebabCase}}.index');
@@ -57,7 +62,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
         $attr = $request->validated();
 
 {{storeFile}}
-        ${{modelNameSingularCamelCase}} = {{modelNameSingularPascalCase}}::create($attr);
+        {{modelNameSingularPascalCase}}::create($attr);
 
         return redirect()
             ->route('{{modelNamePluralKebabCase}}.index')
@@ -72,7 +77,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function show({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-        return view('{{modelNamePluralKebabCase}}.show', compact('{{modelNameSingularPascalCase}}'));
+        return view('{{modelNamePluralKebabCase}}.show', compact('{{modelNameSingularCamelCase}}'));
     }
 
     /**
@@ -83,7 +88,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function edit({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-        return view('{{modelNamePluralKebabCase}}.edit', compact('{{modelNameSingularPascalCase}}'));
+        return view('{{modelNamePluralKebabCase}}.edit', compact('{{modelNameSingularCamelCase}}'));
     }
 
     /**
@@ -104,7 +109,6 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
             ->route('{{modelNamePluralKebabCase}}.index')
             ->with('success', trans('{{modelNameSpaceLowercase}} updated successfully.'));
     }
-
 
     /**
      * Remove the specified resource from storage.

@@ -6,6 +6,11 @@ use App\Generators\GeneratorUtils;
 
 class GenerateCreateView
 {
+    /**
+     * Generate a create view
+     * @param array $request
+     * @return void
+     */
     public function execute(array $request)
     {
         $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
@@ -17,12 +22,14 @@ class GenerateCreateView
             [
                 '{{modelNamePluralUcWords}}',
                 '{{modelNameSingularLowerCase}}',
-                '{{modelNamePluralKebabCase}}'
+                '{{modelNamePluralKebabCase}}',
+                '{{enctype}}'
             ],
             [
                 $modelNamePluralUcWords,
                 $modelNameSingularLowerCase,
-                $modelNamePluralKebabCase
+                $modelNamePluralKebabCase,
+                in_array('file', $request['input_types']) ? ' enctype="multipart/form-data"' : ''
             ],
             GeneratorUtils::getTemplate('views/create')
         );

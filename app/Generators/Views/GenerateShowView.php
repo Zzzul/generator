@@ -6,6 +6,11 @@ use App\Generators\GeneratorUtils;
 
 class GenerateShowView
 {
+    /**
+     * Generate a show view
+     * @param array $request
+     * @return void
+     */
     public function execute(array $request)
     {
         $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
@@ -22,10 +27,23 @@ class GenerateShowView
                 $trs .= "\t\t\t\t\t\t\t\t\t";
             }
 
-            $trs .= "<tr>
+            if ($request['file_types'][$i] == 'image') {
+                $trs .= "<tr>
+                                        <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($field) . "') }}</td>
+                                        <td>
+                                            @if ($" . GeneratorUtils::singularCamelCase($request['model']) . "->" . GeneratorUtils::singularSnakeCase($field) . " == null)
+                                            <img src=\"https://via.placeholder.com/150\" alt=\"" . GeneratorUtils::cleanSingularUcWords($field) . "\" width=\"200\">
+                                            @else
+                                                <img src=\"{{ asset('uploads/" . GeneratorUtils::pluralSnakeCase($field) . "/'$ . " . GeneratorUtils::singularCamelCase($request['model']) . "->" . GeneratorUtils::singularSnakeCase($field) . ") }}\" alt=\"" . GeneratorUtils::cleanSingularUcWords($field) . "\" width=\"200\" style=\"object-fit: cover\">
+                                            @endif
+                                        </td>
+                                    </tr>";
+            } else {
+                $trs .= "<tr>
                                         <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($field) . "') }}</td>
                                         <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($field) . " }}</td>
                                     </tr>";
+            }
 
             if ($i + 1 != $totalFields) {
                 $trs .= "\n";

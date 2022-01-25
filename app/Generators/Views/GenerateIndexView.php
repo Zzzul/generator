@@ -6,7 +6,12 @@ use App\Generators\GeneratorUtils;
 
 class GenerateIndexView
 {
-    public function execute($request)
+    /**
+     * Generate a index view
+     * @param array $request
+     * @return void
+     */
+    public function execute(array $request)
     {
         $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
 
@@ -27,18 +32,47 @@ class GenerateIndexView
              */
             $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($field) . "') }}</th>";
 
-            /**
-             * will generate like:
-             * {
+            if ($request['input_types'][$i] == 'file') {
+                /**
+                 * will generate like:
+                 * {
+                    data: 'photo',
+                    name: 'photo',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, full, meta) {
+                        return `<div class="avatar">
+                            <img src="${data}" alt="Photo">
+                        </div>`;
+                    }
+                },
+                 */
+
+                $tdColumns .=  "{
+                    data: '" . GeneratorUtils::singularSnakeCase($field) . "',
+                    name: '" . GeneratorUtils::singularSnakeCase($field) . "',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, full, meta) {
+                        return `<div class=\"avatar\">
+                            <img src=\"" . '$' . "{data}\" alt=\"" . GeneratorUtils::cleanSingularUcWords($field) . "\">
+                        </div>`;
+                        }
+                    },";
+            } else {
+                /**
+                 * will generate like:
+                 * {
                     data: 'price',
                     name: 'price'
                 }
-             */
+                 */
 
-            $tdColumns .= "{
+                $tdColumns .= "{
                     data: '" . GeneratorUtils::singularSnakeCase($field) . "',
                     name: '" . GeneratorUtils::singularSnakeCase($field) . "'
                 },";
+            }
 
             if ($i + 1 != $totalFields) {
                 // add new line and tab

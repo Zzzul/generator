@@ -6,6 +6,11 @@ use App\Generators\GeneratorUtils;
 
 class GenerateFormView
 {
+    /**
+     * Generate a form/input for create and edit
+     * @param array $request
+     * @return void
+     */
     public function execute(array $request)
     {
         $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($request['model']);
@@ -26,8 +31,10 @@ class GenerateFormView
                 $totalOptions = count($options);
 
                 if ($request['input_types'][$i] == 'select') {
+
+                    // select
                     foreach ($options as $key => $value) {
-                        $lists .= "<option value=\"" . GeneratorUtils::cleanSingularLowerCase($value) . "\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '" . GeneratorUtils::cleanSingularLowerCase($field) . "' ? 'selected' : (old('$fieldSnakeCase') == '" . GeneratorUtils::cleanSingularLowerCase($field) . "' ? 'selected' : '') }}>" . GeneratorUtils::cleanSingularUcWords($value) . "</option>";
+                        $lists .= "<option value=\"" . GeneratorUtils::cleanSingularUcWords($value) . "\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '" . GeneratorUtils::cleanSingularLowerCase($field) . "' ? 'selected' : (old('$fieldSnakeCase') == '" . GeneratorUtils::cleanSingularLowerCase($field) . "' ? 'selected' : '') }}>" . GeneratorUtils::cleanSingularUcWords($value) . "</option>";
 
                         if ($key + 1 != $totalOptions) {
                             $lists .= "\n\t\t";
@@ -36,7 +43,6 @@ class GenerateFormView
                         }
                     }
 
-                    // select
                     $template .= str_replace(
                         [
                             '{{fieldLowercase}}',
@@ -53,18 +59,11 @@ class GenerateFormView
                         GeneratorUtils::getTemplate('views/forms/select')
                     );
                 } else {
-                    $lists .= "\t<div class=\"col-md-6\">\n";
+
+                    // radio
+                    $lists .= "\t<div class=\"col-md-6\">\n\t<label class=\"text-dark\">" . GeneratorUtils::cleanSingularUcWords($field) . "</label>\n";
 
                     foreach ($options as $key => $value) {
-                        // $lists .= "
-                        // <div class=\"form-check\">
-                        //     <input class=\"form-check-input\" type=\"radio\" name=\"$field\" id=\"$value\">
-                        //     <label class=\"form-check-label\" for=\"$value\">
-                        //     $value
-                        //     </label>
-                        // </div>";
-
-                        // radio
                         $lists .= str_replace(
                             [
                                 '{{fieldSnakeCase}}',
@@ -90,6 +89,7 @@ class GenerateFormView
                 }
             } else if ($request['input_types'][$i] == 'textarea') {
 
+                // textarea
                 $template .= str_replace(
                     [
                         '{{fieldLowercase}}',
@@ -164,8 +164,6 @@ class GenerateFormView
         }
 
         $template .= "</div>";
-
-        // dd($template);
 
         GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
 

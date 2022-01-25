@@ -6,6 +6,11 @@ use App\Generators\GeneratorUtils;
 
 class GenerateEditView
 {
+    /**
+     * Generate a edit view
+     * @param array $request
+     * @return void
+     */
     public function execute(array $request)
     {
         $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
@@ -20,13 +25,15 @@ class GenerateEditView
                 '{{modelNamePluralUcWords}}',
                 '{{modelNameSingularLowerCase}}',
                 '{{modelNamePluralKebabCase}}',
-                '{{modelNameSingularCamelCase}}'
+                '{{modelNameSingularCamelCase}}',
+                '{{enctype}}'
             ],
             [
                 $modelNamePluralUcWords,
                 $modelNameSingularLowerCase,
                 $modelNamePluralKebabCase,
-                $modelNameSingularCamelCase
+                $modelNameSingularCamelCase,
+                in_array('file', $request['input_types']) ? ' enctype="multipart/form-data"' : ''
             ],
             GeneratorUtils::getTemplate('views/edit')
         );
