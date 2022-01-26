@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row h-100">
-        <div class="col-lg-7 col-12">
+        <div class="col-lg-6 col-12">
             <div id="auth-left">
                 {{-- <div class="auth-logo" class="mb-0">
                         <a href="index.html"><img src="{{ asset('mazer') }}/images/logo/logo.png" alt="Logo"></a>
@@ -71,18 +71,18 @@
 
                     @if (Route::has('password.request'))
                         <p>
-                            <a class="font-bold"
-                                href="{{ route('password.request') }}">{{ __('Forgot password') }}?</a>.
+                            <a class="font-bold" href="{{ route('password.request') }}">
+                                {{ __('Forgot password') }}?
+                            </a>.
                         </p>
                     @endif
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-5 d-none d-lg-block">
+        <div class="col-lg-6 d-none d-lg-block">
             <div id="auth-right">
             </div>
         </div>
     </div>
-
 @endsection

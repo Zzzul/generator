@@ -28,11 +28,6 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
 
             return DataTables::of(${{modelNamePluralCamleCase}})
                 ->addIndexColumn()
-                ->addColumn('created_at', function ($row) {
-                    return $row->created_at->format('d/m/Y H:i');
-                })->addColumn('updated_at', function ($row) {
-                    return $row->updated_at->format('d/m/Y H:i');
-                })
                 ->addColumn('action', '{{modelNamePluralKebabCase}}.include.action')
                 ->toJson();
         }

@@ -132,9 +132,9 @@ class GenerateFormView
                 $formatValue = "{{ isset($$modelNameSingularCamelCase) ? $$modelNameSingularCamelCase->$fieldSnakeCase : old('$fieldSnakeCase') }}";
 
                 if ($request['data_types'][$i] == 'dateTime') {
-                    $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? date('Y-m-d\TH:i', strtotime($" . $modelNameSingularCamelCase . "->$fieldSnakeCase)) : old('$fieldSnakeCase') }}";
+                    $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('Y-m-d') : old('$fieldSnakeCase') }}";
                 } elseif ($request['data_types'][$i] == 'date') {
-                    $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? date(\"d-m-Y\", strtotime($" . $modelNameSingularCamelCase . "->$fieldSnakeCase)) : old('$fieldSnakeCase') }}";
+                    $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('Y-m-d\TH:i') : old('$fieldSnakeCase') }}";
                 }
 
                 $template .= str_replace(

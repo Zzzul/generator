@@ -38,6 +38,16 @@ class GenerateShowView
                                             @endif
                                         </td>
                                     </tr>";
+            } elseif ($request['date_types'][$i] == 'date') {
+                $trs .= "<tr>
+                                        <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($field) . "') }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($field) . "->format('d/m/Y') }}</td>
+                                    </tr>";
+            } elseif ($request['date_types'][$i] == 'dateTime') {
+                $trs .= "<tr>
+                                        <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($field) . "') }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($field) . "->format('d/m/Y H:i') }}</td>
+                                    </tr>";
             } else {
                 $trs .= "<tr>
                                         <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($field) . "') }}</td>
