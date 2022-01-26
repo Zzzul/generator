@@ -21,7 +21,7 @@
                     <th width="30">#</th>
                     <th>{{ __('Field name') }}</th>
                     <th>{{ __('Data Type') }}</th>
-                    <th>{{ __('Length') }}</th>
+                    <th width="310">{{ __('Length') }}</th>
                     <th>{{ __('Input Type') }}</th>
                     <th>{{ __('Required') }}</th>
                     <th>{{ __('Action') }}</th>
@@ -43,17 +43,23 @@
                                     <option value="{{ $type }}">{{ ucwords($type) }}</option>
                                 @endforeach
                             </select>
-                            <input type="hidden" option" name="select_options[]" class="form-option">
+                            <input type="hidden" name="select_options[]" class="form-option">
                         </div>
                     </td>
                     <td>
-                        <div class="form-group">
-                            <input type="number" name="min_lengths[]" class="form-control" min="1"
-                                placeholder="Min Length">
-                        </div>
-                        <div class="form-group">
-                            <input type="number" name="max_lengths[]" class="form-control" min="1"
-                                placeholder="Max Length">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="number" name="min_lengths[]" class="form-control" min="1"
+                                        placeholder="Min Length">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="number" name="max_lengths[]" class="form-control" min="1"
+                                        placeholder="Max Length">
+                                </div>
+                            </div>
                         </div>
                     </td>
                     <td>
@@ -114,17 +120,23 @@
                                 <option value="" disabled selected>--Select type--</option>
                                 ${list}
                             </select>
-                            <input type="hidden" option" name="select_options[]" class="form-option">
+                            <input type="hidden" name="select_options[]" class="form-option">
                         </div>
                     </td>
                     <td>
-                        <div class="form-group">
-                            <input type="number" name="min_lengths[]" class="form-control" min="1"
-                                placeholder="Min Length">
-                        </div>
-                        <div class="form-group">
-                            <input type="number" name="max_lengths[]" class="form-control" min="1"
-                                placeholder="Max Length">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="number" name="min_lengths[]" class="form-control" min="1"
+                                        placeholder="Min Length">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="number" name="max_lengths[]" class="form-control" min="1"
+                                        placeholder="Max Length">
+                                </div>
+                            </div>
                         </div>
                     </td>
                     <td>
@@ -175,7 +187,7 @@
                 removeInputHidden(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" option" name="select_options[]" class="form-option">
+                    <input type="hidden" name="select_options[]" class="form-option">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -186,7 +198,7 @@
                 removeInputHidden(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" option" name="select_options[]" class="form-option">
+                    <input type="hidden" name="select_options[]" class="form-option">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -197,7 +209,7 @@
                 removeInputHidden(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" option" name="select_options[]" class="form-option">
+                    <input type="hidden" name="select_options[]" class="form-option">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -212,7 +224,7 @@
                 removeInputHidden(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" option" name="select_options[]" class="form-option">
+                    <input type="hidden" name="select_options[]" class="form-option">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -232,7 +244,7 @@
                 removeInputHidden(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" option" name="select_options[]" class="form-option">
+                    <input type="hidden" name="select_options[]" class="form-option">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -243,7 +255,7 @@
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" option" name="select_options[]" class="form-option">
+                    <input type="hidden" name="select_options[]" class="form-option">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -263,12 +275,13 @@
             $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-mimes`).remove()
 
             if ($(this).val() == 'file') {
+                // <option value="mimes">Mimes</option>
+
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(`
-                <div class="form-group mt-2 form-file">
+                <div class="form-group mt-2 form-file-type">
                     <select  name="file_types[]" class="form-select file-types" required>
                         <option value="" disabled selected>-- Select file type --</option>
                         <option value="image">Image</option>
-                        <option value="mimes">Mimes</option>
                     </select>
                 </div>
                 <div class="form-group form-file-size">

@@ -16,7 +16,7 @@ class GenerateSidebarView
         $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
 
         $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
-        $modelNameSingularLowercase = GeneratorUtils::cleanSingularUcWords($request['model']);
+        $modelNameSingularLowercase = GeneratorUtils::cleanSingularLowerCase($request['model']);
 
         $sidebarPath = resource_path("/views/layouts/sidebar.blade.php");
 

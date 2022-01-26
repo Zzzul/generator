@@ -34,7 +34,7 @@ class GenerateFormView
 
                     // select
                     foreach ($options as $key => $value) {
-                        $lists .= "<option value=\"" . GeneratorUtils::cleanSingularUcWords($value) . "\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '" . GeneratorUtils::cleanSingularLowerCase($field) . "' ? 'selected' : (old('$fieldSnakeCase') == '" . GeneratorUtils::cleanSingularLowerCase($field) . "' ? 'selected' : '') }}>" . GeneratorUtils::cleanSingularUcWords($value) . "</option>";
+                        $lists .= "<option value=\"" . GeneratorUtils::cleanSingularUcWords($value) . "\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '" . $value . "' ? 'selected' : (old('$fieldSnakeCase') == '" . $value . "' ? 'selected' : '') }}>" . GeneratorUtils::cleanSingularUcWords($value) . "</option>";
 
                         if ($key + 1 != $totalOptions) {
                             $lists .= "\n\t\t";

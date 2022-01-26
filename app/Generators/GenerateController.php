@@ -97,7 +97,7 @@ class GenerateController
      * @param string $model,
      * @return string
      */
-    protected function uploadFileCode(string $field, string $path, string $model = null): string
+    protected function uploadFileCode(string $field, string $path, string $model = null)
     {
         $replaceString = [
             '{{fieldSingularSnakeCase}}',

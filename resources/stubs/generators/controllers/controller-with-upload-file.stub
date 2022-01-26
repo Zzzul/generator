@@ -30,7 +30,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
             return Datatables::of(${{modelNamePluralCamleCase}})
                 ->addIndexColumn()
                 ->addColumn('action', '{{modelNamePluralKebabCase}}.include.action')
-{{indexFile}}                 ->addColumn('created_at', function ($row) {
+{{indexFile}}                ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('d/m/Y H:i');
                 })->addColumn('updated_at', function ($row) {
                     return $row->updated_at->format('d/m/Y H:i');

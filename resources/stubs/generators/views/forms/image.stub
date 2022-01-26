@@ -3,9 +3,9 @@
             <div class="row">
                 <div class="col-md-4 text-center">
                     @if (${{modelCamelCase}}->{{fieldSingularSnakeCase}} == null)
-                        <img src="https://via.placeholder.com/150" alt="{{fieldUcWords}}" class="rounded" >
+                        <img src="https://via.placeholder.com/150" alt="{{fieldUcWords}}" class="rounded mb-2 mt-2" alt="{{fieldUcWords}}" width="200" style="object-fit: cover">
                     @else
-                        <img src="{{ asset('uploads/{{fieldPluralSnakeCase}}/' . ${{modelCamelCase}}->{{fieldSingularSnakeCase}}) }}" alt="{{fieldUcWords}}" class="rounded mb-2" alt="Photo" width="200" style="object-fit: cover">
+                        <img src="{{ asset('uploads/{{fieldPluralSnakeCase}}/' . ${{modelCamelCase}}->{{fieldSingularSnakeCase}}) }}" alt="{{fieldUcWords}}" class="rounded mb-2 mt-2" width="200" style="object-fit: cover">
                     @endif
                 </div>
 

@@ -32,9 +32,9 @@ class GenerateShowView
                                         <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($field) . "') }}</td>
                                         <td>
                                             @if ($" . GeneratorUtils::singularCamelCase($request['model']) . "->" . GeneratorUtils::singularSnakeCase($field) . " == null)
-                                            <img src=\"https://via.placeholder.com/150\" alt=\"" . GeneratorUtils::cleanSingularUcWords($field) . "\" width=\"200\">
+                                            <img src=\"https://via.placeholder.com/150\" alt=\"" . GeneratorUtils::cleanSingularUcWords($field) . "\"  class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
                                             @else
-                                                <img src=\"{{ asset('uploads/" . GeneratorUtils::pluralSnakeCase($field) . "/'$ . " . GeneratorUtils::singularCamelCase($request['model']) . "->" . GeneratorUtils::singularSnakeCase($field) . ") }}\" alt=\"" . GeneratorUtils::cleanSingularUcWords($field) . "\" width=\"200\" style=\"object-fit: cover\">
+                                                <img src=\"{{ asset('uploads/" . GeneratorUtils::pluralSnakeCase($field) . "/' . $" . GeneratorUtils::singularCamelCase($request['model']) . "->" . GeneratorUtils::singularSnakeCase($field) . ") }}\" alt=\"" . GeneratorUtils::cleanSingularUcWords($field) . "\" class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
                                             @endif
                                         </td>
                                     </tr>";
