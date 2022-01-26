@@ -248,7 +248,6 @@
             } else if (
                 $(this).val() == 'integer' ||
                 $(this).val() == 'bigInteger' ||
-                $(this).val() == 'boolean' ||
                 $(this).val() == 'decimal' ||
                 $(this).val() == 'double' ||
                 $(this).val() == 'float' ||
@@ -263,6 +262,17 @@
                 $(`.input-types:eq(${index})`).html(`
                     <option value="" disabled selected>-- Select input type --</option>
                     <option value="number">Number</option>
+                `)
+            } else if ($(this).val() == 'boolean') {
+                removeInputHidden(index)
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
+                    <input type="hidden" name="select_options[]" class="form-option">
+                `)
+
+                $(`.input-types:eq(${index})`).html(`
+                    <option value="" disabled selected>-- Select input type --</option>
+                    <option value="number">Select</option>
                 `)
             } else {
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()

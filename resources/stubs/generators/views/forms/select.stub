@@ -2,7 +2,7 @@
         <div class="form-group">
             <label for="{{fieldLowercase}}">{{ __('{{fieldUppercase}}') }}</label>
             <select class="form-select" name="{{fieldLowercase}}" id="{{fieldLowercase}}" class="form-control"{{nullable}}>
-                <option value="" selected disabled>-- Select {{fieldLowercase}} --</option>
+                <option value="" selected disabled>-- {{ __('Select {{fieldSpaceLowercase}}') }} --</option>
                 {{options}}
             </select>
         </div>

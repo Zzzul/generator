@@ -27,31 +27,39 @@ class GenerateShowView
                 $trs .= "\t\t\t\t\t\t\t\t\t";
             }
 
+            $fieldSingularUcWords = GeneratorUtils::cleanSingularUcWords($field);
+            $fieldSingularSnakeCase = GeneratorUtils::singularSnakeCase($field);
+
             if ($request['file_types'][$i] == 'image') {
                 $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($field) . "') }}</td>
+                                        <td class=\"fw-bold\">{{ __('$fieldSingularUcWords') }}</td>
                                         <td>
-                                            @if ($" . GeneratorUtils::singularCamelCase($request['model']) . "->" . GeneratorUtils::singularSnakeCase($field) . " == null)
-                                            <img src=\"https://via.placeholder.com/150\" alt=\"" . GeneratorUtils::cleanSingularUcWords($field) . "\"  class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
+                                            @if ($" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . " == null)
+                                            <img src=\"https://via.placeholder.com/150\" alt=\"$fieldSingularUcWords\"  class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
                                             @else
-                                                <img src=\"{{ asset('uploads/" . GeneratorUtils::pluralSnakeCase($field) . "/' . $" . GeneratorUtils::singularCamelCase($request['model']) . "->" . GeneratorUtils::singularSnakeCase($field) . ") }}\" alt=\"" . GeneratorUtils::cleanSingularUcWords($field) . "\" class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
+                                                <img src=\"{{ asset('uploads/" . GeneratorUtils::pluralSnakeCase($field) . "/' . $" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . ") }}\" alt=\"$fieldSingularUcWords\" class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
                                             @endif
                                         </td>
                                     </tr>";
-            } elseif ($request['date_types'][$i] == 'date') {
+            } elseif ($request['data_types'][$i] == 'date') {
                 $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($field) . "') }}</td>
-                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($field) . "->format('d/m/Y') }}</td>
+                                        <td class=\"fw-bold\">{{ __('$fieldSingularUcWords') }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . "->format('d/m/Y') }}</td>
                                     </tr>";
-            } elseif ($request['date_types'][$i] == 'dateTime') {
+            } elseif ($request['data_types'][$i] == 'dateTime') {
                 $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($field) . "') }}</td>
-                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($field) . "->format('d/m/Y H:i') }}</td>
+                                        <td class=\"fw-bold\">{{ __('$fieldSingularUcWords') }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . "->format('d/m/Y H:i') }}</td>
+                                    </tr>";
+            } elseif ($request['data_types'][$i] == 'boolean') {
+                $trs .= "<tr>
+                                        <td class=\"fw-bold\">{{ __('$fieldSingularUcWords') }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . " == 1 ? 'True' : 'False' }}</td>
                                     </tr>";
             } else {
                 $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($field) . "') }}</td>
-                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($field) . " }}</td>
+                                        <td class=\"fw-bold\">{{ __('$fieldSingularUcWords') }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . " }}</td>
                                     </tr>";
             }
 
