@@ -27,7 +27,7 @@ class GenerateRequest
              * will generate like:
              * 'name' => 'required
              */
-            if (isset($request['requireds'][$i])) {
+            if ($request['requireds'][$i] == 'yes') {
                 $validations .= "'required";
             } else {
                 $validations .= "'nullable";

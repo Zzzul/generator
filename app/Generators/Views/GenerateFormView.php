@@ -54,7 +54,7 @@ class GenerateFormView
                             $fieldSnakeCase,
                             $fieldUcWords,
                             $lists,
-                            isset($request['requireds'][$i]) ? ' required' : '',
+                            $request['requireds'][$i] == 'yes' ? ' required' : '',
                         ],
                         GeneratorUtils::getTemplate('views/forms/select')
                     );
@@ -101,7 +101,7 @@ class GenerateFormView
                         $fieldSnakeCase,
                         $fieldUcWords,
                         $modelNameSingularCamelCase,
-                        isset($request['requireds'][$i]) ? ' required' : '',
+                        $request['requireds'][$i] == 'yes' ? ' required' : '',
                     ],
                     GeneratorUtils::getTemplate('views/forms/textarea')
                 );
@@ -120,7 +120,7 @@ class GenerateFormView
                         GeneratorUtils::pluralSnakeCase($field),
                         GeneratorUtils::singularSnakeCase($field),
                         $fieldUcWords,
-                        isset($request['requireds'][$i]) ? ' required' : '',
+                        $request['requireds'][$i] == 'yes' ? ' required' : '',
                     ],
                     GeneratorUtils::getTemplate('views/forms/image')
                 );
@@ -156,7 +156,7 @@ class GenerateFormView
                         $modelNameSingularCamelCase,
                         $request['input_types'][$i],
                         $formatValue,
-                        isset($request['requireds'][$i]) ? ' required' : '',
+                        $request['requireds'][$i] == 'yes' ? ' required' : '',
                     ],
                     GeneratorUtils::getTemplate('views/forms/input')
                 );
@@ -164,6 +164,8 @@ class GenerateFormView
         }
 
         $template .= "</div>";
+
+        dd($template);
 
         GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
 

@@ -81,7 +81,7 @@ class GenerateMigration
 
             if ($i + 1 != $totalFields) {
 
-                if (isset($request['requireds'][$i])) {
+                if ($request['requireds'][$i] == 'yes') {
                     /**
                      * will generate like:
                      * $table->string('name', 30); or $table->string('name');
@@ -97,7 +97,7 @@ class GenerateMigration
                     $setFields .= "->nullable();\n\t\t\t";
                 }
             } else {
-                if (isset($request['requireds'][$i])) {
+                if ($request['requireds'][$i] == 'yes') {
                     /**
                      * will generate like:
                      * $table->string('name', 30); or $table->string('name');

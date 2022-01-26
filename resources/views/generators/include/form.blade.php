@@ -75,8 +75,14 @@
                     </td>
                     <td>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="requireds[]" value="required"
-                                checked />
+                            <input class="form-check-input" id="required-1" type="checkbox" name="requireds[]"
+                                value="yes" checked />
+                            <label for="required-1">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="nullable-1" type="checkbox" name="requireds[]"
+                                value="no" />
+                            <label for="nullable-1">No</label>
                         </div>
                     </td>
                     <td>
@@ -105,10 +111,10 @@
             let table = $('#tbl-field tbody')
 
             let list = renderTypes()
-
+            let no = table.find('tr').length + 1
             let tr = `
                 <tr>
-                    <td>${table.find('tr').length + 1}</td>
+                    <td>${no}</td>
                     <td>
                         <div class="form-group">
                             <input type="text" name="fields[]" class="form-control" placeholder="Field Name" required>
@@ -152,7 +158,14 @@
                     </td>
                     <td>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="requireds[]" value="required" checked/>
+                            <input class="form-check-input" id="required-${no}" type="checkbox" name="requireds[]"
+                                value="yes" checked />
+                            <label for="required-${no}">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="nullable-${no}" type="checkbox" name="requireds[]"
+                                value="no" />
+                            <label for="nullable-${no}">No</label>
                         </div>
                     </td>
                     <td>
@@ -324,6 +337,18 @@
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
                     `<input type="hidden" name="mimes[]" class="form-mimes">`
                 )
+            }
+        })
+
+        $(document).on('change', 'input[type="checkbox"]', function() {
+            let index = $(this).parent().parent().parent().index()
+
+            if ($(this).val() == 'yes') {
+                $(`#required-${index + 1}`).prop('checked', true)
+                $(`#nullable-${index + 1}`).prop('checked', false)
+            } else if ($(this).val() == 'no') {
+                $(`#nullable-${index + 1}`).prop('checked', true)
+                $(`#required-${index + 1}`).prop('checked', false)
             }
         })
 

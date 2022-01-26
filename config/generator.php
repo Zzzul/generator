@@ -16,7 +16,6 @@ return [
         'enum',
         'float',
         // 'foreignId',
-        // 'json',
         'tinyInteger',
         'tinyText',
         'longText'
