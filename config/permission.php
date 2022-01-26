@@ -167,7 +167,7 @@ return [
                 'create user',
                 'edit user',
                 'delete user',
-            ],
+            ]
         ],
         [
             'group' => 'roles & permissions',
@@ -176,7 +176,8 @@ return [
                 'create role',
                 'edit role',
                 'delete role',
-            ],
+            ]
         ],
+        // Don't remove comment below, it will generate new permissions
     ],
 ];

@@ -21,14 +21,14 @@ class GenerateSidebarView
         $sidebarPath = resource_path("/views/layouts/sidebar.blade.php");
 
         $sidebarTemplade = '{{-- sidebarTemplate --}}' . "\n" . '
-                {{-- @can(\'view ' . $modelNameSingularLowercase . '\') --}}
+                @can(\'view ' . $modelNameSingularLowercase . '\')
                 <li class="sidebar-item{{ request()->is(\'' . $modelNamePluralKebabCase . '*\') ? \' active\' : \'\' }}">
                     <a href="{{ route(\'' . $modelNamePluralKebabCase . '.index\') }}" class="sidebar-link">
                         <i class="bi bi-patch-question"></i>
                         <span>{{ __(\'' . $modelNamePluralUcWords . '\') }}</span>
                     </a>
                 </li>
-                {{-- @endcan --}}';
+                @endcan';
 
         $template = str_replace(
             ['{{-- sidebarTemplate --}}'],

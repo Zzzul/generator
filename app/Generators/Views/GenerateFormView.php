@@ -165,8 +165,6 @@ class GenerateFormView
 
         $template .= "</div>";
 
-        dd($template);
-
         GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
 
         GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/include/form.blade.php"), $template);

@@ -8,13 +8,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class {{modelNameSingularPascalCase}}Controller extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('permission:view {{modelNameSpaceLowercase}}')->only('index', 'show');
-    //     $this->middleware('permission:create {{modelNameSpaceLowercase}}')->only('create', 'store');
-    //     $this->middleware('permission:edit {{modelNameSpaceLowercase}}')->only('edit', 'update');
-    //     $this->middleware('permission:delete {{modelNameSpaceLowercase}}')->only('destroy');
-    // }
+    public function __construct()
+    {
+        $this->middleware('permission:view {{modelNameSpaceLowercase}}')->only('index', 'show');
+        $this->middleware('permission:create {{modelNameSpaceLowercase}}')->only('create', 'store');
+        $this->middleware('permission:edit {{modelNameSpaceLowercase}}')->only('edit', 'update');
+        $this->middleware('permission:delete {{modelNameSpaceLowercase}}')->only('destroy');
+    }
 
     /**
      * Display a listing of the resource.

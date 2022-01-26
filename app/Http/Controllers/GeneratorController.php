@@ -8,6 +8,7 @@ use App\Generators\{
     GenerateController,
     GenerateModel,
     GenerateMigration,
+    GeneratePermission,
     GenerateRequest,
     GenerateRoute
 };
@@ -83,6 +84,11 @@ class GeneratorController extends Controller
      */
     protected $generateSidebarView;
 
+    /**
+     * @var GeneratePermission $generatePermission
+     */
+    protected $generatePermission;
+
     public function __construct(
         GenerateModel $generateModel,
         GenerateMigration $generateMigration,
@@ -96,6 +102,7 @@ class GeneratorController extends Controller
         GenerateActionView $generateActionView,
         GenerateFormView $generateFormView,
         GenerateSidebarView $generateSidebarView,
+        GeneratePermission $generatePermission,
     ) {
         $this->generateModel = $generateModel;
         $this->generateMigration = $generateMigration;
@@ -109,6 +116,7 @@ class GeneratorController extends Controller
         $this->generateActionView = $generateActionView;
         $this->generateFormView = $generateFormView;
         $this->generateSidebarView = $generateSidebarView;
+        $this->generatePermission = $generatePermission;
     }
 
     /**
@@ -141,6 +149,7 @@ class GeneratorController extends Controller
         $this->generateFormView->execute($request->all());
         $this->generateRoute->execute($request->all());
         $this->generateSidebarView->execute($request->all());
+        $this->generatePermission->execute($request->all());
         $this->clearCache();
         $this->migrateTable();
 
