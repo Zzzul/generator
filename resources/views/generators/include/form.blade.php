@@ -272,7 +272,8 @@
 
                 $(`.input-types:eq(${index})`).html(`
                     <option value="" disabled selected>-- Select input type --</option>
-                    <option value="number">Select</option>
+                    <option value="select">Select</option>
+                    <option value="radio">Radio</option>
                 `)
             } else {
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()

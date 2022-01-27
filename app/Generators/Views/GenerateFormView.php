@@ -90,25 +90,56 @@ class GenerateFormView
                     $template .= $options;
                 }
             } else if ($request['data_types'][$i] == 'boolean') {
-                $options = "<option value=\"0\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '0' ? 'selected' : (old('$fieldSnakeCase') == '0' ? 'selected' : '') }}>{{ __('True') }}</option>\n\t\t\t\t<option value=\"1\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '1' ? 'selected' : (old('$fieldSnakeCase') == '1' ? 'selected' : '') }}>{{ __('False') }}</option>";
+                if ($request['input_types'][$i] == 'select') {
+                    // select
+                    $options = "<option value=\"0\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '0' ? 'selected' : (old('$fieldSnakeCase') == '0' ? 'selected' : '') }}>{{ __('True') }}</option>\n\t\t\t\t<option value=\"1\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '1' ? 'selected' : (old('$fieldSnakeCase') == '1' ? 'selected' : '') }}>{{ __('False') }}</option>";
 
-                $template .= str_replace(
-                    [
-                        '{{fieldLowercase}}',
-                        '{{fieldUppercase}}',
-                        '{{fieldSpaceLowercase}}',
-                        '{{options}}',
-                        '{{nullable}}'
-                    ],
-                    [
-                        $fieldSnakeCase,
-                        $fieldUcWords,
-                        GeneratorUtils::cleanSingularLowerCase($field),
-                        $options,
-                        $request['requireds'][$i] == 'yes' ? ' required' : '',
-                    ],
-                    GeneratorUtils::getTemplate('views/forms/select')
-                );
+                    $template .= str_replace(
+                        [
+                            '{{fieldLowercase}}',
+                            '{{fieldUppercase}}',
+                            '{{fieldSpaceLowercase}}',
+                            '{{options}}',
+                            '{{nullable}}'
+                        ],
+                        [
+                            $fieldSnakeCase,
+                            $fieldUcWords,
+                            GeneratorUtils::cleanSingularLowerCase($field),
+                            $options,
+                            $request['requireds'][$i] == 'yes' ? ' required' : '',
+                        ],
+                        GeneratorUtils::getTemplate('views/forms/select')
+                    );
+                } else {
+                    // radio
+                    $options = "\t<div class=\"col-md-6\">\n\t<label class=\"text-dark\">$fieldUcWords</label>";
+
+                    /**
+                     * will generate
+                     * <div class="form-check mb-2">
+                     *  <input class="form-check-input" type="radio" name="is_active" id="is_active-1" value="1" {{ isset(product) && product->is_active == '1' ? 'checked' : (old('is_active') == '1' ? 'checked' : '') }}>
+                     *     <label class="form-check-label" for="is_active-1">True</label>
+                     * </div>
+                     *  <div class="form-check mb-2">
+                     *    <input class="form-check-input" type="radio" name="is_active" id="is_active-0" value="0" {{ isset(product) && product->is_active == '0' ? 'checked' : (old('is_active') == '0' ? 'checked' : '') }}>
+                     *      <label class="form-check-label" for="is_active-0">False</label>
+                     * </div>
+                     */
+                    $options .= "
+                    <div class=\"form-check mb-2\">
+                        <input class=\"form-check-input\" type=\"radio\" name=\"$fieldSnakeCase\" id=\"$fieldSnakeCase-1\" value=\"1\" {{ isset($modelNameSingularCamelCase) && " . $modelNameSingularCamelCase . "->$fieldSnakeCase == '1' ? 'checked' : (old('$fieldSnakeCase') == '1' ? 'checked' : '') }}>
+                        <label class=\"form-check-label\" for=\"$fieldSnakeCase-1\">True</label>
+                    </div>
+                    <div class=\"form-check mb-2\">
+                        <input class=\"form-check-input\" type=\"radio\" name=\"$fieldSnakeCase\" id=\"$fieldSnakeCase-0\" value=\"0\" {{ isset($modelNameSingularCamelCase) && " . $modelNameSingularCamelCase . "->$fieldSnakeCase == '0' ? 'checked' : (old('$fieldSnakeCase') == '0' ? 'checked' : '') }}>
+                        <label class=\"form-check-label\" for=\"$fieldSnakeCase-0\">False</label>
+                    </div>\n";
+
+                    $options .= "\t</div>\n";
+
+                    $template .= $options;
+                }
             } else if ($request['input_types'][$i] == 'textarea') {
 
                 // textarea
