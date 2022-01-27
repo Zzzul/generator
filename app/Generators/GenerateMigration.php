@@ -36,9 +36,9 @@ class GenerateMigration
 
                 foreach ($options as $key => $value) {
                     if ($key + 1 != $totalOptions) {
-                        $enum .= "'" . GeneratorUtils::cleanSingularUcWords($value) . "', ";
+                        $enum .= "'$value', ";
                     } else {
-                        $enum .= "'" . GeneratorUtils::cleanSingularUcWords($value) . "']";
+                        $enum .= "'$value']";
                     }
                 }
 

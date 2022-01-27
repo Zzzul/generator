@@ -137,25 +137,25 @@ class GeneratorController extends Controller
      */
     public function store(Request $request)
     {
-        $this->generateModel->execute($request->all());
+        // $this->generateModel->execute($request->all());
         $this->generateMigration->execute($request->all());
-        $this->generateController->execute($request->all());
-        $this->generateRequest->execute($request->all());
-        $this->generateIndexView->execute($request->all());
-        $this->generateCreateView->execute($request->all());
-        $this->generateShowView->execute($request->all());
-        $this->generateEditView->execute($request->all());
-        $this->generateActionView->execute($request->all());
-        $this->generateFormView->execute($request->all());
-        $this->generateRoute->execute($request->all());
-        $this->generateSidebarView->execute($request->all());
-        $this->generatePermission->execute($request->all());
-        $this->clearCache();
-        $this->migrateTable();
+        // $this->generateController->execute($request->all());
+        // $this->generateRequest->execute($request->all());
+        // $this->generateIndexView->execute($request->all());
+        // $this->generateCreateView->execute($request->all());
+        // $this->generateShowView->execute($request->all());
+        // $this->generateEditView->execute($request->all());
+        // $this->generateActionView->execute($request->all());
+        // $this->generateFormView->execute($request->all());
+        // $this->generateRoute->execute($request->all());
+        // $this->generateSidebarView->execute($request->all());
+        // $this->generatePermission->execute($request->all());
+        // $this->clearCache();
+        // $this->migrateTable();
 
-        return redirect()
-            ->route('generators.create')
-            ->with('success', trans('Module created successfully.'));
+        // return redirect()
+        //     ->route('generators.create')
+        //     ->with('success', trans('Module created successfully.'));
     }
 
     protected function migrateTable(): void
