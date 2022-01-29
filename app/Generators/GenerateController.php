@@ -35,6 +35,24 @@ class GenerateController
             }
         }
 
+        $relations = "";
+        if (in_array('foreignId', $request['data_types'])) {
+            $relations .= "$" . $modelNameSingularCamelCase . "->load(";
+            $countForeidnId = count(array_keys($request['data_types'], 'foreignId'));
+
+            foreach ($request['data_types'] as $i => $data_type) {
+                if ($request['constrains'][$i] != null) {
+                    $relations .= "'" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "'";
+
+                    if ($i + 1 != $countForeidnId) {
+                        $relations .= ");\n\t\t";
+                    } else {
+                        $relations .= ", ";
+                    }
+                }
+            }
+        }
+
         if (in_array('file', $request['input_types'])) {
             /**
              * with upload file controller file
@@ -49,7 +67,8 @@ class GenerateController
                     '{{indexFile}}',
                     '{{storeFile}}',
                     '{{updateFile}}',
-                    '{{deleteFile}}'
+                    '{{deleteFile}}',
+                    '{{loadRelation}}'
                 ],
                 [
                     $modelNameSingularPascalCase,
@@ -61,6 +80,7 @@ class GenerateController
                     $storeTemplate,
                     $updateTemplate,
                     $deleteTemplate,
+                    $relations
                 ],
                 GeneratorUtils::getTemplate('controllers/controller-with-upload-file')
             );
@@ -74,14 +94,16 @@ class GenerateController
                     '{{modelNameSingularCamelCase}}',
                     '{{modelNamePluralCamelCase}}',
                     '{{modelNamePluralKebabCase}}',
-                    '{{modelNameSpaceLowercase}}'
+                    '{{modelNameSpaceLowercase}}',
+                    '{{loadRelation}}'
                 ],
                 [
                     $modelNameSingularPascalCase,
                     $modelNameSingularCamelCase,
                     $modelNamePluralCamelCase,
                     $modelNamePluralKebabCase,
-                    $modelNameSpaceLowercase
+                    $modelNameSpaceLowercase,
+                    $relations
                 ],
                 GeneratorUtils::getTemplate('controllers/controller')
             );

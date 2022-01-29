@@ -109,33 +109,41 @@ class GenerateRequest
                 $validations .= "|min:" . $request['min_lengths'][$i];
             }
 
+            if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0) {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|max:30',
+                 */
+                $validations .= "|max:" . $request['max_lengths'][$i];
+            }
+
             if ($i + 1 != $totalFields) {
-                if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0 && $request['input_types'][$i] != 'file') {
+                if ($request['data_types'][$i] == 'foreignId') {
                     /**
                      * will generate like:
-                     * 'name' => 'required|max:30',
+                     * 'name' => 'required|max:30|exists:App\Models\Product,id',
                      * with new line and 3x tab
                      */
-                    $validations .= "|max:" . $request['max_lengths'][$i] . "',\n\t\t\t";
+                    $validations .= "|exists:App\Models\\" . GeneratorUtils::singularPascalCase($request['constrains'][$i]) . ",id',\n\t\t\t";
                 } else {
                     /**
                      * will generate like:
-                     * 'name' => 'required',
+                     * 'name' => 'required|max:30|exists:App\Models\Product,id',
                      * with new line and 3x tab
                      */
                     $validations .= "',\n\t\t\t";
                 }
             } else {
-                if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0) {
+                if ($request['data_types'][$i] == 'foreignId') {
                     /**
                      * will generate like:
-                     * 'name' => 'required|max:30',
+                     * 'name' => 'required|max:30|exists:App\Models\Product,id',
                      */
-                    $validations .= "|max:" . $request['max_lengths'][$i] . "',";
+                    $validations .= "|exists:App\Models\\" . GeneratorUtils::singularPascalCase($request['constrains'][$i]) . ",id',";
                 } else {
                     /**
                      * will generate like:
-                     * 'name' => 'required',
+                     * 'name' => 'required|max:30|exists:App\Models\Product,id',
                      */
                     $validations .= "',";
                 }

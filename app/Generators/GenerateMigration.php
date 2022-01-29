@@ -81,34 +81,28 @@ class GenerateMigration
 
             if ($i + 1 != $totalFields) {
 
-                if ($request['requireds'][$i] == 'yes') {
-                    /**
-                     * will generate like:
-                     * $table->string('name', 30); or $table->string('name');
-                     * with new line and 3x tab
-                     */
-                    $setFields .= ";\n\t\t\t";
+                if ($request['requireds'][$i] != 'yes') {
+                    $setFields .= "->nullable()";
+                }
+
+                if ($request['data_types'][$i] == 'foreignId') {
+                    $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($request['constrains'][$i]) . "');\n\t\t\t";
                 } else {
-                    /**
-                     * will generate like:
-                     * $table->string('name', 30)->nullable(); or $table->string('name')->nullable();
-                     * with new line and 3x tab
-                     */
-                    $setFields .= "->nullable();\n\t\t\t";
+                    $setFields .= ";\n\t\t\t";
                 }
             } else {
-                if ($request['requireds'][$i] == 'yes') {
-                    /**
-                     * will generate like:
-                     * $table->string('name', 30); or $table->string('name');
-                     */
-                    $setFields .= ";";
-                } else {
+                if ($request['requireds'][$i] != 'yes') {
                     /**
                      * will generate like:
                      * $table->string('name', 30)->nullable(); or $table->string('name')->nullable();
                      */
                     $setFields .= "->nullable();";
+                }
+
+                if ($request['data_types'][$i] == 'foreignId') {
+                    $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($request['constrains'][$i]) . "');";
+                } else {
+                    $setFields .= ";";
                 }
             }
         }

@@ -16,7 +16,7 @@ return [
         'double',
         'enum',
         'float',
-        // 'foreignId',
+        'foreignId',
         'tinyInteger',
         'tinyText',
         'longText'

@@ -1,0 +1,10 @@
+View::composer([
+            '{{modelNamePluralKebabCase}}.create',
+            '{{modelNamePluralKebabCase}}.edit',
+        ], function ($view) {
+            return $view->with(
+                '{{constrainsPluralCamelCase}}',
+                \App\Models\{{constrainsSingularPascalCase}}::select({{fieldsSelect}})->get()
+            );
+        });
+

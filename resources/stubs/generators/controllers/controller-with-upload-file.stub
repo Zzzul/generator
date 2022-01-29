@@ -31,7 +31,6 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', '{{modelNamePluralKebabCase}}.include.action')
 {{indexFile}}                ->toJson();
-
         }
 
         return view('{{modelNamePluralKebabCase}}.index');
@@ -73,7 +72,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function show({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-        return view('{{modelNamePluralKebabCase}}.show', compact('{{modelNameSingularCamelCase}}'));
+        {{loadRelation}}return view('{{modelNamePluralKebabCase}}.show', compact('{{modelNameSingularCamelCase}}'));
     }
 
     /**
@@ -84,7 +83,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function edit({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-        return view('{{modelNamePluralKebabCase}}.edit', compact('{{modelNameSingularCamelCase}}'));
+        {{loadRelation}}return view('{{modelNamePluralKebabCase}}.edit', compact('{{modelNameSingularCamelCase}}'));
     }
 
     /**

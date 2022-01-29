@@ -24,9 +24,9 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            ${{modelNamePluralCamleCase}} = {{modelNameSingularPascalCase}}::query();
+            ${{modelNamePluralCamelCase}} = {{modelNameSingularPascalCase}}::query();
 
-            return DataTables::of(${{modelNamePluralCamleCase}})
+            return DataTables::of(${{modelNamePluralCamelCase}})
                 ->addIndexColumn()
                 ->addColumn('action', '{{modelNamePluralKebabCase}}.include.action')
                 ->toJson();
@@ -68,7 +68,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function show({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-        return view('{{modelNamePluralKebabCase}}.show', compact('{{modelNameSpaceLowercase}}'));
+        {{loadRelation}}return view('{{modelNamePluralKebabCase}}.show', compact('{{modelNameSpaceLowercase}}'));
     }
 
     /**
@@ -79,7 +79,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function edit({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-        return view('{{modelNamePluralKebabCase}}.edit', compact('{{modelNameSpaceLowercase}}'));
+        {{loadRelation}}return view('{{modelNamePluralKebabCase}}.edit', compact('{{modelNameSpaceLowercase}}'));
     }
 
     /**

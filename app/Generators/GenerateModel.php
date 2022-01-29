@@ -17,6 +17,7 @@ class GenerateModel
 
         $fields = "[";
         $casts = "[";
+        $relations = "";
         $totalFields = count($request['fields']);
 
         foreach ($request['fields'] as $i => $value) {
@@ -43,6 +44,20 @@ class GenerateModel
             } elseif (Str::contains($request['data_types'][$i], 'string') || Str::contains($request['data_types'][$i], 'text') || Str::contains($request['data_types'][$i], 'char')) {
                 $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'string', ";
             }
+
+            if ($request['data_types'][$i] == 'foreignId') {
+                $foreign_id = isset($request['foreign_ids'][$i]) ? ", '" . $request['foreign_ids'][$i] . "'" : '';
+
+                if ($i > 0) {
+                    $relations .= "\t";
+                }
+
+                $relations .= "public function " . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "()\n\t{\n\t\treturn \$this->belongsTo(" . GeneratorUtils::singularPascalCase($request['constrains'][$i]) . "::class" . $foreign_id . ");\n\t}";
+
+                if ($i + 1 != $totalFields) {
+                    $relations .= "\n\n";
+                }
+            }
         }
 
         $casts .= "'created_at' => 'datetime:d/m/Y H:i', 'updated_at' => 'datetime:d/m/Y H:i']";
@@ -51,17 +66,17 @@ class GenerateModel
             [
                 '{{modelName}}',
                 '{{fields}}',
-                '{{casts}}'
+                '{{casts}}',
+                '{{relations}}'
             ],
             [
                 $model,
                 $fields,
-                $casts
+                $casts,
+                $relations
             ],
             GeneratorUtils::getTemplate('model')
         );
-
-        // dd($template);
 
         GeneratorUtils::generateTemplate(app_path("/Models/$model.php"), $template);
     }

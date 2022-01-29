@@ -44,6 +44,8 @@
                                 @endforeach
                             </select>
                             <input type="hidden" name="select_options[]" class="form-option">
+                            <input type="hidden" name="constrains[]" class="form-constrain">
+                            <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
                         </div>
                     </td>
                     <td>
@@ -127,6 +129,8 @@
                                 ${list}
                             </select>
                             <input type="hidden" name="select_options[]" class="form-option">
+                            <input type="hidden" name="constrains[]" class="form-constrain">
+                            <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
                         </div>
                     </td>
                     <td>
@@ -189,6 +193,8 @@
                 <div class="form-group form-option mt-2">
                     <input type="text" name="select_options[]" class="form-control" placeholder="Seperate with '|', eg: water|fire">
                 </div>
+                <input type="hidden" name="constrains[]" class="form-constrain">
+                <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -201,6 +207,8 @@
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
                     <input type="hidden" name="select_options[]" class="form-option">
+                    <input type="hidden" name="constrains[]" class="form-constrain">
+                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -212,6 +220,8 @@
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
                     <input type="hidden" name="select_options[]" class="form-option">
+                    <input type="hidden" name="constrains[]" class="form-constrain">
+                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -223,11 +233,33 @@
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
                     <input type="hidden" name="select_options[]" class="form-option">
+                    <input type="hidden" name="constrains[]" class="form-constrain">
+                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
                     <option value="" disabled selected>-- Select input type --</option>
                     <option value="datetime-local">Datetime local</option>
+                `)
+            } else if ($(this).val() == 'foreignId') {
+                removeInputHidden(index)
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
+                    <input type="hidden" name="select_options[]" class="form-option">
+                `)
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
+                <div class="form-group form-constrain mt-2">
+                    <input type="text" name="constrains[]" class="form-control" placeholder="Constrain / model name" required>
+                </div>
+                <div class="form-group form-foreign-id mt-2">
+                    <input type="text" name="foreign_ids[]" class="form-control" placeholder="Foreign id (optional)">
+                </div>
+                `)
+
+                $(`.input-types:eq(${index})`).html(`
+                    <option value="" disabled selected>-- Select input type --</option>
+                    <option value="select">Select</option>
                 `)
             } else if (
                 $(this).val() == 'text' ||
@@ -238,6 +270,8 @@
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
                     <input type="hidden" name="select_options[]" class="form-option">
+                    <input type="hidden" name="constrains[]" class="form-constrain">
+                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -257,6 +291,8 @@
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
                     <input type="hidden" name="select_options[]" class="form-option">
+                    <input type="hidden" name="constrains[]" class="form-constrain">
+                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -268,6 +304,8 @@
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
                     <input type="hidden" name="select_options[]" class="form-option">
+                    <input type="hidden" name="constrains[]" class="form-constrain">
+                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -276,10 +314,12 @@
                     <option value="radio">Radio</option>
                 `)
             } else {
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()
+                removeInputHidden(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
                     <input type="hidden" name="select_options[]" class="form-option">
+                    <input type="hidden" name="constrains[]" class="form-constrain">
+                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
                 `)
 
                 $(`.input-types:eq(${index})`).html(`
@@ -309,7 +349,7 @@
                     </select>
                 </div>
                 <div class="form-group form-file-size">
-                    <input type="number" name="files_sizes[]" class="form-control" placeholder="Max size, eg: 1024" required>
+                    <input type="number" name="files_sizes[]" class="form-control" placeholder="Max size(kb), eg: 1024" required>
                 </div>
                 `)
             } else {
@@ -368,11 +408,15 @@
 
             if (table.length > 1) {
                 $(this).parent().parent().remove()
+                generateNo()
             }
         })
 
         function removeInputHidden(index) {
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-constrain`).remove()
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-foreign-id`).remove()
+
             $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-type`).remove()
             $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-size`).remove()
             $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-mimes`).remove()
@@ -390,6 +434,15 @@
 
         function capitalizeFirstLetter(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        function generateNo() {
+            let no = 1
+
+            $('#tbl-field tbody tr').each(function() {
+                $(this).find('td:nth-child(1)').html(no)
+                no++
+            })
         }
     </script>
 @endpush

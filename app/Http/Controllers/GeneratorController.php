@@ -10,7 +10,8 @@ use App\Generators\{
     GenerateMigration,
     GeneratePermission,
     GenerateRequest,
-    GenerateRoute
+    GenerateRoute,
+    GenerateViewComposer
 };
 use App\Generators\Views\{
     GenerateActionView,
@@ -89,6 +90,11 @@ class GeneratorController extends Controller
      */
     protected $generatePermission;
 
+    /**
+     * @var GenerateViewComposer $generateViewComposer
+     */
+    protected $generateViewComposer;
+
     public function __construct(
         GenerateModel $generateModel,
         GenerateMigration $generateMigration,
@@ -103,6 +109,7 @@ class GeneratorController extends Controller
         GenerateFormView $generateFormView,
         GenerateSidebarView $generateSidebarView,
         GeneratePermission $generatePermission,
+        GenerateViewComposer $generateViewComposer,
     ) {
         $this->generateModel = $generateModel;
         $this->generateMigration = $generateMigration;
@@ -117,6 +124,7 @@ class GeneratorController extends Controller
         $this->generateFormView = $generateFormView;
         $this->generateSidebarView = $generateSidebarView;
         $this->generatePermission = $generatePermission;
+        $this->generateViewComposer = $generateViewComposer;
     }
 
     /**
@@ -137,8 +145,10 @@ class GeneratorController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
+
         // $this->generateModel->execute($request->all());
-        $this->generateMigration->execute($request->all());
+        // $this->generateMigration->execute($request->all());
         // $this->generateController->execute($request->all());
         // $this->generateRequest->execute($request->all());
         // $this->generateIndexView->execute($request->all());
@@ -150,12 +160,18 @@ class GeneratorController extends Controller
         // $this->generateRoute->execute($request->all());
         // $this->generateSidebarView->execute($request->all());
         // $this->generatePermission->execute($request->all());
+        // if (in_array('foreignId', $request->data_types)) {
+        //     $this->generateViewComposer->execute($request->all());
+        // }
         // $this->clearCache();
         // $this->migrateTable();
 
         // return redirect()
         //     ->route('generators.create')
         //     ->with('success', trans('Module created successfully.'));
+
+
+        dd('success');
     }
 
     protected function migrateTable(): void
