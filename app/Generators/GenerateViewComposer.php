@@ -17,12 +17,12 @@ class GenerateViewComposer
 
         foreach ($request['data_types'] as $i => $dataType) {
             if ($dataType == 'foreignId') {
-                $table = GeneratorUtils::singularPascalCase($request['constrains'][$i]);
+                $table = GeneratorUtils::pluralSnakeCase($request['constrains'][$i]);
 
                 $allColums = Schema::getColumnListing($table);
 
                 if (sizeof($allColums) > 0) {
-                    $fieldsSelect = "'id', $allColums[1]'";
+                    $fieldsSelect = "'id', '$allColums[1]'";
                 } else {
                     $fieldsSelect = "'id'";
                 }

@@ -3,6 +3,7 @@
 namespace App\Generators\Views;
 
 use App\Generators\GeneratorUtils;
+use Illuminate\Support\Facades\Schema;
 
 class GenerateFormView
 {
@@ -89,6 +90,36 @@ class GenerateFormView
 
                     $template .= $options;
                 }
+            } else if ($request['data_types'][$i] == 'foreignId') {
+                $constrainSingularCamelCase = GeneratorUtils::singularCamelCase($request['constrains'][$i]);
+
+                $table = GeneratorUtils::pluralSnakeCase($request['constrains'][$i]);
+                $columnAfterId = $this->getColumnAfterId($table);
+
+                $options = "
+                @foreach ($" .  GeneratorUtils::pluralCamelCase($request['constrains'][$i]) . " as $$constrainSingularCamelCase)
+                    <option value=\"{{ $" . $constrainSingularCamelCase . "->id }}\" {{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == $" . $constrainSingularCamelCase . "->id ? 'selected' : (old('$fieldSnakeCase') == $" . $constrainSingularCamelCase . "->id ? 'selected' : '') }}>
+                        {{ $" . $constrainSingularCamelCase . "->$columnAfterId }}
+                    </option>
+                @endforeach";
+
+                $template .= str_replace(
+                    [
+                        '{{fieldLowercase}}',
+                        '{{fieldUppercase}}',
+                        '{{fieldSpaceLowercase}}',
+                        '{{options}}',
+                        '{{nullable}}'
+                    ],
+                    [
+                        $fieldSnakeCase,
+                        GeneratorUtils::cleanPluralUcWords($request['constrains'][$i]),
+                        GeneratorUtils::cleanSingularLowerCase($request['constrains'][$i]),
+                        $options,
+                        $request['requireds'][$i] == 'yes' ? ' required' : '',
+                    ],
+                    GeneratorUtils::getTemplate('views/forms/select')
+                );
             } else if ($request['data_types'][$i] == 'boolean') {
                 if ($request['input_types'][$i] == 'select') {
                     // select
@@ -221,5 +252,18 @@ class GenerateFormView
         GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
 
         GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/include/form.blade.php"), $template);
+    }
+
+    protected function getColumnAfterId(string $table)
+    {
+        $allColums = Schema::getColumnListing($table);
+
+        if (sizeof($allColums) > 0) {
+            $column = $allColums[1];
+        } else {
+            $column = "id";
+        }
+
+        return $column;
     }
 }

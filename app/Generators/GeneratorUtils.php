@@ -2,6 +2,7 @@
 
 namespace App\Generators;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class GeneratorUtils
@@ -206,4 +207,17 @@ class GeneratorUtils
     {
         return strtolower(Str::plural(trim(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string)), 2));
     }
+
+    // public static function getColumnAfterId(string $table)
+    // {
+    //     $allColums = Schema::getColumnListing($table);
+
+    //     if (sizeof($allColums) > 0) {
+    //         $fieldsSelect = "'id', $allColums[1]'";
+    //     } else {
+    //         $fieldsSelect = "'id'";
+    //     }
+
+    //     return $fieldsSelect;
+    // }
 }

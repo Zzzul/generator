@@ -35,14 +35,16 @@ class GenerateController
             }
         }
 
+        // load the relations for create and edit
         $relations = "";
         if (in_array('foreignId', $request['data_types'])) {
             $relations .= "$" . $modelNameSingularCamelCase . "->load(";
+
             $countForeidnId = count(array_keys($request['data_types'], 'foreignId'));
 
-            foreach ($request['data_types'] as $i => $data_type) {
-                if ($request['constrains'][$i] != null) {
-                    $relations .= "'" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "'";
+            foreach ($request['constrains'] as $i => $constrain) {
+                if ($constrain != null) {
+                    $relations .= "'" . GeneratorUtils::singularSnakeCase($constrain) . "'";
 
                     if ($i + 1 != $countForeidnId) {
                         $relations .= ");\n\t\t";
@@ -116,7 +118,7 @@ class GenerateController
      * Generate upload file code
      * @param string $field,
      * @param string $path,
-     * @param string $model,
+     * @param null|string $model,
      * @return string
      */
     protected function uploadFileCode(string $field, string $path, string $model = null)
@@ -131,7 +133,7 @@ class GenerateController
             GeneratorUtils::pluralKebabCase($field),
         ];
 
-        if ($model) {
+        if ($model != null) {
             array_push($replaceString, '{{modelNameSingularCamelCase}}');
             array_push($replaceWith, $model);
         }

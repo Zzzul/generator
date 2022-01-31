@@ -36,16 +36,16 @@ class GenerateIndexView
                 /**
                  * will generate like:
                  * {
-                    data: 'photo',
-                    name: 'photo',
-                    orderable: false,
-                    searchable: false,
-                    render: function(data, type, full, meta) {
-                        return `<div class="avatar">
-                            <img src="${data}" alt="Photo">
-                        </div>`;
-                    }
-                },
+                 *    data: 'photo',
+                 *    name: 'photo',
+                 *    orderable: false,
+                 *    searchable: false,
+                 *    render: function(data, type, full, meta) {
+                 *        return `<div class="avatar">
+                 *            <img src="${data}" alt="Photo">
+                 *        </div>`;
+                 *    }
+                 * },
                  */
 
                 $tdColumns .=  "{
@@ -63,9 +63,9 @@ class GenerateIndexView
                 /**
                  * will generate like:
                  * {
-                    data: 'price',
-                    name: 'price'
-                }
+                 *    data: 'price',
+                 *   name: 'price'
+                 * }
                  */
 
                 $tdColumns .= "{
