@@ -48,7 +48,6 @@ class GenerateController
 
             $query = "$modelNameSingularPascalCase::with(";
 
-
             foreach ($request['constrains'] as $i => $constrain) {
                 if ($constrain != null) {
                     $constrainSnakeCase = GeneratorUtils::singularSnakeCase($constrain);
@@ -86,7 +85,9 @@ class GenerateController
                     '{{storeFile}}',
                     '{{updateFile}}',
                     '{{deleteFile}}',
-                    '{{loadRelation}}'
+                    '{{loadRelation}}',
+                    '{{addColumns}}',
+                    '{{query}}'
                 ],
                 [
                     $modelNameSingularPascalCase,
@@ -98,7 +99,9 @@ class GenerateController
                     $storeTemplate,
                     $updateTemplate,
                     $deleteTemplate,
-                    $relations
+                    $relations,
+                    $addColumns,
+                    $query
                 ],
                 GeneratorUtils::getTemplate('controllers/controller-with-upload-file')
             );

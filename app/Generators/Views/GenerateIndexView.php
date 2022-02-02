@@ -30,7 +30,9 @@ class GenerateIndexView
              * will generate like:
              * <th>{{ __('Price') }}</th>
              */
-            $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($field) . "') }}</th>";
+            if ($request['data_types'][$i] != 'foreignId') {
+                $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($field) . "') }}</th>";
+            }
 
             if ($request['input_types'][$i] == 'file') {
                 /**
@@ -61,6 +63,14 @@ class GenerateIndexView
                     },";
             } elseif ($request['data_types'][$i] == 'foreignId') {
                 $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($request['constrains'][$i]) . "') }}</th>";
+
+                /**
+                 * will generate like:
+                 * {
+                 *    data: 'user',
+                 *    name: 'user.name'
+                 * }
+                 */
                 $tdColumns .=  "{
                     data: '" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "',
                     name: '" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "." . GeneratorUtils::getColumnAfterId($request['constrains'][$i]) . "'
@@ -73,7 +83,6 @@ class GenerateIndexView
                  *    name: 'price'
                  * }
                  */
-
                 $tdColumns .= "{
                     data: '" . GeneratorUtils::singularSnakeCase($field) . "',
                     name: '" . GeneratorUtils::singularSnakeCase($field) . "'
