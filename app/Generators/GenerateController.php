@@ -55,17 +55,17 @@ class GenerateController
                     $columnAfterId = GeneratorUtils::getColumnAfterId($constrain);
                     $relations .= "'$constrainSnakeCase:$selectedColumns'";
 
-                    if ($i + 1 != $countForeidnId) {
-                        $relations .= ");\n\n\t\t";
-                        $query .= "'$constrainSnakeCase:$selectedColumns')";
-                    } else {
+                    if ($i + 1 < $countForeidnId) {
                         $relations .= ", ";
                         $query .= "'$constrainSnakeCase:$selectedColumns', ";
+                    } else {
+                        $relations .= ");\n\n\t\t";
+                        $query .= "'$constrainSnakeCase:$selectedColumns')";
                     }
 
                     $addColumns .= "->addColumn('$constrainSnakeCase', function (\$row) {
                     return \$row->" . $constrainSnakeCase . "->$columnAfterId;
-                })\n\t\t\t\t";
+                })";
                 }
             }
         }

@@ -29,8 +29,10 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
 
             return Datatables::of(${{modelNamePluralCamleCase}})
                 ->addIndexColumn()
-                {{addColumns}}->addColumn('action', '{{modelNamePluralKebabCase}}.include.action')
-{{indexFile}}                ->toJson();
+                {{addColumns}}
+{{indexFile}}
+                ->addColumn('action', '{{modelNamePluralKebabCase}}.include.action')
+                ->toJson();
         }
 
         return view('{{modelNamePluralKebabCase}}.index');
