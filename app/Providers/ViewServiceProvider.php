@@ -34,7 +34,6 @@ class ViewServiceProvider extends ServiceProvider
                 Role::get()
             );
         });
-
         // don`t remove this comment, it will generate view composer
     }
 }

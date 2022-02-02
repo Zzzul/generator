@@ -23,6 +23,11 @@ class GenerateController
         $updateTemplate = "";
         $deleteTemplate = "";
 
+        $relations = "";
+        $addColumns = "";
+
+        $query = "$modelNameSingularPascalCase::query()";
+
         foreach ($request['input_types'] as $i => $input) {
             if ($input == 'file') {
                 $indexTemplate .= $this->uploadFileCode($request['fields'][$i], 'index');
@@ -36,21 +41,32 @@ class GenerateController
         }
 
         // load the relations for create and edit
-        $relations = "";
         if (in_array('foreignId', $request['data_types'])) {
             $relations .= "$" . $modelNameSingularCamelCase . "->load(";
 
             $countForeidnId = count(array_keys($request['data_types'], 'foreignId'));
 
+            $query = "$modelNameSingularPascalCase::with(";
+
+
             foreach ($request['constrains'] as $i => $constrain) {
                 if ($constrain != null) {
-                    $relations .= "'" . GeneratorUtils::singularSnakeCase($constrain) . "'";
+                    $constrainSnakeCase = GeneratorUtils::singularSnakeCase($constrain);
+                    $selectedColumns = GeneratorUtils::selectColumnAfterIdAndIdItself($constrain);
+                    $columnAfterId = GeneratorUtils::getColumnAfterId($constrain);
+                    $relations .= "'$constrainSnakeCase:$selectedColumns'";
 
                     if ($i + 1 != $countForeidnId) {
-                        $relations .= ");\n\t\t";
+                        $relations .= ");\n\n\t\t";
+                        $query .= "'$constrainSnakeCase:$selectedColumns')";
                     } else {
                         $relations .= ", ";
+                        $query .= "'$constrainSnakeCase:$selectedColumns', ";
                     }
+
+                    $addColumns .= "->addColumn('$constrainSnakeCase', function (\$row) {
+                    return \$row->" . $constrainSnakeCase . "->$columnAfterId;
+                })\n\t\t\t\t";
                 }
             }
         }
@@ -97,7 +113,9 @@ class GenerateController
                     '{{modelNamePluralCamelCase}}',
                     '{{modelNamePluralKebabCase}}',
                     '{{modelNameSpaceLowercase}}',
-                    '{{loadRelation}}'
+                    '{{loadRelation}}',
+                    '{{addColumns}}',
+                    '{{query}}'
                 ],
                 [
                     $modelNameSingularPascalCase,
@@ -105,7 +123,9 @@ class GenerateController
                     $modelNamePluralCamelCase,
                     $modelNamePluralKebabCase,
                     $modelNameSpaceLowercase,
-                    $relations
+                    $relations,
+                    $addColumns,
+                    $query
                 ],
                 GeneratorUtils::getTemplate('controllers/controller')
             );

@@ -79,26 +79,21 @@ class GenerateMigration
                 }
             }
 
+            if ($request['requireds'][$i] != 'yes') {
+                /**
+                 * will generate like:
+                 * $table->string('name', 30)->nullable() or $table->string('name')->nullable()
+                 */
+                $setFields .= "->nullable()";
+            }
+
             if ($i + 1 != $totalFields) {
-
-                if ($request['requireds'][$i] != 'yes') {
-                    $setFields .= "->nullable()";
-                }
-
                 if ($request['data_types'][$i] == 'foreignId') {
                     $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($request['constrains'][$i]) . "');\n\t\t\t";
                 } else {
                     $setFields .= ";\n\t\t\t";
                 }
             } else {
-                if ($request['requireds'][$i] != 'yes') {
-                    /**
-                     * will generate like:
-                     * $table->string('name', 30)->nullable(); or $table->string('name')->nullable();
-                     */
-                    $setFields .= "->nullable();";
-                }
-
                 if ($request['data_types'][$i] == 'foreignId') {
                     $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($request['constrains'][$i]) . "');";
                 } else {

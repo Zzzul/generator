@@ -49,6 +49,7 @@ class GeneratorUtils
      * Set input type by table field data type
      *
      * @param string $dataType
+     * @param string|null $field
      * @return string
      */
     public static function setInputType(string $dataType, string $field = null)
@@ -208,16 +209,42 @@ class GeneratorUtils
         return strtolower(Str::plural(trim(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string)), 2));
     }
 
-    // public static function getColumnAfterId(string $table)
-    // {
-    //     $allColums = Schema::getColumnListing($table);
+    /**
+     * Get 1 column after id on the table
+     * @param string $table
+     * @return string $column
+     */
+    public static function getColumnAfterId(string $table)
+    {
+        $table = GeneratorUtils::pluralSnakeCase($table);
+        $allColums = Schema::getColumnListing($table);
 
-    //     if (sizeof($allColums) > 0) {
-    //         $fieldsSelect = "'id', $allColums[1]'";
-    //     } else {
-    //         $fieldsSelect = "'id'";
-    //     }
+        if (sizeof($allColums) > 0) {
+            $column = $allColums[1];
+        } else {
+            $column = "id";
+        }
 
-    //     return $fieldsSelect;
-    // }
+        return $column;
+    }
+
+    /**
+     * Select id and after id column
+     * @param string $table
+     * @return string $selectedField
+     */
+    public static function selectColumnAfterIdAndIdItself(string $table)
+    {
+
+        $table = GeneratorUtils::pluralSnakeCase($table);
+        $allColums = Schema::getColumnListing($table);
+
+        if (sizeof($allColums) > 0) {
+            $selectedField = "id,$allColums[1]";
+        } else {
+            $selectedField = "id";
+        }
+
+        return $selectedField;
+    }
 }

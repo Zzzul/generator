@@ -24,11 +24,11 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            ${{modelNamePluralCamelCase}} = {{modelNameSingularPascalCase}}::query();
+            ${{modelNamePluralCamelCase}} = {{query}};
 
             return DataTables::of(${{modelNamePluralCamelCase}})
                 ->addIndexColumn()
-                ->addColumn('action', '{{modelNamePluralKebabCase}}.include.action')
+                {{addColumns}}->addColumn('action', '{{modelNamePluralKebabCase}}.include.action')
                 ->toJson();
         }
 

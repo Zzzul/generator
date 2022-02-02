@@ -59,12 +59,18 @@ class GenerateIndexView
                         </div>`;
                         }
                     },";
+            } elseif ($request['data_types'][$i] == 'foreignId') {
+                $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($request['constrains'][$i]) . "') }}</th>";
+                $tdColumns .=  "{
+                    data: '" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "',
+                    name: '" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "." . GeneratorUtils::getColumnAfterId($request['constrains'][$i]) . "'
+                },";
             } else {
                 /**
                  * will generate like:
                  * {
                  *    data: 'price',
-                 *   name: 'price'
+                 *    name: 'price'
                  * }
                  */
 

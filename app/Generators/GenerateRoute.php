@@ -13,10 +13,10 @@ class GenerateRoute
      */
     public function execute($request)
     {
-        $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($request['model']);
+        $modelNameSingularPascalCase = GeneratorUtils::singularPascalCase($request['model']);
         $modelNamePluralLowercase = GeneratorUtils::pluralKebabCase($request['model']);
 
-        $controllerClass = "\n\n" . "Route::resource('" . $modelNamePluralLowercase . "', App\Http\Controllers\\" . $modelNameSingularCamelCase . "Controller::class)->middleware('auth');";
+        $controllerClass = "\n\n" . "Route::resource('" . $modelNamePluralLowercase . "', App\Http\Controllers\\" . $modelNameSingularPascalCase . "Controller::class)->middleware('auth');";
 
         File::append(base_path('routes/web.php'), $controllerClass);
     }

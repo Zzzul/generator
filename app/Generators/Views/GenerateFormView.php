@@ -94,7 +94,7 @@ class GenerateFormView
                 $constrainSingularCamelCase = GeneratorUtils::singularCamelCase($request['constrains'][$i]);
 
                 $table = GeneratorUtils::pluralSnakeCase($request['constrains'][$i]);
-                $columnAfterId = $this->getColumnAfterId($table);
+                $columnAfterId = GeneratorUtils::getColumnAfterId($table);
 
                 $options = "
                 @foreach ($" .  GeneratorUtils::pluralCamelCase($request['constrains'][$i]) . " as $$constrainSingularCamelCase)
@@ -113,7 +113,7 @@ class GenerateFormView
                     ],
                     [
                         $fieldSnakeCase,
-                        GeneratorUtils::cleanPluralUcWords($request['constrains'][$i]),
+                        GeneratorUtils::cleanSingularUcWords($request['constrains'][$i]),
                         GeneratorUtils::cleanSingularLowerCase($request['constrains'][$i]),
                         $options,
                         $request['requireds'][$i] == 'yes' ? ' required' : '',
@@ -252,18 +252,5 @@ class GenerateFormView
         GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
 
         GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/include/form.blade.php"), $template);
-    }
-
-    protected function getColumnAfterId(string $table)
-    {
-        $allColums = Schema::getColumnListing($table);
-
-        if (sizeof($allColums) > 0) {
-            $column = $allColums[1];
-        } else {
-            $column = "id";
-        }
-
-        return $column;
     }
 }
