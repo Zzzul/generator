@@ -35,7 +35,7 @@ class GenerateShowView
                                         <td class=\"fw-bold\">{{ __('$fieldSingularUcWords') }}</td>
                                         <td>
                                             @if ($" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . " == null)
-                                            <img src=\"https://via.placeholder.com/150\" alt=\"$fieldSingularUcWords\"  class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
+                                            <img src=\"https://via.placeholder.com/350?text=No+Image+Available\" alt=\"$fieldSingularUcWords\"  class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
                                             @else
                                                 <img src=\"{{ asset('uploads/" . GeneratorUtils::pluralSnakeCase($field) . "/' . $" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . ") }}\" alt=\"$fieldSingularUcWords\" class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
                                             @endif
