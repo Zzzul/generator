@@ -9,6 +9,7 @@ class GenerateFormView
 {
     /**
      * Generate a form/input for create and edit
+     *
      * @param array $request
      * @return void
      */

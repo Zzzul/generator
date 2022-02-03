@@ -8,6 +8,7 @@ class GenerateViewComposer
 {
     /**
      * Generate view composer on viewServiceProvider
+     *
      * @param array $request
      * @return void
      */

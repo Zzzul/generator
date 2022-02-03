@@ -8,6 +8,7 @@ class GenerateModel
 {
     /**
      * Generate a model file
+     *
      * @param array $request
      * @return void
      */

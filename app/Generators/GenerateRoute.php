@@ -8,6 +8,7 @@ class GenerateRoute
 {
     /**
      * Generate a route on web.php
+     *
      * @param array $request
      * @return void
      */

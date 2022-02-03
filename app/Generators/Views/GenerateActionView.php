@@ -8,6 +8,7 @@ class GenerateActionView
 {
     /**
      * Generate a action(table) view
+     *
      * @param array $request
      * @return void
      */

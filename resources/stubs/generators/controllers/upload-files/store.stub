@@ -1,6 +1,6 @@
         if ($request->file('{{fieldSingularSnakeCase}}') && $request->file('{{fieldSingularSnakeCase}}')->isValid()) {
 
-            $filename = time() . '.' . $request->file('{{fieldSingularSnakeCase}}')->getClientOriginalExtension();
+            $filename = $request->file('{{fieldSingularSnakeCase}}')->hashName();
 
             $destination = 'uploads/{{fieldPluralKebabCase}}/';
 

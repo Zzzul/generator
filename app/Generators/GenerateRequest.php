@@ -6,6 +6,7 @@ class GenerateRequest
 {
     /**
      * Generate a request validation class file
+     *
      * @param array $request
      * @return void
      */

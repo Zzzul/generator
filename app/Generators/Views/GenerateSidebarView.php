@@ -8,6 +8,7 @@ class GenerateSidebarView
 {
     /**
      * Generate a sidebar menu
+     *
      * @param array $request
      * @return void
      */

@@ -6,6 +6,7 @@ class GenerateController
 {
     /**
      * Generate a controller file
+     *
      * @param array $request
      * @return void
      */

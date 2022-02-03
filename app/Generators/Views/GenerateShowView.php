@@ -8,6 +8,7 @@ class GenerateShowView
 {
     /**
      * Generate a show view
+     *
      * @param array $request
      * @return void
      */

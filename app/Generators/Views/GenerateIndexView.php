@@ -8,6 +8,7 @@ class GenerateIndexView
 {
     /**
      * Generate a index view
+     *
      * @param array $request
      * @return void
      */

@@ -6,6 +6,7 @@ class GenerateMigration
 {
     /**
      * Generate a migration file
+     *
      * @param array $request
      * @return void
      */

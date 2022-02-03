@@ -8,6 +8,7 @@ class GenerateEditView
 {
     /**
      * Generate a edit view
+     *
      * @param array $request
      * @return void
      */
