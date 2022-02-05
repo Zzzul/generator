@@ -166,7 +166,7 @@ class RequestGenerator
         /**
          * on update request if any image, then set 'required' to nullbale
          */
-        if (\Str::contains($validations, "'required|image")) {
+        if (str_contains($validations, "'required|image")) {
             $updateValidations = str_replace("'required|image", "'nullable|image", $validations);
         } else {
             $updateValidations = $validations;

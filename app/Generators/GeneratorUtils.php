@@ -55,7 +55,7 @@ class GeneratorUtils
     public static function setInputType(string $dataType, string $field = null)
     {
         if (
-            Str::contains($dataType, 'integer') ||
+            str_contains($dataType, 'integer') ||
             $dataType == 'float' ||
             $dataType == 'double' ||
             $dataType == 'decimal' ||

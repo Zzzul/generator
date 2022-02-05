@@ -2,8 +2,6 @@
 
 namespace App\Generators;
 
-use Illuminate\Support\Str;
-
 class ModelGenerator
 {
     /**
@@ -33,7 +31,7 @@ class ModelGenerator
                 $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'date:d/m/Y', ";
             } elseif ($request['data_types'][$i] == 'dateTime') {
                 $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'datetime:d/m/Y H:i', ";
-            } elseif (Str::contains($request['data_types'][$i], 'integer')) {
+            } elseif (str_contains($request['data_types'][$i], 'integer')) {
                 $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'integer', ";
             } elseif ($request['data_types'][$i] == 'float') {
 
@@ -42,7 +40,7 @@ class ModelGenerator
                 $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'boolean', ";
             } elseif ($request['data_types'][$i] == 'double') {
                 $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'double', ";
-            } elseif (Str::contains($request['data_types'][$i], 'string') || Str::contains($request['data_types'][$i], 'text') || Str::contains($request['data_types'][$i], 'char')) {
+            } elseif (str_contains($request['data_types'][$i], 'string') || str_contains($request['data_types'][$i], 'text') || str_contains($request['data_types'][$i], 'char')) {
                 $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'string', ";
             }
 
