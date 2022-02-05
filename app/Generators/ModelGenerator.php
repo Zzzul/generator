@@ -4,7 +4,7 @@ namespace App\Generators;
 
 use Illuminate\Support\Str;
 
-class GenerateModel
+class ModelGenerator
 {
     /**
      * Generate a model file

@@ -2,7 +2,7 @@
 
 namespace App\Generators;
 
-class GenerateController
+class ControllerGenerator
 {
     /**
      * Generate a controller file

@@ -4,7 +4,7 @@ namespace App\Generators\Views;
 
 use App\Generators\GeneratorUtils;
 
-class GenerateShowView
+class ShowViewGenerator
 {
     /**
      * Generate a show view

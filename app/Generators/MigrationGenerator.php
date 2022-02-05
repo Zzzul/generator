@@ -2,7 +2,7 @@
 
 namespace App\Generators;
 
-class GenerateMigration
+class MigrationGenerator
 {
     /**
      * Generate a migration file

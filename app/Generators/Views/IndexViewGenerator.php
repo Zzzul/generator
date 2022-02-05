@@ -4,7 +4,7 @@ namespace App\Generators\Views;
 
 use App\Generators\GeneratorUtils;
 
-class GenerateIndexView
+class IndexViewGenerator
 {
     /**
      * Generate a index view

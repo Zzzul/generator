@@ -2,7 +2,7 @@
 
 namespace App\Generators;
 
-class GenerateRequest
+class RequestGenerator
 {
     /**
      * Generate a request validation class file

@@ -4,7 +4,7 @@ namespace App\Generators;
 
 use Illuminate\Support\Facades\Schema;
 
-class GenerateViewComposer
+class ViewComposerGenerator
 {
     /**
      * Generate view composer on viewServiceProvider

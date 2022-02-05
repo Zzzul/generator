@@ -4,7 +4,7 @@ namespace App\Generators\Views;
 
 use App\Generators\GeneratorUtils;
 
-class GenerateSidebarView
+class SidebarViewGenerator
 {
     /**
      * Generate a sidebar menu

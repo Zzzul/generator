@@ -3,9 +3,8 @@
 namespace App\Generators\Views;
 
 use App\Generators\GeneratorUtils;
-use Illuminate\Support\Facades\Schema;
 
-class GenerateFormView
+class FormViewGenerator
 {
     /**
      * Generate a form/input for create and edit

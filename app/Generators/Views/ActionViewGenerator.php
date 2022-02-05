@@ -4,7 +4,7 @@ namespace App\Generators\Views;
 
 use App\Generators\GeneratorUtils;
 
-class GenerateActionView
+class ActionViewGenerator
 {
     /**
      * Generate a action(table) view

@@ -5,128 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use App\Generators\{
-    GenerateController,
-    GenerateModel,
-    GenerateMigration,
-    GeneratePermission,
-    GenerateRequest,
-    GenerateRoute,
-    GenerateViewComposer
+    ControllerGenerator,
+    ModelGenerator,
+    MigrationGenerator,
+    PermissionGenerator,
+    RequestGenerator,
+    RouteGenerator,
+    ViewComposerGenerator
 };
 use App\Generators\Views\{
-    GenerateActionView,
-    GenerateCreateView,
-    GenerateEditView,
-    GenerateFormView,
-    GenerateIndexView,
-    GenerateShowView,
-    GenerateSidebarView
+    ActionViewGenerator,
+    CreateViewGenerator,
+    EditViewGenerator,
+    FormViewGenerator,
+    IndexViewGenerator,
+    ShowViewGenerator,
+    SidebarViewGenerator
 };
 
 class GeneratorController extends Controller
 {
-    /**
-     * @var GenerateModel $generateModel
-     */
-    protected $generateModel;
-
-    /**
-     * @var GenerateMigration $generateMigration
-     */
-    protected $generateMigration;
-
-    /**
-     * @var GenerateController $generateController
-     */
-    protected $generateController;
-
-    /**
-     * @var GenerateRequest $generateRequest
-     */
-    protected $generateRequest;
-
-    /**
-     * @var GenerateRoute $generateRoute
-     */
-    protected $generateRoute;
-
-    /**
-     * @var GenerateIndexView $generateIndexView
-     */
-    protected $generateIndexView;
-
-    /**
-     * @var GenerateCreateView $generateCreateView
-     */
-    protected $generateCreateView;
-
-    /**
-     * @var GenerateShowView $generateShowView
-     */
-    protected $generateShowView;
-
-    /**
-     * @var GenerateEditView $generateEditView
-     */
-    protected $generateEditView;
-
-    /**
-     * @var GenerateActionView $generateActionView
-     */
-    protected $generateActionView;
-
-    /**
-     * @var GenerateFormView $generateFormView
-     */
-    protected $generateFormView;
-
-    /**
-     * @var GenerateSidebarView $generateSidebarView
-     */
-    protected $generateSidebarView;
-
-    /**
-     * @var GeneratePermission $generatePermission
-     */
-    protected $generatePermission;
-
-    /**
-     * @var GenerateViewComposer $generateViewComposer
-     */
-    protected $generateViewComposer;
-
-    public function __construct(
-        GenerateModel $generateModel,
-        GenerateMigration $generateMigration,
-        GenerateController $generateController,
-        GenerateRequest $generateRequest,
-        GenerateRoute $generateRoute,
-        GenerateIndexView $generateIndexView,
-        GenerateCreateView $generateCreateView,
-        GenerateShowView $generateShowView,
-        GenerateEditView $generateEditView,
-        GenerateActionView $generateActionView,
-        GenerateFormView $generateFormView,
-        GenerateSidebarView $generateSidebarView,
-        GeneratePermission $generatePermission,
-        GenerateViewComposer $generateViewComposer,
-    ) {
-        $this->generateModel = $generateModel;
-        $this->generateMigration = $generateMigration;
-        $this->generateController = $generateController;
-        $this->generateRequest = $generateRequest;
-        $this->generateRoute = $generateRoute;
-        $this->generateIndexView = $generateIndexView;
-        $this->generateCreateView = $generateCreateView;
-        $this->generateShowView = $generateShowView;
-        $this->generateEditView = $generateEditView;
-        $this->generateActionView = $generateActionView;
-        $this->generateFormView = $generateFormView;
-        $this->generateSidebarView = $generateSidebarView;
-        $this->generatePermission = $generatePermission;
-        $this->generateViewComposer = $generateViewComposer;
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -148,8 +46,9 @@ class GeneratorController extends Controller
         if ($request->generate_type == 'all') {
             $this->generateAll($request->all());
         } else {
-            $this->generateModel->execute($request->all());
-            $this->generateMigration->execute($request->all());
+            (new ModelGenerator)->execute($request->all());
+
+            (new MigrationGenerator)->execute($request->all());
         }
 
         return redirect()
@@ -165,24 +64,25 @@ class GeneratorController extends Controller
      */
     protected function generateAll(array $request)
     {
-        $this->generateModel->execute($request);
-        $this->generateMigration->execute($request);
-        $this->generateController->execute($request);
-        $this->generateRequest->execute($request);
+        (new ModelGenerator)->execute($request);
+        (new MigrationGenerator)->execute($request);
+        (new ControllerGenerator)->execute($request);
+        (new RequestGenerator)->execute($request);
 
-        $this->generateIndexView->execute($request);
-        $this->generateCreateView->execute($request);
-        $this->generateShowView->execute($request);
-        $this->generateEditView->execute($request);
-        $this->generateActionView->execute($request);
-        $this->generateFormView->execute($request);
+        (new IndexViewGenerator)->execute($request);
+        (new CreateViewGenerator)->execute($request);
+        (new ShowViewGenerator)->execute($request);
+        (new EditViewGenerator)->execute($request);
+        (new ActionViewGenerator)->execute($request);
+        (new FormViewGenerator)->execute($request);
+        (new SidebarViewGenerator)->execute($request);
 
-        $this->generateRoute->execute($request);
-        $this->generateSidebarView->execute($request);
-        $this->generatePermission->execute($request);
+        (new RouteGenerator)->execute($request);
+
+        (new PermissionGenerator)->execute($request);
 
         if (in_array('foreignId', $request['data_types'])) {
-            $this->generateViewComposer->execute($request);
+            (new ViewComposerGenerator)->execute($request);
         }
 
         $this->clearCache();

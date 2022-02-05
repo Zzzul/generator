@@ -4,7 +4,7 @@ namespace App\Generators;
 
 use Illuminate\Support\Facades\File;
 
-class GenerateRoute
+class RouteGenerator
 {
     /**
      * Generate a route on web.php

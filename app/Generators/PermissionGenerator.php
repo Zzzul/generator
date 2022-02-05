@@ -4,7 +4,7 @@ namespace App\Generators;
 
 use Spatie\Permission\Models\{Role, Permission};
 
-class GeneratePermission
+class PermissionGenerator
 {
     /**
      * Generate new permissions to confg.permissions.list_permissions(used for peermissios seeder)
