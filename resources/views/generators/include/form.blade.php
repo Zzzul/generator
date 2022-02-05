@@ -1,5 +1,5 @@
 <div class="row mb-2">
-    <div class="col-md-6">
+    <div class="col-md-5">
         <div class="form-group">
             <label for="model">{{ __('Model') }}</label>
             <input type="text" name="model" id="model" class="form-control @error('model') is-invalid @enderror"
@@ -9,6 +9,24 @@
                     {{ $message }}
                 </div>
             @enderror
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <p class="mb-2">Generate Type</p>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="generate_type" id="generate-type-1" value="all" checked>
+            <label class="form-check-label" for="generate-type-1">
+                {{ __('All (Model, Migration, Controller, View, Route, & Request)') }}
+            </label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="generate_type" id="generate-type-2"
+                value="model & migration">
+            <label class="form-check-label" for="generate-type-2">
+                {{ __('Only Model & Migration') }}
+            </label>
         </div>
     </div>
 
@@ -39,7 +57,7 @@
                         <div class="form-group">
                             <select name="data_types[]" class="form-select form-data-types" required>
                                 <option value="" disabled selected>--Select data type--</option>
-                                @foreach (config('generator.types') as $type)
+                                @foreach (config('generator.data_types') as $type)
                                     <option value="{{ $type }}">{{ ucwords($type) }}</option>
                                 @endforeach
                             </select>
@@ -107,7 +125,7 @@
     <script src="{{ asset('mazer') }}/vendors/fontawesome/all.min.js"></script>
 
     <script>
-        const types = {!! json_encode(config('generator.types')) !!}
+        const types = {!! json_encode(config('generator.data_types')) !!}
 
         $('#btn-add').click(function() {
             let table = $('#tbl-field tbody')
@@ -258,7 +276,7 @@
                     <input type="text" name="constrains[]" class="form-control" placeholder="Constrain / model name" required>
                 </div>
                 <div class="form-group form-foreign-id mt-2">
-                    <input type="text" name="foreign_ids[]" class="form-control" placeholder="Foreign id (optional)">
+                    <input type="text" name="foreign_ids[]" class="form-control" placeholder="Foreign key (optional)">
                 </div>
                 `)
 
@@ -431,11 +449,11 @@
                 dataType == 'char' ||
                 dataType == 'float'
             ) {
-                minLength.prop('disabled', false)
-                maxLength.prop('disabled', false)
+                minLength.prop('readonly', false)
+                maxLength.prop('readonly', false)
             } else {
-                minLength.prop('disabled', true)
-                maxLength.prop('disabled', true)
+                minLength.prop('readonly', true)
+                maxLength.prop('readonly', true)
                 minLength.val('')
                 maxLength.val('')
             }

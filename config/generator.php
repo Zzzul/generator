@@ -1,7 +1,7 @@
 <?php
 return [
     'route' => 'generators',
-    'types' => [
+    'data_types' => [
         'string',
         'integer',
         'text',
@@ -20,5 +20,5 @@ return [
         'tinyInteger',
         'tinyText',
         'longText'
-    ]
+    ],
 ];

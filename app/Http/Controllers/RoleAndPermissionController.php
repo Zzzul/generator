@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\{StoreRoleRequest, UpdateRoleRequest};
+use Spatie\Permission\Models\{Role, Permission};
 use Yajra\DataTables\Facades\DataTables;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 class RoleAndPermissionController extends Controller
 {
@@ -65,7 +64,7 @@ class RoleAndPermissionController extends Controller
 
         return redirect()
             ->route('roles.index')
-            ->with('success', trans('Role created successfully.'));
+            ->with('success', __('Role created successfully.'));
     }
 
     /**
@@ -111,7 +110,7 @@ class RoleAndPermissionController extends Controller
 
         return redirect()
             ->route('roles.index')
-            ->with('success', trans('Role updated successfully.'));
+            ->with('success', __('Role updated successfully.'));
     }
 
     /**
@@ -130,11 +129,11 @@ class RoleAndPermissionController extends Controller
 
             return redirect()
                 ->route('roles.index')
-                ->with('success', trans('Role deleted successfully.'));
+                ->with('success', __('Role deleted successfully.'));
         } else {
             return redirect()
                 ->route('roles.index')
-                ->with('error', trans("Can`t delete role."));
+                ->with('error', __('Can`t delete role.'));
         }
 
         return redirect()->route('role.index');

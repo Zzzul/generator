@@ -60,7 +60,7 @@ class GenerateShowView
             } elseif ($request['data_types'][$i] == 'foreignId') {
                 $trs .= "<tr>
                                         <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($request['constrains'][$i]) . "') }}</td>
-                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "->" . GeneratorUtils::getColumnAfterId($request['constrains'][$i]) . " }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . " ? $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "->" . GeneratorUtils::getColumnAfterId($request['constrains'][$i]) . " : '' }}</td>
                                     </tr>";
             } else {
                 $trs .= "<tr>

@@ -65,7 +65,7 @@ class GenerateController
                     }
 
                     $addColumns .= "->addColumn('$constrainSnakeCase', function (\$row) {
-                    return \$row->" . $constrainSnakeCase . "->$columnAfterId;
+                    return \$row->" . $constrainSnakeCase . " ? \$row->" . $constrainSnakeCase . "->$columnAfterId : '';
                 })";
                 }
             }
