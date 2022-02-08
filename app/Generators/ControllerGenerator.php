@@ -5,7 +5,7 @@ namespace App\Generators;
 class ControllerGenerator
 {
     /**
-     * Generate a controller file
+     * Generate a controller file.
      *
      * @param array $request
      * @return void
@@ -19,10 +19,11 @@ class ControllerGenerator
         $modelNameSingularPascalCase = GeneratorUtils::singularPascalCase($request['model']);
 
         $template = "";
-        $indexTemplate = "";
-        $storeTemplate = "";
-        $updateTemplate = "";
-        $deleteTemplate = "";
+
+        $indexCode = "";
+        $storeCode = "";
+        $updateCode = "";
+        $deleteCode = "";
 
         $relations = "";
         $addColumns = "";
@@ -31,17 +32,17 @@ class ControllerGenerator
 
         foreach ($request['input_types'] as $i => $input) {
             if ($input == 'file') {
-                $indexTemplate .= $this->uploadFileCode($request['fields'][$i], 'index');
+                $indexCode .= $this->uploadFileCode($request['fields'][$i], 'index');
 
-                $storeTemplate .= $this->uploadFileCode($request['fields'][$i], 'store');
+                $storeCode .= $this->uploadFileCode($request['fields'][$i], 'store');
 
-                $updateTemplate .= $this->uploadFileCode($request['fields'][$i], 'update', $modelNameSingularCamelCase);
+                $updateCode .= $this->uploadFileCode($request['fields'][$i], 'update', $modelNameSingularCamelCase);
 
-                $deleteTemplate .= $this->uploadFileCode($request['fields'][$i], 'delete', $modelNameSingularCamelCase);
+                $deleteCode .= $this->uploadFileCode($request['fields'][$i], 'delete', $modelNameSingularCamelCase);
             }
         }
 
-        // load the relations for create and edit
+        // load the relations for create, show, and edit
         if (in_array('foreignId', $request['data_types'])) {
             $relations .= "$" . $modelNameSingularCamelCase . "->load(";
 
@@ -82,10 +83,10 @@ class ControllerGenerator
                     '{{modelNamePluralCamleCase}}',
                     '{{modelNamePluralKebabCase}}',
                     '{{modelNameSpaceLowercase}}',
-                    '{{indexFile}}',
-                    '{{storeFile}}',
-                    '{{updateFile}}',
-                    '{{deleteFile}}',
+                    '{{indexCode}}',
+                    '{{storeCode}}',
+                    '{{updateCode}}',
+                    '{{deleteCode}}',
                     '{{loadRelation}}',
                     '{{addColumns}}',
                     '{{query}}'
@@ -96,10 +97,10 @@ class ControllerGenerator
                     $modelNamePluralCamelCase,
                     $modelNamePluralKebabCase,
                     $modelNameSpaceLowercase,
-                    $indexTemplate,
-                    $storeTemplate,
-                    $updateTemplate,
-                    $deleteTemplate,
+                    $indexCode,
+                    $storeCode,
+                    $updateCode,
+                    $deleteCode,
                     $relations,
                     $addColumns,
                     $query

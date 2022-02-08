@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\File;
 class RouteGenerator
 {
     /**
-     * Generate a route on web.php
+     * Generate a route on web.php.
      *
      * @param array $request
      * @return void

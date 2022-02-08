@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+{{namespace}}
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,5 +23,5 @@ class {{modelName}} extends Model
     */
     protected $casts = {{casts}};
 
-    {{relations}}
+{{relations}}
 }

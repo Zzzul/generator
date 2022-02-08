@@ -7,7 +7,7 @@ use App\Generators\GeneratorUtils;
 class CreateViewGenerator
 {
     /**
-     * Generate a create view
+     * Generate a create view.
      *
      * @param array $request
      * @return void

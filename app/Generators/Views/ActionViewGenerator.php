@@ -7,7 +7,7 @@ use App\Generators\GeneratorUtils;
 class ActionViewGenerator
 {
     /**
-     * Generate a action(table) view
+     * Generate a action(table) view.
      *
      * @param array $request
      * @return void

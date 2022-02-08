@@ -7,7 +7,7 @@ use Spatie\Permission\Models\{Role, Permission};
 class PermissionGenerator
 {
     /**
-     * Generate new permissions to confg.permissions.list_permissions(used for peermissios seeder)
+     * Generate new permissions to confg.permissions.list_permissions(used for peermissios seeder).
      *
      * @param array $request
      * @return void

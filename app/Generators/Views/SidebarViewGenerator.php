@@ -7,7 +7,7 @@ use App\Generators\GeneratorUtils;
 class SidebarViewGenerator
 {
     /**
-     * Generate a sidebar menu
+     * Generate a sidebar menu.
      *
      * @param array $request
      * @return void

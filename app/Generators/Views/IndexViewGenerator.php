@@ -7,7 +7,7 @@ use App\Generators\GeneratorUtils;
 class IndexViewGenerator
 {
     /**
-     * Generate a index view
+     * Generate a index view.
      *
      * @param array $request
      * @return void

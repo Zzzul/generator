@@ -5,19 +5,40 @@ namespace App\Generators;
 class ModelGenerator
 {
     /**
-     * Generate a model file
+     * Generate a model file.
      *
      * @param array $request
      * @return void
      */
-    public function execute($request)
+    public function execute(array $request)
     {
-        $model = GeneratorUtils::singularPascalCase($request['model']);
+        $arrModel = explode('/', $request['model']);
+        $totalArrModel = count($arrModel);
+
+        /**
+         * will generate something like:
+         * Master\Product
+         */
+        $path = "";
+        for ($i = 0; $i < $totalArrModel - 1; $i++) {
+            $path .= GeneratorUtils::singularPascalCase($arrModel[$i]);
+            if ($i + 1 != $totalArrModel - 1) {
+                $path .= "\\";
+            }
+        }
+
+        $model = GeneratorUtils::singularPascalCase($arrModel[$totalArrModel - 1]);
 
         $fields = "[";
         $casts = "[";
         $relations = "";
         $totalFields = count($request['fields']);
+
+        if ($path != '') {
+            $namespace = "namespace App\\Models\\$path;";
+        } else {
+            $namespace = "namespace App\\Models;";
+        }
 
         foreach ($request['fields'] as $i => $value) {
 
@@ -66,17 +87,26 @@ class ModelGenerator
                 '{{modelName}}',
                 '{{fields}}',
                 '{{casts}}',
-                '{{relations}}'
+                '{{relations}}',
+                '{{namespace}}'
             ],
             [
                 $model,
                 $fields,
                 $casts,
-                $relations
+                $relations,
+                $namespace
             ],
             GeneratorUtils::getTemplate('model')
         );
 
-        GeneratorUtils::generateTemplate(app_path("/Models/$model.php"), $template);
+        if ($path != '') {
+            $fullPath = app_path("/Models/$path");
+
+            GeneratorUtils::checkFolder($fullPath);
+            GeneratorUtils::generateTemplate($fullPath . "/$model.php", $template);
+        } else {
+            GeneratorUtils::generateTemplate(app_path("/Models/$model.php"), $template);
+        }
     }
 }

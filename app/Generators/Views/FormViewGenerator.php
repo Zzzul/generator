@@ -7,7 +7,7 @@ use App\Generators\GeneratorUtils;
 class FormViewGenerator
 {
     /**
-     * Generate a form/input for create and edit
+     * Generate a form/input for create and edit.
      *
      * @param array $request
      * @return void

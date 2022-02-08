@@ -3,7 +3,8 @@
         <div class="form-group">
             <label for="model">{{ __('Model') }}</label>
             <input type="text" name="model" id="model" class="form-control @error('model') is-invalid @enderror"
-                placeholder="{{ __('Model Name') }}" value="{{ old('model') }}" autofocus required>
+                placeholder="{{ __('Product') }}" value="{{ old('model') }}" autofocus required>
+            <small class="text-secondary">Used '/' for sub folder. eg: Master/Product</small>
             @error('model')
                 <div class="invalid-feedback">
                     {{ $message }}

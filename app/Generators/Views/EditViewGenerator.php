@@ -7,7 +7,7 @@ use App\Generators\GeneratorUtils;
 class EditViewGenerator
 {
     /**
-     * Generate a edit view
+     * Generate a edit view.
      *
      * @param array $request
      * @return void

@@ -30,7 +30,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
             return Datatables::of(${{modelNamePluralCamleCase}})
                 ->addIndexColumn()
                 {{addColumns}}
-{{indexFile}}
+{{indexCode}}
                 ->addColumn('action', '{{modelNamePluralKebabCase}}.include.action')
                 ->toJson();
         }
@@ -58,7 +58,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
     {
         $attr = $request->validated();
 
-{{storeFile}}
+{{storeCode}}
         {{modelNameSingularPascalCase}}::create($attr);
 
         return redirect()
@@ -99,7 +99,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
     {
         $attr = $request->validated();
 
-{{updateFile}}
+{{updateCode}}
         ${{modelNameSingularCamelCase}}->update($attr);
 
         return redirect()
@@ -115,7 +115,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function destroy({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-{{deleteFile}}
+{{deleteCode}}
         ${{modelNameSingularCamelCase}}->delete();
 
         return redirect()

@@ -5,7 +5,7 @@ namespace App\Generators;
 class RequestGenerator
 {
     /**
-     * Generate a request validation class file
+     * Generate a request validation class file.
      *
      * @param array $request
      * @return void

@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 class GeneratorUtils
 {
     /**
-     * Get template/stub file
+     * Get template/stub file.
      *
      * @param string $path
      * @return string
@@ -19,34 +19,32 @@ class GeneratorUtils
     }
 
     /**
-     * Generate template to php file
+     * Generate string template to php file.
      *
      * @param string $destination
      * @param string $template
-     * @return bool
+     * @return void
      */
     public static function generateTemplate(string $destination, string $template)
     {
-        return file_put_contents($destination, $template);
+        file_put_contents($destination, $template);
     }
 
     /**
-     * Check folder if doesnt exist, then make folder
+     * Check folder if doesnt exist, then make folder.
      *
      * @param string $path
-     * @return bool
+     * @return void
      */
     public static function checkFolder(string $path)
     {
         if (!file_exists($path)) {
             return mkdir($path, 0777, true);
         }
-
-        return;
     }
 
     /**
-     * Set input type by table field data type
+     * Set input type by table field data type.
      *
      * @param string $dataType
      * @param string|null $field
@@ -78,7 +76,7 @@ class GeneratorUtils
     }
 
     /**
-     * Convert string to singular pascal case
+     * Convert string to singular pascal case.
      *
      * @param string $string
      * @return string
@@ -89,7 +87,7 @@ class GeneratorUtils
     }
 
     /**
-     * Convert string to plural pascal case
+     * Convert string to plural pascal case.
      *
      * @param string $string
      * @return string
@@ -100,7 +98,7 @@ class GeneratorUtils
     }
 
     /**
-     * Convert string to plural snake case
+     * Convert string to plural snake case.
      *
      * @param string $string
      * @return string
@@ -111,7 +109,7 @@ class GeneratorUtils
     }
 
     /**
-     * Convert string to singular snake case
+     * Convert string to singular snake case.
      *
      * @param string $string
      * @return string
@@ -122,7 +120,7 @@ class GeneratorUtils
     }
 
     /**
-     * Convert string to plural pascal case
+     * Convert string to plural pascal case.
      *
      * @param string $string
      * @return string
@@ -133,7 +131,7 @@ class GeneratorUtils
     }
 
     /**
-     * Convert string to singular pascal case
+     * Convert string to singular pascal case.
      *
      * @param string $string
      * @return string
@@ -144,7 +142,7 @@ class GeneratorUtils
     }
 
     /**
-     * Convert string to plural, kebab case, and lowercase
+     * Convert string to plural, kebab case, and lowercase.
      *
      * @param string $string
      * @return string
@@ -155,7 +153,7 @@ class GeneratorUtils
     }
 
     /**
-     * Convert string to singular, kebab case, and lowercase
+     * Convert string to singular, kebab case, and lowercase.
      *
      * @param string $string
      * @return string
@@ -166,7 +164,7 @@ class GeneratorUtils
     }
 
     /**
-     * Convert string to singular, remove special caracters, and lowercase
+     * Convert string to singular, remove special caracters, and lowercase.
      *
      * @param string $string
      * @return string
@@ -177,7 +175,7 @@ class GeneratorUtils
     }
 
     /**
-     * Convert string to plural, remove special caracters, and uppercase every first letters
+     * Convert string to plural, remove special caracters, and uppercase every first letters.
      *
      * @param string $string
      * @return string
@@ -188,7 +186,7 @@ class GeneratorUtils
     }
 
     /**
-     * Convert string to singular, remove special caracters, and uppercase every first letters
+     * Convert string to singular, remove special caracters, and uppercase every first letters.
      *
      * @param string $string
      * @return string
@@ -199,7 +197,7 @@ class GeneratorUtils
     }
 
     /**
-     * Convert string to plural, remove special caracters, and lowercase
+     * Convert string to plural, remove special caracters, and lowercase.
      *
      * @param string $string
      * @return string
@@ -210,7 +208,7 @@ class GeneratorUtils
     }
 
     /**
-     * Get 1 column after id on the table
+     * Get 1 column after id on the table.
      * @param string $table
      * @return string $column
      */
@@ -229,13 +227,13 @@ class GeneratorUtils
     }
 
     /**
-     * Select id and after id column
+     * Select id and after id column.
+     *
      * @param string $table
      * @return string $selectedField
      */
     public static function selectColumnAfterIdAndIdItself(string $table)
     {
-
         $table = GeneratorUtils::pluralSnakeCase($table);
         $allColums = Schema::getColumnListing($table);
 

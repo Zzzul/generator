@@ -5,7 +5,7 @@ namespace App\Generators;
 class MigrationGenerator
 {
     /**
-     * Generate a migration file
+     * Generate a migration file.
      *
      * @param array $request
      * @return void

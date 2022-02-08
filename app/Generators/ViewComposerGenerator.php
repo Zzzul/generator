@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class ViewComposerGenerator
 {
     /**
-     * Generate view composer on viewServiceProvider
+     * Generate view composer on viewServiceProvider, if any belongsTo relation.
      *
      * @param array $request
      * @return void
