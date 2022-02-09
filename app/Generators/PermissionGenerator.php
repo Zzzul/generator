@@ -14,8 +14,9 @@ class PermissionGenerator
      */
     public function execute(array $request)
     {
-        $modelNamePlural = GeneratorUtils::cleanPluralLowerCase($request['model']);
-        $modelNameSingular = GeneratorUtils::cleanSingularLowerCase($request['model']);
+        $model = GeneratorUtils::setModelName($request['model']);
+        $modelNamePlural = GeneratorUtils::cleanPluralLowerCase($model);
+        $modelNameSingular = GeneratorUtils::cleanSingularLowerCase($model);
 
         $permissions = str_replace(
             [
@@ -64,11 +65,12 @@ class PermissionGenerator
     }
 
     /**
-     * Give role admin new permissions
+     * Give role admin new permissions.
+     *
      * @param array $request
      * @return void
      */
-    protected function setRoleAndPermissions($model)
+    protected function setRoleAndPermissions(string $model)
     {
         $role = Role::findByName('admin');
 
