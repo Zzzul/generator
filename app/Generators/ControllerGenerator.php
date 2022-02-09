@@ -155,7 +155,15 @@ class ControllerGenerator
             );
         }
 
-        GeneratorUtils::generateTemplate(app_path("/Http/Controllers/{$modelNameSingularPascalCase}Controller.php"), $template);
+        if ($path != '') {
+            $fullPath = app_path("/Http/Controllers/$path/");
+
+            GeneratorUtils::checkFolder($fullPath);
+
+            GeneratorUtils::generateTemplate("$fullPath{$modelNameSingularPascalCase}Controller.php", $template);
+        } else {
+            GeneratorUtils::generateTemplate(app_path("/Http/Controllers/{$modelNameSingularPascalCase}Controller.php"), $template);
+        }
     }
 
     /**
