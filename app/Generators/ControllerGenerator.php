@@ -12,23 +12,29 @@ class ControllerGenerator
      */
     public function execute(array $request)
     {
-        $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($request['model']);
-        $modelNamePluralCamelCase = GeneratorUtils::pluralCamelCase($request['model']);
-        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
-        $modelNameSpaceLowercase = GeneratorUtils::cleanSingularLowerCase($request['model']);
-        $modelNameSingularPascalCase = GeneratorUtils::singularPascalCase($request['model']);
+        $model = GeneratorUtils::setModelName($request['model']);
+        $path = GeneratorUtils::getModelLocation($request['model']);
+
+        $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($model);
+        $modelNamePluralCamelCase = GeneratorUtils::pluralCamelCase($model);
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($model);
+        $modelNameSpaceLowercase = GeneratorUtils::cleanSingularLowerCase($model);
+        $modelNameSingularPascalCase = GeneratorUtils::singularPascalCase($model);
 
         $template = "";
-
         $indexCode = "";
         $storeCode = "";
         $updateCode = "";
         $deleteCode = "";
-
         $relations = "";
         $addColumns = "";
-
         $query = "$modelNameSingularPascalCase::query()";
+
+        if ($path != '') {
+            $namespace = "namespace App\Http\Controllers\\$path;\n\nuse App\Http\Controllers\Controller;";
+        } else {
+            $namespace = "namespace App\Http\Controllers;\n\n";
+        }
 
         foreach ($request['input_types'] as $i => $input) {
             if ($input == 'file') {
@@ -55,6 +61,7 @@ class ControllerGenerator
                     $constrainSnakeCase = GeneratorUtils::singularSnakeCase($constrain);
                     $selectedColumns = GeneratorUtils::selectColumnAfterIdAndIdItself($constrain);
                     $columnAfterId = GeneratorUtils::getColumnAfterId($constrain);
+
                     $relations .= "'$constrainSnakeCase:$selectedColumns'";
 
                     if ($i + 1 < $countForeidnId) {
@@ -89,7 +96,9 @@ class ControllerGenerator
                     '{{deleteCode}}',
                     '{{loadRelation}}',
                     '{{addColumns}}',
-                    '{{query}}'
+                    '{{query}}',
+                    '{{modelPath}}',
+                    '{{namespace}}',
                 ],
                 [
                     $modelNameSingularPascalCase,
@@ -103,7 +112,9 @@ class ControllerGenerator
                     $deleteCode,
                     $relations,
                     $addColumns,
-                    $query
+                    $query,
+                    $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
+                    $namespace,
                 ],
                 GeneratorUtils::getTemplate('controllers/controller-with-upload-file')
             );
@@ -120,7 +131,9 @@ class ControllerGenerator
                     '{{modelNameSpaceLowercase}}',
                     '{{loadRelation}}',
                     '{{addColumns}}',
-                    '{{query}}'
+                    '{{query}}',
+                    '{{modelPath}}',
+                    '{{namespace}}',
                 ],
                 [
                     $modelNameSingularPascalCase,
@@ -130,23 +143,28 @@ class ControllerGenerator
                     $modelNameSpaceLowercase,
                     $relations,
                     $addColumns,
-                    $query
+                    $query,
+                    $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
+                    $namespace
                 ],
                 GeneratorUtils::getTemplate('controllers/controller')
             );
         }
 
+        dd($template);
+
         GeneratorUtils::generateTemplate(app_path("/Http/Controllers/{$modelNameSingularPascalCase}Controller.php"), $template);
     }
 
     /**
-     * Generate upload file code
+     * Generate an upload file code.
+     *
      * @param string $field,
      * @param string $path,
      * @param null|string $model,
      * @return string
      */
-    protected function uploadFileCode(string $field, string $path, string $model = null)
+    protected function uploadFileCode(string $field, string $path, ?string $model = null)
     {
         $replaceString = [
             '{{fieldSingularSnakeCase}}',

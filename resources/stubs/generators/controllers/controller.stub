@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use App\Models\{{modelNameSingularPascalCase}};
+{{namespace}}
+use {{modelPath}};
 use App\Http\Requests\{Store{{modelNameSingularPascalCase}}Request, Update{{modelNameSingularPascalCase}}Request};
 use Yajra\DataTables\Facades\DataTables;
 

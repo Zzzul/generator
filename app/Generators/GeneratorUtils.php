@@ -245,4 +245,44 @@ class GeneratorUtils
 
         return $selectedField;
     }
+
+    /**
+     * Get model location/path if contains '/'.
+     *
+     * @param string $model
+     * @return string $path
+     */
+    public static function getModelLocation(string $model)
+    {
+        $arrModel = explode('/', $model);
+        $totalArrModel = count($arrModel);
+
+        /**
+         * will generate something like:
+         * Master\Product
+         */
+        $path = "";
+        for ($i = 0; $i < $totalArrModel - 1; $i++) {
+            $path .= GeneratorUtils::singularPascalCase($arrModel[$i]);
+            if ($i + 1 != $totalArrModel - 1) {
+                $path .= "\\";
+            }
+        }
+
+        return $path;
+    }
+
+    /**
+     * Set model name from the latest of array(if exists).
+     *
+     * @param string $model
+     * @return string
+     */
+    public static function setModelName(string $model)
+    {
+        $arrModel = explode('/', $model);
+        $totalArrModel = count($arrModel);
+
+        return GeneratorUtils::singularPascalCase($arrModel[$totalArrModel - 1]);
+    }
 }

@@ -12,22 +12,9 @@ class ModelGenerator
      */
     public function execute(array $request)
     {
-        $arrModel = explode('/', $request['model']);
-        $totalArrModel = count($arrModel);
+        $path = GeneratorUtils::getModelLocation($request['model']);
 
-        /**
-         * will generate something like:
-         * Master\Product
-         */
-        $path = "";
-        for ($i = 0; $i < $totalArrModel - 1; $i++) {
-            $path .= GeneratorUtils::singularPascalCase($arrModel[$i]);
-            if ($i + 1 != $totalArrModel - 1) {
-                $path .= "\\";
-            }
-        }
-
-        $model = GeneratorUtils::singularPascalCase($arrModel[$totalArrModel - 1]);
+        $model = GeneratorUtils::setModelName($request['model']);
 
         $fields = "[";
         $casts = "[";

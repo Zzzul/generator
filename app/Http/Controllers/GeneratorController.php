@@ -43,7 +43,7 @@ class GeneratorController extends Controller
      */
     public function store(Request $request)
     {
-        (new ModelGenerator)->execute($request->all());
+        (new ControllerGenerator)->execute($request->all());
 
         // if ($request->generate_type == 'all') {
         //     $this->generateAll($request->all());
