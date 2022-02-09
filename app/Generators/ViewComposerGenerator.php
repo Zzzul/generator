@@ -16,6 +16,15 @@ class ViewComposerGenerator
     {
         $template = "";
 
+        $model = GeneratorUtils::setModelName($request['model']);
+        $viewPath = GeneratorUtils::getModelLocation($request['model']);
+
+        if ($viewPath != '') {
+            $modelPath = "\App\Models\\$viewPath\\$model";
+        } else {
+            $modelPath = "\App\Models\\$model";
+        }
+
         foreach ($request['data_types'] as $i => $dataType) {
             if ($dataType == 'foreignId') {
                 $table = GeneratorUtils::pluralSnakeCase($request['constrains'][$i]);
@@ -37,13 +46,17 @@ class ViewComposerGenerator
                         '{{modelNamePluralKebabCase}}',
                         '{{constrainsPluralCamelCase}}',
                         '{{constrainsSingularPascalCase}}',
-                        '{{fieldsSelect}}'
+                        '{{fieldsSelect}}',
+                        '{{modelPath}}',
+                        '{{viewPath}}',
                     ],
                     [
-                        GeneratorUtils::pluralKebabCase($request['model']),
+                        GeneratorUtils::pluralKebabCase($model),
                         GeneratorUtils::pluralCamelCase($request['constrains'][$i]),
                         GeneratorUtils::singularPascalCase($request['constrains'][$i]),
-                        $fieldsSelect
+                        $fieldsSelect,
+                        $modelPath,
+                        $viewPath != '' ? str_replace('\\', '.', strtolower($viewPath)) . "." : '',
                     ],
                     GeneratorUtils::getTemplate('view-composer')
                 );
