@@ -12,12 +12,19 @@ class RouteGenerator
      * @param array $request
      * @return void
      */
-    public function execute($request)
+    public function execute(array $request)
     {
-        $modelNameSingularPascalCase = GeneratorUtils::singularPascalCase($request['model']);
-        $modelNamePluralLowercase = GeneratorUtils::pluralKebabCase($request['model']);
+        $model = GeneratorUtils::setModelName($request['model']);
+        $path = GeneratorUtils::getModelLocation($request['model']);
 
-        $controllerClass = "\n\n" . "Route::resource('" . $modelNamePluralLowercase . "', App\Http\Controllers\\" . $modelNameSingularPascalCase . "Controller::class)->middleware('auth');";
+        $modelNameSingularPascalCase = GeneratorUtils::singularPascalCase($model);
+        $modelNamePluralLowercase = GeneratorUtils::pluralKebabCase($model);
+
+        if ($path != '') {
+            $controllerClass = "\n\n" . "Route::resource('" . $modelNamePluralLowercase . "', App\Http\Controllers\\" . str_replace('/', '\\', $path) . "\\" . $modelNameSingularPascalCase . "Controller::class)->middleware('auth');";
+        } else {
+            $controllerClass = "\n\n" . "Route::resource('" . $modelNamePluralLowercase . "', App\Http\Controllers\\" . $modelNameSingularPascalCase . "Controller::class)->middleware('auth');";
+        }
 
         File::append(base_path('routes/web.php'), $controllerClass);
     }

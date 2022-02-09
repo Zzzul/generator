@@ -12,8 +12,9 @@ class MigrationGenerator
      */
     public function execute(array $request)
     {
-        $tableNamePluralUppercase = GeneratorUtils::pluralPascalCase($request['model']);
-        $tableNamePluralLowercase = GeneratorUtils::pluralSnakeCase($request['model']);
+        $model = GeneratorUtils::setModelName($request['model']);
+        $tableNamePluralUppercase = GeneratorUtils::pluralPascalCase($model);
+        $tableNamePluralLowercase = GeneratorUtils::pluralSnakeCase($model);
 
         $setFields = '';
         $totalFields = count($request['fields']);
