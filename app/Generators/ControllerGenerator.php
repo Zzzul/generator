@@ -116,7 +116,7 @@ class ControllerGenerator
                     $query,
                     $namespace,
                     $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
-                    $path != '' ? GeneratorUtils::pluralKebabCase($path) . "." : '',
+                    $path != '' ? str_replace('\\', '.', $path) . "." : ''
                 ],
                 GeneratorUtils::getTemplate('controllers/controller-with-upload-file')
             );
@@ -149,7 +149,7 @@ class ControllerGenerator
                     $query,
                     $namespace,
                     $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
-                    $path != '' ? GeneratorUtils::pluralKebabCase($path) . "." : ''
+                    $path != '' ? str_replace('\\', '.', $path) . "." : ''
                 ],
                 GeneratorUtils::getTemplate('controllers/controller')
             );

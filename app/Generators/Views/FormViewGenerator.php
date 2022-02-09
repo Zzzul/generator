@@ -254,7 +254,7 @@ class FormViewGenerator
 
 
         if ($path != '') {
-            $fullPath = resource_path("/views/" . GeneratorUtils::pluralKebabCase($path) . "/$modelNamePluralKebabCase" . "/include");
+            $fullPath = resource_path("/views/$path/$modelNamePluralKebabCase" . "/include");
 
             GeneratorUtils::checkFolder($fullPath);
 

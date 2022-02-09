@@ -118,7 +118,7 @@ class IndexViewGenerator
         );
 
         if ($path != '') {
-            $fullPath = resource_path("/views/" . GeneratorUtils::pluralKebabCase($path) . "/$modelNamePluralKebabCase");
+            $fullPath = resource_path("/views/$path/$modelNamePluralKebabCase");
 
             GeneratorUtils::checkFolder($fullPath);
 

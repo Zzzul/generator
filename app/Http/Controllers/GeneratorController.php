@@ -44,6 +44,12 @@ class GeneratorController extends Controller
     public function store(Request $request)
     {
         (new ControllerGenerator)->execute($request->all());
+        (new IndexViewGenerator)->execute($request->all());
+        (new CreateViewGenerator)->execute($request->all());
+        (new ShowViewGenerator)->execute($request->all());
+        (new EditViewGenerator)->execute($request->all());
+        (new ActionViewGenerator)->execute($request->all());
+        (new FormViewGenerator)->execute($request->all());
 
         // if ($request->generate_type == 'all') {
         //     $this->generateAll($request->all());

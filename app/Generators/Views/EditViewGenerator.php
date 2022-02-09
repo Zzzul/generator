@@ -37,13 +37,13 @@ class EditViewGenerator
                 $modelNamePluralKebabCase,
                 $modelNameSingularCamelCase,
                 in_array('file', $request['input_types']) ? ' enctype="multipart/form-data"' : '',
-                $path != '' ? GeneratorUtils::pluralKebabCase($path) . "." : ''
+                $path != '' ? str_replace('\\', '.', $path) . "." : ''
             ],
             GeneratorUtils::getTemplate('views/edit')
         );
 
         if ($path != '') {
-            $fullPath = resource_path("/views/" . GeneratorUtils::pluralKebabCase($path) . "/$modelNamePluralKebabCase");
+            $fullPath = resource_path("/views/$path/$modelNamePluralKebabCase");
 
             GeneratorUtils::checkFolder($fullPath);
 
