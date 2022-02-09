@@ -19,15 +19,18 @@ class ViewComposerGenerator
         $model = GeneratorUtils::setModelName($request['model']);
         $viewPath = GeneratorUtils::getModelLocation($request['model']);
 
-        if ($viewPath != '') {
-            $modelPath = "\App\Models\\$viewPath\\$model";
-        } else {
-            $modelPath = "\App\Models\\$model";
-        }
-
         foreach ($request['data_types'] as $i => $dataType) {
             if ($dataType == 'foreignId') {
                 $table = GeneratorUtils::pluralSnakeCase($request['constrains'][$i]);
+
+                $relatedModel = GeneratorUtils::setModelName($request['constrains'][$i]);
+                $relatedModelPath = GeneratorUtils::getModelLocation($request['constrains'][$i]);
+
+                if ($relatedModelPath != '') {
+                    $relatedModelPath = "\App\Models\\$relatedModelPath\\$relatedModel";
+                } else {
+                    $relatedModelPath = "\App\Models\\" . GeneratorUtils::singularPascalCase($request['constrains'][$i]);
+                }
 
                 $allColums = Schema::getColumnListing($table);
 
@@ -47,16 +50,16 @@ class ViewComposerGenerator
                         '{{constrainsPluralCamelCase}}',
                         '{{constrainsSingularPascalCase}}',
                         '{{fieldsSelect}}',
-                        '{{modelPath}}',
+                        '{{relatedModelPath}}',
                         '{{viewPath}}',
                     ],
                     [
                         GeneratorUtils::pluralKebabCase($model),
-                        GeneratorUtils::pluralCamelCase($request['constrains'][$i]),
+                        GeneratorUtils::pluralCamelCase($relatedModel),
                         GeneratorUtils::singularPascalCase($request['constrains'][$i]),
                         $fieldsSelect,
-                        $modelPath,
-                        $viewPath != '' ? str_replace('\\', '.', strtolower($viewPath)) . "." : '',
+                        $relatedModelPath,
+                        $viewPath != '' ? str_replace('\\', '.', $viewPath) . "." : '',
                     ],
                     GeneratorUtils::getTemplate('view-composer')
                 );

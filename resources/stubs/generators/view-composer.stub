@@ -4,7 +4,7 @@ View::composer([
         ], function ($view) {
             return $view->with(
                 '{{constrainsPluralCamelCase}}',
-                {{modelPath}}::select({{fieldsSelect}})->get()
+                {{relatedModelPath}}::select({{fieldsSelect}})->get()
             );
         });
 

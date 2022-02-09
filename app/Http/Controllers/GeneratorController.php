@@ -43,17 +43,19 @@ class GeneratorController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->generate_type == 'all') {
-            $this->generateAll($request->all());
-        } else {
-            (new ModelGenerator)->execute($request->all());
+        (new ViewComposerGenerator)->execute($request->all());
 
-            (new MigrationGenerator)->execute($request->all());
-        }
+        // if ($request->generate_type == 'all') {
+        //     $this->generateAll($request->all());
+        // } else {
+        //     (new ModelGenerator)->execute($request->all());
 
-        return redirect()
-            ->route('generators.create')
-            ->with('success', __('Module created successfully.'));
+        //     (new MigrationGenerator)->execute($request->all());
+        // }
+
+        // return redirect()
+        //     ->route('generators.create')
+        //     ->with('success', __('Module created successfully.'));
     }
 
     /**

@@ -14,10 +14,10 @@ class SidebarViewGenerator
      */
     public function execute(array $request)
     {
-        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
-
-        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
-        $modelNameSingularLowercase = GeneratorUtils::cleanSingularLowerCase($request['model']);
+        $model = GeneratorUtils::setModelName($request['model']);
+        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($model);
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($model);
+        $modelNameSingularLowercase = GeneratorUtils::cleanSingularLowerCase($model);
 
         $sidebarPath = resource_path("/views/layouts/sidebar.blade.php");
 

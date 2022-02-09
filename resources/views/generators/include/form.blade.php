@@ -4,7 +4,7 @@
             <label for="model">{{ __('Model') }}</label>
             <input type="text" name="model" id="model" class="form-control @error('model') is-invalid @enderror"
                 placeholder="{{ __('Product') }}" value="{{ old('model') }}" autofocus required>
-            <small class="text-secondary">Used '/' for sub folder. eg: Master/Product</small>
+            <small class="text-secondary">{{ __("Used ' / ' for generate a sub folder. eg: Master/Product.") }}</small>
             @error('model')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -275,6 +275,7 @@
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
                 <div class="form-group form-constrain mt-2">
                     <input type="text" name="constrains[]" class="form-control" placeholder="Constrain / model name" required>
+                    <small class="text-secondary">Used '/' if related model at sub folder, eg: Master/Product.</small>
                 </div>
                 <div class="form-group form-foreign-id mt-2">
                     <input type="text" name="foreign_ids[]" class="form-control" placeholder="Foreign key (optional)">
