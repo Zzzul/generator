@@ -2,7 +2,7 @@
 
 {{namespace}}
 use {{modelPath}};
-use App\Http\Requests\{Store{{modelNameSingularPascalCase}}Request, Update{{modelNameSingularPascalCase}}Request};
+use {{requestPath}};
 use Yajra\DataTables\Facades\DataTables;
 
 class {{modelNameSingularPascalCase}}Controller extends Controller

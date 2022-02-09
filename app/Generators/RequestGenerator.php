@@ -12,10 +12,17 @@ class RequestGenerator
      */
     public function execute(array $request)
     {
-        $model = GeneratorUtils::singularPascalCase($request['model']);
+        $model = GeneratorUtils::setModelName($request['model']);
+        $path = GeneratorUtils::getModelLocation($request['model']);
 
         $validations = '';
         $totalFields = count($request['fields']);
+
+        if ($path != '') {
+            $namespace = "namespace App\Http\Requests\\$path;";
+        } else {
+            $namespace = "namespace App\Http\Requests;";
+        }
 
         foreach ($request['fields'] as $i => $field) {
             /**
@@ -154,17 +161,19 @@ class RequestGenerator
         $storeRequestTemplate = str_replace(
             [
                 '{{modelNamePascalCase}}',
-                '{{fields}}'
+                '{{fields}}',
+                '{{namespace}}',
             ],
             [
                 "Store$model",
-                $validations
+                $validations,
+                $namespace
             ],
             GeneratorUtils::getTemplate('request')
         );
 
         /**
-         * on update request if any image, then set 'required' to nullbale
+         * on update request if any image validation, then set 'required' to nullbale
          */
         if (str_contains($validations, "'required|image")) {
             $updateValidations = str_replace("'required|image", "'nullable|image", $validations);
@@ -175,19 +184,30 @@ class RequestGenerator
         $updateRequestTemplate = str_replace(
             [
                 '{{modelNamePascalCase}}',
-                '{{fields}}'
+                '{{fields}}',
+                '{{namespace}}',
             ],
             [
                 "Update$model",
-                $updateValidations
+                $updateValidations,
+                $namespace
             ],
             GeneratorUtils::getTemplate('request')
         );
 
-        GeneratorUtils::checkFolder(app_path('/Http/Requests'));
+        if ($path != '') {
+            $fullPath = app_path("/Http/Requests/$path");
 
-        GeneratorUtils::generateTemplate(app_path("/Http/Requests/Store{$model}Request.php"), $storeRequestTemplate);
+            GeneratorUtils::checkFolder($fullPath);
 
-        GeneratorUtils::generateTemplate(app_path("/Http/Requests/Update{$model}Request.php"), $updateRequestTemplate);
+            GeneratorUtils::generateTemplate("$fullPath/Store{$model}Request.php", $storeRequestTemplate);
+            GeneratorUtils::generateTemplate("$fullPath/Update{$model}Request.php", $updateRequestTemplate);
+        } else {
+            GeneratorUtils::checkFolder(app_path('/Http/Requests'));
+
+            GeneratorUtils::generateTemplate(app_path("/Http/Requests/Store{$model}Request.php"), $storeRequestTemplate);
+
+            GeneratorUtils::generateTemplate(app_path("/Http/Requests/Update{$model}Request.php"), $updateRequestTemplate);
+        }
     }
 }

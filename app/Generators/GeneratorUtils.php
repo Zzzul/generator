@@ -209,6 +209,7 @@ class GeneratorUtils
 
     /**
      * Get 1 column after id on the table.
+     *
      * @param string $table
      * @return string $column
      */
@@ -283,6 +284,9 @@ class GeneratorUtils
         $arrModel = explode('/', $model);
         $totalArrModel = count($arrModel);
 
+        /**
+         * get the latest index value of array
+         */
         return GeneratorUtils::singularPascalCase($arrModel[$totalArrModel - 1]);
     }
 }

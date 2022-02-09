@@ -2,8 +2,8 @@
 
 {{namespace}}
 use {{modelPath}};
+use {{requestPath}};
 use Yajra\DataTables\Facades\DataTables;
-use App\Http\Requests\{Store{{modelNameSingularPascalCase}}Request, Update{{modelNameSingularPascalCase}}Request};
 use Image;
 
 class {{modelNameSingularPascalCase}}Controller extends Controller

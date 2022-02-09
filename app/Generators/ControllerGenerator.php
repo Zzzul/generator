@@ -32,8 +32,16 @@ class ControllerGenerator
 
         if ($path != '') {
             $namespace = "namespace App\Http\Controllers\\$path;\n\nuse App\Http\Controllers\Controller;";
+
+            $requestPath = "App\Http\Requests\\" . $path . "\{Store" . $modelNameSingularPascalCase . "Request, Update" . $modelNameSingularPascalCase . "Request}";
         } else {
             $namespace = "namespace App\Http\Controllers;\n\n";
+
+            /**
+             * will generate something like:
+             * use App\Http\Requests\{StoreProductRequest, UpdateProductRequest};
+             */
+            $requestPath = "App\Http\Requests\{Store" . $modelNameSingularPascalCase . "Request, Update" . $modelNameSingularPascalCase . "Request}";
         }
 
         foreach ($request['input_types'] as $i => $input) {
@@ -98,6 +106,7 @@ class ControllerGenerator
                     '{{addColumns}}',
                     '{{query}}',
                     '{{namespace}}',
+                    '{{requestPath}}',
                     '{{modelPath}}',
                     '{{viewPath}}',
                 ],
@@ -115,8 +124,9 @@ class ControllerGenerator
                     $addColumns,
                     $query,
                     $namespace,
+                    $requestPath,
                     $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
-                    $path != '' ? str_replace('\\', '.', $path) . "." : ''
+                    $path != '' ? str_replace('\\', '.', $path) . "." : '',
                 ],
                 GeneratorUtils::getTemplate('controllers/controller-with-upload-file')
             );
@@ -135,6 +145,7 @@ class ControllerGenerator
                     '{{addColumns}}',
                     '{{query}}',
                     '{{namespace}}',
+                    '{{requestPath}}',
                     '{{modelPath}}',
                     '{{viewPath}}',
                 ],
@@ -148,8 +159,9 @@ class ControllerGenerator
                     $addColumns,
                     $query,
                     $namespace,
+                    $requestPath,
                     $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
-                    $path != '' ? str_replace('\\', '.', $path) . "." : ''
+                    $path != '' ? str_replace('\\', '.', $path) . "." : '',
                 ],
                 GeneratorUtils::getTemplate('controllers/controller')
             );
