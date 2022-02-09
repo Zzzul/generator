@@ -370,6 +370,14 @@
             if ($(this).val() == 'file') {
                 // <option value="mimes">Mimes</option>
 
+                let minLength = $(`.form-min-lengths:eq(${index})`)
+                let maxLength = $(`.form-max-lengths:eq(${index})`)
+
+                minLength.prop('readonly', true)
+                maxLength.prop('readonly', true)
+                minLength.val('')
+                maxLength.val('')
+
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(`
                 <div class="form-group mt-2 form-file-types">
                     <select  name="file_types[]" class="form-select file-types" required>
@@ -381,7 +389,18 @@
                     <input type="number" name="files_sizes[]" class="form-control" placeholder="Max size(kb), eg: 1024" required>
                 </div>
                 `)
+            } else if ($(this).val() == 'email') {
+                let minLength = $(`.form-min-lengths:eq(${index})`)
+                let maxLength = $(`.form-max-lengths:eq(${index})`)
+
+                minLength.prop('readonly', true)
+                maxLength.prop('readonly', true)
+                minLength.val('')
+                maxLength.val('')
             } else {
+                $(`.form-min-lengths:eq(${index})`).prop('readonly', false)
+                $(`.form-max-lengths:eq(${index})`).prop('readonly', false)
+
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
                     `<input type="hidden" name="file_types[]" class="form-file-types">`
                 )

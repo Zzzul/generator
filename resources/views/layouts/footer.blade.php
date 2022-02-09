@@ -9,6 +9,7 @@
         </div>
     </div>
 </footer> --}}
+</div>
 <script src="{{ asset('mazer') }}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script src="{{ asset('mazer') }}/js/bootstrap.bundle.min.js"></script>
 
