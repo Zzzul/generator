@@ -7,20 +7,20 @@ use App\Generators\GeneratorUtils;
 class IndexViewGenerator
 {
     /**
-     * Generate a index view.
+     * Generate an index view.
      *
      * @param array $request
      * @return void
      */
     public function execute(array $request)
     {
-        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
+        $model = GeneratorUtils::setModelName($request['model']);
+        $path = GeneratorUtils::getModelLocation($request['model']);
 
-        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
-
-        $modelNamePluralLowerCase = GeneratorUtils::cleanPluralLowerCase($request['model']);
-
-        $modelNameSingularLowercase = GeneratorUtils::cleanSingularLowerCase($request['model']);
+        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($model);
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($model);
+        $modelNamePluralLowerCase = GeneratorUtils::cleanPluralLowerCase($model);
+        $modelNameSingularLowercase = GeneratorUtils::cleanSingularLowerCase($model);
 
         $thColums = '';
         $tdColumns = '';
@@ -117,8 +117,16 @@ class IndexViewGenerator
             GeneratorUtils::getTemplate('views/index')
         );
 
-        GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+        if ($path != '') {
+            $fullPath = resource_path("/views/" . GeneratorUtils::pluralKebabCase($path) . "/$modelNamePluralKebabCase");
 
-        GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/index.blade.php"), $template);
+            GeneratorUtils::checkFolder($fullPath);
+
+            GeneratorUtils::generateTemplate($fullPath . "/index.blade.php", $template);
+        } else {
+            GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+
+            GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/index.blade.php"), $template);
+        }
     }
 }

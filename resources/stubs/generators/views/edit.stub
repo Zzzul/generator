@@ -36,7 +36,7 @@
                                 @csrf
                                 @method('PUT')
 
-                                @include('{{modelNamePluralKebabCase}}.include.form')
+                                @include('{{viewPath}}{{modelNamePluralKebabCase}}.include.form')
 
                                 <a href="{{ url()->previous() }}" class="btn btn-secondary">{{ __('Back') }}</a>
 

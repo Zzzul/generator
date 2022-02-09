@@ -14,11 +14,14 @@ class ShowViewGenerator
      */
     public function execute(array $request)
     {
-        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
-        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
-        $modelNameSingularLowerCase = GeneratorUtils::cleanSingularLowerCase($request['model']);
+        $model = GeneratorUtils::setModelName($request['model']);
+        $path = GeneratorUtils::getModelLocation($request['model']);
 
-        $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($request['model']);
+        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($model);
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($model);
+        $modelNameSingularLowerCase = GeneratorUtils::cleanSingularLowerCase($model);
+
+        $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($model);
 
         $trs = "";
         $totalFields = count($request['fields']);
@@ -92,8 +95,16 @@ class ShowViewGenerator
             GeneratorUtils::getTemplate('views/show')
         );
 
-        GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+        if ($path != '') {
+            $fullPath = resource_path("/views/" . GeneratorUtils::pluralKebabCase($path) . "/$modelNamePluralKebabCase");
 
-        GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/show.blade.php"), $template);
+            GeneratorUtils::checkFolder($fullPath);
+
+            GeneratorUtils::generateTemplate($fullPath . "/show.blade.php", $template);
+        } else {
+            GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+
+            GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/show.blade.php"), $template);
+        }
     }
 }

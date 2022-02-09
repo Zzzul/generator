@@ -14,8 +14,11 @@ class ActionViewGenerator
      */
     public function execute(array $request)
     {
-        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
-        $modelNameSingularLowercase = GeneratorUtils::cleanSingularLowerCase($request['model']);
+        $model = GeneratorUtils::setModelName($request['model']);
+        $path = GeneratorUtils::getModelLocation($request['model']);
+
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($model);
+        $modelNameSingularLowercase = GeneratorUtils::cleanSingularLowerCase($model);
 
         $template = str_replace(
             [
@@ -29,8 +32,16 @@ class ActionViewGenerator
             GeneratorUtils::getTemplate('views/action')
         );
 
-        GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
+        if ($path != '') {
+            $fullPath = resource_path("/views/" . GeneratorUtils::pluralKebabCase($path) . "/$modelNamePluralKebabCase" . "/include");
 
-        GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/include/action.blade.php"), $template);
+            GeneratorUtils::checkFolder($fullPath);
+
+            GeneratorUtils::generateTemplate($fullPath . "/action.blade.php", $template);
+        } else {
+            GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+
+            GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/include/action.blade.php"), $template);
+        };
     }
 }

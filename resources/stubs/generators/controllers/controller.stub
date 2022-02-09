@@ -27,11 +27,12 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
 
             return DataTables::of(${{modelNamePluralCamelCase}})
                 ->addIndexColumn()
-                {{addColumns}}->addColumn('action', '{{modelNamePluralKebabCase}}.include.action')
+                {{addColumns}}->addColumn('action', '{{viewPath}}{{modelNamePluralKebabCase}}.include.action')
                 ->toJson();
         }
 
-        return view('{{modelNamePluralKebabCase}}.index');
+
+        return view('{{viewPath}}{{modelNamePluralKebabCase}}.index');
     }
 
     /**
@@ -41,7 +42,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function create()
     {
-        return view('{{modelNamePluralKebabCase}}.create');
+        return view('{{viewPath}}{{modelNamePluralKebabCase}}.create');
     }
 
     /**
@@ -67,7 +68,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function show({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-        {{loadRelation}}return view('{{modelNamePluralKebabCase}}.show', compact('{{modelNameSpaceLowercase}}'));
+        {{loadRelation}}return view('{{viewPath}}{{modelNamePluralKebabCase}}.show', compact('{{modelNameSpaceLowercase}}'));
     }
 
     /**
@@ -78,7 +79,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function edit({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-        {{loadRelation}}return view('{{modelNamePluralKebabCase}}.edit', compact('{{modelNameSpaceLowercase}}'));
+        {{loadRelation}}return view('{{viewPath}}{{modelNamePluralKebabCase}}.edit', compact('{{modelNameSpaceLowercase}}'));
     }
 
     /**

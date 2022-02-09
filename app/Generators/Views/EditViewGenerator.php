@@ -7,19 +7,20 @@ use App\Generators\GeneratorUtils;
 class EditViewGenerator
 {
     /**
-     * Generate a edit view.
+     * Generate an edit view.
      *
      * @param array $request
      * @return void
      */
     public function execute(array $request)
     {
-        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
+        $model = GeneratorUtils::setModelName($request['model']);
+        $path = GeneratorUtils::getModelLocation($request['model']);
 
-        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
-        $modelNameSingularLowerCase = GeneratorUtils::cleanSingularLowerCase($request['model']);
-
-        $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($request['model']);
+        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($model);
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($model);
+        $modelNameSingularLowerCase = GeneratorUtils::cleanSingularLowerCase($model);
+        $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($model);
 
         $template = str_replace(
             [
@@ -27,20 +28,30 @@ class EditViewGenerator
                 '{{modelNameSingularLowerCase}}',
                 '{{modelNamePluralKebabCase}}',
                 '{{modelNameSingularCamelCase}}',
-                '{{enctype}}'
+                '{{enctype}}',
+                '{{viewPath}}',
             ],
             [
                 $modelNamePluralUcWords,
                 $modelNameSingularLowerCase,
                 $modelNamePluralKebabCase,
                 $modelNameSingularCamelCase,
-                in_array('file', $request['input_types']) ? ' enctype="multipart/form-data"' : ''
+                in_array('file', $request['input_types']) ? ' enctype="multipart/form-data"' : '',
+                $path != '' ? GeneratorUtils::pluralKebabCase($path) . "." : ''
             ],
             GeneratorUtils::getTemplate('views/edit')
         );
 
-        GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+        if ($path != '') {
+            $fullPath = resource_path("/views/" . GeneratorUtils::pluralKebabCase($path) . "/$modelNamePluralKebabCase");
 
-        GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/edit.blade.php"), $template);
+            GeneratorUtils::checkFolder($fullPath);
+
+            GeneratorUtils::generateTemplate($fullPath . "/edit.blade.php", $template);
+        } else {
+            GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+
+            GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/edit.blade.php"), $template);
+        }
     }
 }

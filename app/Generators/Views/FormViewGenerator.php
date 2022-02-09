@@ -14,8 +14,11 @@ class FormViewGenerator
      */
     public function execute(array $request)
     {
-        $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($request['model']);
-        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
+        $model = GeneratorUtils::setModelName($request['model']);
+        $path = GeneratorUtils::getModelLocation($request['model']);
+
+        $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($model);
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($model);
 
         $template = "<div class=\"row mb-2\">\n";
 
@@ -249,8 +252,17 @@ class FormViewGenerator
 
         $template .= "</div>";
 
-        GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
 
-        GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/include/form.blade.php"), $template);
+        if ($path != '') {
+            $fullPath = resource_path("/views/" . GeneratorUtils::pluralKebabCase($path) . "/$modelNamePluralKebabCase" . "/include");
+
+            GeneratorUtils::checkFolder($fullPath);
+
+            GeneratorUtils::generateTemplate($fullPath . "/form.blade.php", $template);
+        } else {
+            GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+
+            GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/include/form.blade.php"), $template);
+        };
     }
 }

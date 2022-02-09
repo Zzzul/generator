@@ -97,8 +97,9 @@ class ControllerGenerator
                     '{{loadRelation}}',
                     '{{addColumns}}',
                     '{{query}}',
-                    '{{modelPath}}',
                     '{{namespace}}',
+                    '{{modelPath}}',
+                    '{{viewPath}}',
                 ],
                 [
                     $modelNameSingularPascalCase,
@@ -113,8 +114,9 @@ class ControllerGenerator
                     $relations,
                     $addColumns,
                     $query,
-                    $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
                     $namespace,
+                    $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
+                    $path != '' ? GeneratorUtils::pluralKebabCase($path) . "." : '',
                 ],
                 GeneratorUtils::getTemplate('controllers/controller-with-upload-file')
             );
@@ -132,8 +134,9 @@ class ControllerGenerator
                     '{{loadRelation}}',
                     '{{addColumns}}',
                     '{{query}}',
-                    '{{modelPath}}',
                     '{{namespace}}',
+                    '{{modelPath}}',
+                    '{{viewPath}}',
                 ],
                 [
                     $modelNameSingularPascalCase,
@@ -144,14 +147,13 @@ class ControllerGenerator
                     $relations,
                     $addColumns,
                     $query,
+                    $namespace,
                     $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
-                    $namespace
+                    $path != '' ? GeneratorUtils::pluralKebabCase($path) . "." : ''
                 ],
                 GeneratorUtils::getTemplate('controllers/controller')
             );
         }
-
-        dd($template);
 
         GeneratorUtils::generateTemplate(app_path("/Http/Controllers/{$modelNameSingularPascalCase}Controller.php"), $template);
     }

@@ -14,29 +14,41 @@ class CreateViewGenerator
      */
     public function execute(array $request)
     {
-        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($request['model']);
+        $model = GeneratorUtils::setModelName($request['model']);
+        $path = GeneratorUtils::getModelLocation($request['model']);
 
-        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($request['model']);
-        $modelNameSingularLowerCase = GeneratorUtils::cleanSingularLowerCase($request['model']);
+        $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($model);
+        $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($model);
+        $modelNameSingularLowerCase = GeneratorUtils::cleanSingularLowerCase($model);
 
         $template = str_replace(
             [
                 '{{modelNamePluralUcWords}}',
                 '{{modelNameSingularLowerCase}}',
                 '{{modelNamePluralKebabCase}}',
-                '{{enctype}}'
+                '{{enctype}}',
+                '{{viewPath}}',
             ],
             [
                 $modelNamePluralUcWords,
                 $modelNameSingularLowerCase,
                 $modelNamePluralKebabCase,
-                in_array('file', $request['input_types']) ? ' enctype="multipart/form-data"' : ''
+                in_array('file', $request['input_types']) ? ' enctype="multipart/form-data"' : '',
+                $path != '' ? GeneratorUtils::pluralKebabCase($path) . "." : ''
             ],
             GeneratorUtils::getTemplate('views/create')
         );
 
-        GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+        if ($path != '') {
+            $fullPath = resource_path("/views/" . GeneratorUtils::pluralKebabCase($path) . "/$modelNamePluralKebabCase");
 
-        GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/create.blade.php"), $template);
+            GeneratorUtils::checkFolder($fullPath);
+
+            GeneratorUtils::generateTemplate($fullPath . "/create.blade.php", $template);
+        } else {
+            GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+
+            GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/create.blade.php"), $template);
+        }
     }
 }
