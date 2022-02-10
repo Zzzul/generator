@@ -397,10 +397,13 @@
                 maxLength.prop('readonly', true)
                 minLength.val('')
                 maxLength.val('')
-            } else {
-                $(`.form-min-lengths:eq(${index})`).prop('readonly', false)
-                $(`.form-max-lengths:eq(${index})`).prop('readonly', false)
+            } else if ($(this).val() == 'text') {
+                let minLength = $(`.form-min-lengths:eq(${index})`)
+                let maxLength = $(`.form-max-lengths:eq(${index})`)
 
+                minLength.prop('readonly', false)
+                maxLength.prop('readonly', false)
+            } else {
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
                     `<input type="hidden" name="file_types[]" class="form-file-types">`
                 )
