@@ -13,7 +13,6 @@ class ModelGenerator
     public function execute(array $request)
     {
         $path = GeneratorUtils::getModelLocation($request['model']);
-
         $model = GeneratorUtils::setModelName($request['model']);
 
         $fields = "[";
@@ -50,16 +49,35 @@ class ModelGenerator
                 $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'double', ";
             } elseif (str_contains($request['data_types'][$i], 'string') || str_contains($request['data_types'][$i], 'text') || str_contains($request['data_types'][$i], 'char')) {
                 $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'string', ";
-            }
+            } elseif ($request['data_types'][$i] == 'foreignId') {
+                $constrainPath = GeneratorUtils::getModelLocation($request['constrains'][$i]);
+                $constrainName = GeneratorUtils::setModelName($request['constrains'][$i]);
 
-            if ($request['data_types'][$i] == 'foreignId') {
                 $foreign_id = isset($request['foreign_ids'][$i]) ? ", '" . $request['foreign_ids'][$i] . "'" : '';
 
                 if ($i > 0) {
                     $relations .= "\t";
                 }
 
-                $relations .= "public function " . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "()\n\t{\n\t\treturn \$this->belongsTo(" . GeneratorUtils::singularPascalCase($request['constrains'][$i]) . "::class" . $foreign_id . ");\n\t}";
+                /**
+                 * will generate something like:
+                 * \App\Models\Master\Product::class or \App\Models\Product::class
+                 */
+                if ($constrainPath != '') {
+                    $constrainPath = "\\App\\Models\\$constrainPath\\$constrainName";
+                } else {
+                    $constrainPath = "\\App\\Models\\$constrainName";
+                }
+
+                /**
+                 * will generate something like:
+                 *
+                 * public function product()
+                 * {
+                 *     return $this->belongsTo(\App\Models\Master\Product::class); or return $this->belongsTo(\App\Models\Product::class);
+                 * }
+                 */
+                $relations .= "public function " . GeneratorUtils::singularSnakeCase($constrainName) . "()\n\t{\n\t\treturn \$this->belongsTo(" . $constrainPath . "::class" . $foreign_id . ");\n\t}";
 
                 if ($i + 1 != $totalFields) {
                     $relations .= "\n\n";
