@@ -33,7 +33,7 @@ class ActionViewGenerator
         );
 
         if ($path != '') {
-            $fullPath = resource_path("/views/$path/$modelNamePluralKebabCase" . "/include");
+            $fullPath = resource_path("/views/" . strtolower($path) . "/$modelNamePluralKebabCase/include");
 
             GeneratorUtils::checkFolder($fullPath);
 

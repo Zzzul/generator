@@ -59,7 +59,7 @@ class ViewComposerGenerator
                         GeneratorUtils::singularPascalCase($request['constrains'][$i]),
                         $fieldsSelect,
                         $relatedModelPath,
-                        $viewPath != '' ? str_replace('\\', '.', $viewPath) . "." : '',
+                        $viewPath != '' ? str_replace('\\', '.', strtolower($viewPath)) . "." : '',
                     ],
                     GeneratorUtils::getTemplate('view-composer')
                 );

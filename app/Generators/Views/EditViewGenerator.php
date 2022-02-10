@@ -43,7 +43,7 @@ class EditViewGenerator
         );
 
         if ($path != '') {
-            $fullPath = resource_path("/views/$path/$modelNamePluralKebabCase");
+            $fullPath = resource_path("/views/" . strtolower($path) . "/$modelNamePluralKebabCase");
 
             GeneratorUtils::checkFolder($fullPath);
 
