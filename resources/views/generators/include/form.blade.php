@@ -363,9 +363,9 @@
         $(document).on('change', '.form-input-types', function() {
             let index = $(this).parent().parent().parent().index()
 
-            $(`.form-file-types:eq(${index})`).remove()
-            $(`.form-file-sizes:eq(${index})`).remove()
-            $(`.form-mimes:eq(${index})`).remove()
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-type`).remove()
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-size`).remove()
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-mimes`).remove()
 
             if ($(this).val() == 'file') {
                 // <option value="mimes">Mimes</option>
@@ -397,23 +397,29 @@
                 maxLength.prop('readonly', true)
                 minLength.val('')
                 maxLength.val('')
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
+                    `<input type="hidden" name="file_types[]" class="form-file-types">
+                    <input type="hidden" name="files_sizes[]" class="form-file-sizes">
+                    <input type="hidden" name="mimes[]" class="form-mimes">`
+                )
             } else if ($(this).val() == 'text') {
                 let minLength = $(`.form-min-lengths:eq(${index})`)
                 let maxLength = $(`.form-max-lengths:eq(${index})`)
 
                 minLength.prop('readonly', false)
                 maxLength.prop('readonly', false)
+
+                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
+                    `<input type="hidden" name="file_types[]" class="form-file-types">
+                    <input type="hidden" name="files_sizes[]" class="form-file-sizes">
+                    <input type="hidden" name="mimes[]" class="form-mimes">`
+                )
             } else {
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
-                    `<input type="hidden" name="file_types[]" class="form-file-types">`
-                )
-
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
-                    `<input type="hidden" name="files_sizes[]" class="form-file-sizes">`
-                )
-
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
-                    `<input type="hidden" name="mimes[]" class="form-mimes">`
+                    `<input type="hidden" name="file_types[]" class="form-file-types">
+                    <input type="hidden" name="files_sizes[]" class="form-file-sizes">
+                    <input type="hidden" name="mimes[]" class="form-mimes">`
                 )
             }
         })
