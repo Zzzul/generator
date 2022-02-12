@@ -139,7 +139,7 @@
                                     <label for="password">{{ __('Current Password') }}</label>
                                     <input type="password" name="current_password"
                                         class="form-control @error('current_password', 'updatePassword') is-invalid @enderror"
-                                        id="password" placeholder="••••••••" required>
+                                        id="password" placeholder="Current Password" required>
                                     @error('current_password', 'updatePassword')
                                         <div class="invalid-feedback">
                                             <i class="bx bx-radio-circle"></i>
@@ -152,7 +152,7 @@
                                     <label for="password">{{ __('New Password') }}</label>
                                     <input type="password" name="password"
                                         class="form-control @error('password', 'updatePassword') is-invalid @enderror"
-                                        id="password" placeholder="••••••••" required>
+                                        id="password" placeholder="New Password" required>
                                     @error('password', 'updatePassword')
                                         <div class="invalid-feedback">
                                             <i class="bx bx-radio-circle"></i>
@@ -164,7 +164,7 @@
                                 <div class="form-group">
                                     <label for="password_confirmation">{{ __('Confirm Password') }}</label>
                                     <input type="password" class="form-control" id="password_confirmation"
-                                        name="password_confirmation" placeholder="••••••••" required>
+                                        name="password_confirmation" placeholder="Confirm Password" required>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">{{ __('Change Password') }}</button>
@@ -217,32 +217,32 @@
                                         <div class="col-md-6">
                                             <p>{{ __('Save these Recovery Codes in a secure location.') }}</p>
                                             <ul>
-                                                @foreach (json_decode(decrypt(auth()->user()->two_factor_recovery_codes)) as
-                                                $code)
-                                                <li>{{ $code }}</li>
-                                @endforeach
-                                </ul>
+                                                @foreach (json_decode(decrypt(auth()->user()->two_factor_recovery_codes)) as $code)
+                                                    <li>{{ $code }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-danger mt-3"
+                                        type="submit">{{ __('Disable Two Factor Authentication') }}</button>
+                                @else
+                                    <button class="btn btn-primary"
+                                        type="submit">{{ __('Enable Two Factor Authentication') }}</button>
+                                @endif
+                            </form>
+
+                            {{-- generate recovery codes --}}
+                            @if (auth()->user()->two_factor_secret)
+                                <form method="POST" action="/user/two-factor-recovery-codes">
+                                    @csrf
+                                    <button class="btn btn-primary mt-3 float-right" type="submit">
+                                        {{ __('Regenerate Recovery Codes') }}
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                     </div>
-
-                    <button class="btn btn-danger mt-3"
-                        type="submit">{{ __('Disable Two Factor Authentication') }}</button>
-                @else
-                    <button class="btn btn-primary" type="submit">{{ __('Enable Two Factor Authentication') }}</button>
-                    @endif
-                    </form>
-
-                    {{-- generate recovery codes --}}
-                    @if (auth()->user()->two_factor_secret)
-                        <form method="POST" action="/user/two-factor-recovery-codes">
-                            @csrf
-                            <button class="btn btn-primary mt-3 float-right" type="submit">
-                                {{ __('Regenerate Recovery Codes') }}
-                            </button>
-                        </form>
-                    @endif
-                </div>
-            </div>
         </section>
     </div>
 @endsection

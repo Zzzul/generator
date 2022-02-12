@@ -18,7 +18,7 @@
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="generate_type" id="generate-type-1" value="all" checked>
             <label class="form-check-label" for="generate-type-1">
-                {{ __('All (Model, Migration, Controller, View, Route, & Request)') }}
+                {{ __('All (Migration, Model, View, Controller, Route, & Request)') }}
             </label>
         </div>
 
@@ -476,8 +476,7 @@
                 dataType == 'longText' ||
                 dataType == 'tinyText' ||
                 dataType == 'varchar' ||
-                dataType == 'char' ||
-                dataType == 'float'
+                dataType == 'char'
             ) {
                 minLength.prop('readonly', false)
                 maxLength.prop('readonly', false)

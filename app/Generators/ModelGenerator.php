@@ -41,7 +41,6 @@ class ModelGenerator
             } elseif (str_contains($request['data_types'][$i], 'integer')) {
                 $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'integer', ";
             } elseif ($request['data_types'][$i] == 'float') {
-
                 $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'float', ";
             } elseif ($request['data_types'][$i] == 'boolean') {
                 $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'boolean', ";
