@@ -39,7 +39,7 @@ class ActionViewGenerator
 
             GeneratorUtils::generateTemplate($fullPath . "/action.blade.php", $template);
         } else {
-            GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+            GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
 
             GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/include/action.blade.php"), $template);
         };

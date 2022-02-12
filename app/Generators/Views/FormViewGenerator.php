@@ -260,7 +260,7 @@ class FormViewGenerator
 
             GeneratorUtils::generateTemplate($fullPath . "/form.blade.php", $template);
         } else {
-            GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+            GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
 
             GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/include/form.blade.php"), $template);
         };

@@ -66,9 +66,12 @@ class ControllerGenerator
 
             foreach ($request['constrains'] as $i => $constrain) {
                 if ($constrain != null) {
-                    $constrainSnakeCase = GeneratorUtils::singularSnakeCase($constrain);
-                    $selectedColumns = GeneratorUtils::selectColumnAfterIdAndIdItself($constrain);
-                    $columnAfterId = GeneratorUtils::getColumnAfterId($constrain);
+                    // remove path or '/' if exists
+                    $constrainName = GeneratorUtils::setModelName($request['constrains'][$i]);
+
+                    $constrainSnakeCase = GeneratorUtils::singularSnakeCase($constrainName);
+                    $selectedColumns = GeneratorUtils::selectColumnAfterIdAndIdItself($constrainName);
+                    $columnAfterId = GeneratorUtils::getColumnAfterId($constrainName);
 
                     $relations .= "'$constrainSnakeCase:$selectedColumns'";
 

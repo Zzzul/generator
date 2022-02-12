@@ -89,15 +89,21 @@ class MigrationGenerator
                 $setFields .= "->nullable()";
             }
 
+            $constrainName = '';
+            if ($request['data_types'][$i] == 'foreignId') {
+                // remove path or '/' if exists
+                $constrainName = GeneratorUtils::setModelName($request['constrains'][$i]);
+            }
+
             if ($i + 1 != $totalFields) {
                 if ($request['data_types'][$i] == 'foreignId') {
-                    $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($request['constrains'][$i]) . "');\n\t\t\t";
+                    $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($constrainName) . "');\n\t\t\t";
                 } else {
                     $setFields .= ";\n\t\t\t";
                 }
             } else {
                 if ($request['data_types'][$i] == 'foreignId') {
-                    $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($request['constrains'][$i]) . "');";
+                    $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($constrainName) . "');";
                 } else {
                     $setFields .= ";";
                 }

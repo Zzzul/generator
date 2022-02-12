@@ -17,10 +17,10 @@ class {{modelName}} extends Model
     protected $fillable = {{fields}};
 
     /**
-    * The attributes that should be cast.
-    *
-    * @var array
-    */
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
     protected $casts = {{casts}};
 
 {{relations}}
