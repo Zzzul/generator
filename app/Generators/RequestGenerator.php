@@ -125,36 +125,37 @@ class RequestGenerator
                 $validations .= "|max:" . $request['max_lengths'][$i];
             }
 
-            if ($i + 1 != $totalFields) {
-                if ($request['data_types'][$i] == 'foreignId') {
+            if ($request['data_types'][$i] == 'foreignId') {
+                // remove '/' or sub folders
+                $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
+                $constrainpath = GeneratorUtils::getModelLocation($request['constrains'][$i]);
+
+                if ($constrainpath != '') {
                     /**
                      * will generate like:
-                     * 'name' => 'required|max:30|exists:App\Models\Product,id',
+                     * 'name' => 'required|max:30|exists:App\Models\Master\Product,id',
                      * with new line and 3x tab
                      */
-                    $validations .= "|exists:App\Models\\" . GeneratorUtils::singularPascalCase($request['constrains'][$i]) . ",id',\n\t\t\t";
+                    $validations .= "|exists:App\Models\\" . str_replace('/', '\\', $constrainpath) . "\\" . GeneratorUtils::singularPascalCase($constrainModel) . ",id',";
                 } else {
                     /**
                      * will generate like:
                      * 'name' => 'required|max:30|exists:App\Models\Product,id',
                      * with new line and 3x tab
                      */
-                    $validations .= "',\n\t\t\t";
+                    $validations .= "|exists:App\Models\\" . GeneratorUtils::singularPascalCase($constrainModel) . ",id',";
                 }
             } else {
-                if ($request['data_types'][$i] == 'foreignId') {
-                    /**
-                     * will generate like:
-                     * 'name' => 'required|max:30|exists:App\Models\Product,id',
-                     */
-                    $validations .= "|exists:App\Models\\" . GeneratorUtils::singularPascalCase($request['constrains'][$i]) . ",id',";
-                } else {
-                    /**
-                     * will generate like:
-                     * 'name' => 'required|max:30|exists:App\Models\Product,id',
-                     */
-                    $validations .= "',";
-                }
+                /**
+                 * will generate like:
+                 * 'name' => 'required|max:30|exists:App\Models\Product,id',
+                 * with new line and 3x tab
+                 */
+                $validations .= "',";
+            }
+
+            if ($i + 1 != $totalFields) {
+                $validations .= "\n\t\t\t";
             }
         }
 

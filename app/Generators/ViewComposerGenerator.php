@@ -21,15 +21,16 @@ class ViewComposerGenerator
 
         foreach ($request['data_types'] as $i => $dataType) {
             if ($dataType == 'foreignId') {
-                $table = GeneratorUtils::pluralSnakeCase($request['constrains'][$i]);
+                // remove '/' or sub folders
+                $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
 
-                $relatedModel = GeneratorUtils::setModelName($request['constrains'][$i]);
                 $relatedModelPath = GeneratorUtils::getModelLocation($request['constrains'][$i]);
+                $table = GeneratorUtils::pluralSnakeCase($constrainModel);
 
                 if ($relatedModelPath != '') {
-                    $relatedModelPath = "\App\Models\\$relatedModelPath\\$relatedModel";
+                    $relatedModelPath = "\App\Models\\$relatedModelPath\\$constrainModel";
                 } else {
-                    $relatedModelPath = "\App\Models\\" . GeneratorUtils::singularPascalCase($request['constrains'][$i]);
+                    $relatedModelPath = "\App\Models\\" . GeneratorUtils::singularPascalCase($constrainModel);
                 }
 
                 $allColums = Schema::getColumnListing($table);
@@ -55,8 +56,8 @@ class ViewComposerGenerator
                     ],
                     [
                         GeneratorUtils::pluralKebabCase($model),
-                        GeneratorUtils::pluralCamelCase($relatedModel),
-                        GeneratorUtils::singularPascalCase($request['constrains'][$i]),
+                        GeneratorUtils::pluralCamelCase($constrainModel),
+                        GeneratorUtils::singularPascalCase($constrainModel),
                         $fieldsSelect,
                         $relatedModelPath,
                         $viewPath != '' ? str_replace('\\', '.', strtolower($viewPath)) . "." : '',
