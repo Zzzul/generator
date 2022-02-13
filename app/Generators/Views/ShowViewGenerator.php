@@ -61,9 +61,12 @@ class ShowViewGenerator
                                         <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . " == 1 ? 'True' : 'False' }}</td>
                                     </tr>";
             } elseif ($request['data_types'][$i] == 'foreignId') {
+                // remove '/' or sub folders
+                $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
+
                 $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($request['constrains'][$i]) . "') }}</td>
-                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . " ? $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "->" . GeneratorUtils::getColumnAfterId($request['constrains'][$i]) . " : '' }}</td>
+                                        <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($constrainModel) . "') }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($constrainModel) . " ? $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($constrainModel) . "->" . GeneratorUtils::getColumnAfterId($constrainModel) . " : '' }}</td>
                                     </tr>";
             } else {
                 $trs .= "<tr>

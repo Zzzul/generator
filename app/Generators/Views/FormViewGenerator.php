@@ -94,13 +94,15 @@ class FormViewGenerator
                     $template .= $options;
                 }
             } else if ($request['data_types'][$i] == 'foreignId') {
-                $constrainSingularCamelCase = GeneratorUtils::singularCamelCase($request['constrains'][$i]);
+                // remove '/' or sub folders
+                $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
 
-                $table = GeneratorUtils::pluralSnakeCase($request['constrains'][$i]);
-                $columnAfterId = GeneratorUtils::getColumnAfterId($table);
+                $constrainSingularCamelCase = GeneratorUtils::singularCamelCase($constrainModel);
+
+                $columnAfterId = GeneratorUtils::getColumnAfterId($constrainModel);
 
                 $options = "
-                @foreach ($" .  GeneratorUtils::pluralCamelCase($request['constrains'][$i]) . " as $$constrainSingularCamelCase)
+                @foreach ($" .  GeneratorUtils::pluralCamelCase($constrainModel) . " as $$constrainSingularCamelCase)
                     <option value=\"{{ $" . $constrainSingularCamelCase . "->id }}\" {{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == $" . $constrainSingularCamelCase . "->id ? 'selected' : (old('$fieldSnakeCase') == $" . $constrainSingularCamelCase . "->id ? 'selected' : '') }}>
                         {{ $" . $constrainSingularCamelCase . "->$columnAfterId }}
                     </option>
@@ -116,8 +118,8 @@ class FormViewGenerator
                     ],
                     [
                         $fieldSnakeCase,
-                        GeneratorUtils::cleanSingularUcWords($request['constrains'][$i]),
-                        GeneratorUtils::cleanSingularLowerCase($request['constrains'][$i]),
+                        GeneratorUtils::cleanSingularUcWords($constrainModel),
+                        GeneratorUtils::cleanSingularLowerCase($constrainModel),
                         $options,
                         $request['requireds'][$i] == 'yes' ? ' required' : '',
                     ],
@@ -251,7 +253,6 @@ class FormViewGenerator
         }
 
         $template .= "</div>";
-
 
         if ($path != '') {
             $fullPath = resource_path("/views/" . strtolower($path) . "/$modelNamePluralKebabCase/include");

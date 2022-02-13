@@ -63,7 +63,10 @@ class IndexViewGenerator
                         }
                     },";
             } elseif ($request['data_types'][$i] == 'foreignId') {
-                $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($request['constrains'][$i]) . "') }}</th>";
+                // remove '/' or sub folders
+                $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
+
+                $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($constrainModel) . "') }}</th>";
 
                 /**
                  * will generate like:
@@ -73,8 +76,8 @@ class IndexViewGenerator
                  * }
                  */
                 $tdColumns .=  "{
-                    data: '" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "',
-                    name: '" . GeneratorUtils::singularSnakeCase($request['constrains'][$i]) . "." . GeneratorUtils::getColumnAfterId($request['constrains'][$i]) . "'
+                    data: '" . GeneratorUtils::singularSnakeCase($constrainModel) . "',
+                    name: '" . GeneratorUtils::singularSnakeCase($constrainModel) . "." . GeneratorUtils::getColumnAfterId($constrainModel) . "'
                 },";
             } else {
                 /**
