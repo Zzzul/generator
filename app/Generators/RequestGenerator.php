@@ -134,14 +134,12 @@ class RequestGenerator
                     /**
                      * will generate like:
                      * 'name' => 'required|max:30|exists:App\Models\Master\Product,id',
-                     * with new line and 3x tab
                      */
                     $validations .= "|exists:App\Models\\" . str_replace('/', '\\', $constrainpath) . "\\" . GeneratorUtils::singularPascalCase($constrainModel) . ",id',";
                 } else {
                     /**
                      * will generate like:
                      * 'name' => 'required|max:30|exists:App\Models\Product,id',
-                     * with new line and 3x tab
                      */
                     $validations .= "|exists:App\Models\\" . GeneratorUtils::singularPascalCase($constrainModel) . ",id',";
                 }
@@ -149,7 +147,6 @@ class RequestGenerator
                 /**
                  * will generate like:
                  * 'name' => 'required|max:30|exists:App\Models\Product,id',
-                 * with new line and 3x tab
                  */
                 $validations .= "',";
             }

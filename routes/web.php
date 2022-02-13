@@ -1,7 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{GeneratorController, UserController, ProfileController, RoleAndPermissionController};
+use App\Http\Controllers\{
+    GeneratorController,
+    UserController,
+    ProfileController,
+    RoleAndPermissionController
+};
 
 Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/', function () {
