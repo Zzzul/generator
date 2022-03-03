@@ -248,16 +248,16 @@
 
             if ($(this).val() == 'file') {
                 // <option value="mimes">Mimes</option>
-                // removeInputHidden(index)
-                checkMinAndMaxLength(index)
+                // // removeInputHidden(index)
+                // checkMinAndMaxLength(index)
 
-                // let minLength = $(`.form-min-lengths:eq(${index})`)
-                // let maxLength = $(`.form-max-lengths:eq(${index})`)
+                let minLength = $(`.form-min-lengths:eq(${index})`)
+                let maxLength = $(`.form-max-lengths:eq(${index})`)
 
-                // minLength.prop('readonly', true)
-                // maxLength.prop('readonly', true)
-                // minLength.val('')
-                // maxLength.val('')
+                minLength.prop('readonly', true)
+                maxLength.prop('readonly', true)
+                minLength.val('')
+                maxLength.val('')
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(`
                 <div class="form-group mt-2 form-file-types">
@@ -271,16 +271,16 @@
                 </div>
                 `)
             } else if ($(this).val() == 'email') {
-                // removeInputHidden(index)
-                checkMinAndMaxLength(index)
+                // // removeInputHidden(index)
+                // checkMinAndMaxLength(index)
 
-                // let minLength = $(`.form-min-lengths:eq(${index})`)
-                // let maxLength = $(`.form-max-lengths:eq(${index})`)
+                let minLength = $(`.form-min-lengths:eq(${index})`)
+                let maxLength = $(`.form-max-lengths:eq(${index})`)
 
-                // minLength.prop('readonly', true)
-                // maxLength.prop('readonly', true)
-                // minLength.val('')
-                // maxLength.val('')
+                minLength.prop('readonly', true)
+                maxLength.prop('readonly', true)
+                minLength.val('')
+                maxLength.val('')
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
                     `<input type="hidden" name="file_types[]" class="form-file-types">
@@ -288,14 +288,14 @@
                     <input type="hidden" name="mimes[]" class="form-mimes">`
                 )
             } else if ($(this).val() == 'text') {
-                // removeInputHidden(index)
-                checkMinAndMaxLength(index)
+                // // removeInputHidden(index)
+                // checkMinAndMaxLength(index)
 
-                // let minLength = $(`.form-min-lengths:eq(${index})`)
-                // let maxLength = $(`.form-max-lengths:eq(${index})`)
+                let minLength = $(`.form-min-lengths:eq(${index})`)
+                let maxLength = $(`.form-max-lengths:eq(${index})`)
 
-                // minLength.prop('readonly', false)
-                // maxLength.prop('readonly', false)
+                minLength.prop('readonly', false)
+                maxLength.prop('readonly', false)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
                     `<input type="hidden" name="file_types[]" class="form-file-types">
@@ -303,8 +303,8 @@
                     <input type="hidden" name="mimes[]" class="form-mimes">`
                 )
             } else {
-                // removeInputHidden(index)
-                checkMinAndMaxLength(index)
+                // // removeInputHidden(index)
+                // checkMinAndMaxLength(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
                     `<input type="hidden" name="file_types[]" class="form-file-types">
@@ -395,7 +395,7 @@
                 input_types: $('select[name="input_types[]"]').map(function() {
                     return $(this).val()
                 }).get(),
-                files_sizes: $('input[name="files_sizes[]"]').map(function() {
+                files_sizes: $('[name="files_sizes[]"]').map(function() {
                     return $(this).val()
                 }).get(),
                 file_types: $('[name="file_types[]"]').map(function(i) {

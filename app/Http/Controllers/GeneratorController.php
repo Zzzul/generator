@@ -44,9 +44,6 @@ class GeneratorController extends Controller
      */
     public function store(StoreGeneratorRequest $request)
     {
-        // return $request->validated();
-        // die;
-
         if ($request->generate_type == 'all') {
             $this->generateAll($request->validated());
         } else {
