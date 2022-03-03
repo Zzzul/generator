@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-@section('title', trans('Create Module'))
+@section('title', __('Create Module'))
+
+@push('css')
+    <link rel="stylesheet" href="{{ asset('mazer') }}/vendors/fontawesome/all.min.css">
+@endpush
 
 @section('content')
     <div class="page-heading">
@@ -31,18 +35,27 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('generators.store') }}" method="POST">
+                            <form action="{{ route('generators.store') }}" method="POST" id="form-generator">
                                 @csrf
                                 @method('POST')
 
                                 @include('generators.include.form')
 
-                                <a href="{{ url()->previous() }}" class="btn btn-secondary">{{ __('Back') }}</a>
+                                <a href="{{ url()->previous() }}" id="btn-back"
+                                    class="btn btn-secondary">{{ __('Back') }}</a>
 
                                 <button type="button" id="btn-add" class="btn btn-success">{{ __('Add') }}</button>
 
-                                <button type="submit" class="btn btn-primary">{{ __('Generate') }}</button>
+                                <button type="submit" id="btn-save" class="btn btn-primary">{{ __('Generate') }}</button>
                             </form>
+                        </div>
+                    </div>
+
+                    <div id="validation-errors" style="display: none;">
+                        <div class="alert alert-danger fade show" role="alert">
+
+                            <h4 class="alert-heading">Error</h4>
+                            <ul class="mb-0"></ul>
                         </div>
                     </div>
                 </div>
@@ -50,3 +63,5 @@
         </section>
     </div>
 @endsection
+
+@include('generators.include.script')

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreGeneratorRequest;
 use Illuminate\Support\Facades\Artisan;
 use App\Generators\{
     ControllerGenerator,
@@ -22,6 +22,7 @@ use App\Generators\Views\{
     ShowViewGenerator,
     SidebarViewGenerator
 };
+use Illuminate\Http\Request;
 
 class GeneratorController extends Controller
 {
@@ -41,14 +42,17 @@ class GeneratorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreGeneratorRequest $request)
     {
-        if ($request->generate_type == 'all') {
-            $this->generateAll($request->all());
-        } else {
-            (new ModelGenerator)->execute($request->all());
+        // return $request->validated();
+        // die;
 
-            (new MigrationGenerator)->execute($request->all());
+        if ($request->generate_type == 'all') {
+            $this->generateAll($request->validated());
+        } else {
+            (new ModelGenerator)->execute($request->validated());
+
+            (new MigrationGenerator)->execute($request->validated());
         }
 
         return redirect()
