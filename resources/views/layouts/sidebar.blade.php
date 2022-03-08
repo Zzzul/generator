@@ -13,67 +13,39 @@
         </div>
         <div class="sidebar-menu">
             <ul class="menu">
-                <li class="sidebar-title">Menu</li>
 
-                <li class="sidebar-item{{ request()->is('dashboard') || request()->is('/') ? ' active' : '' }}">
-                    <a href="/" class="sidebar-link">
-                        <i class="bi bi-speedometer2"></i>
-                        <span>{{ __('Dashboard') }}</span>
-                    </a>
-                </li>
+                @foreach (config('generator.sidebars') as $sidebar)
+                    <li class="sidebar-title">{{ $sidebar['header'] }}</li>
 
-                <li class="sidebar-item{{ request()->is(config('generator.route') . '*') ? ' active' : '' }}">
-                    <a href="{{ route(config('generator.route') . '.create') }}" class="sidebar-link">
-                        <i class="bi bi-grid"></i>
-                        <span>{{ __('Generators') }}</span>
-                    </a>
-                </li>
-
-                {{-- @canany(['view something', 'view something']) --}}
-                <li class="sidebar-item has-sub{{ request()->is('master-data*') ? ' active' : '' }}">
-                    <a href="#" class="sidebar-link">
-                        <i class="bi bi-collection"></i>
-                        <span>Master Data</span>
-                    </a>
-                    <ul class="submenu ">
-                        {{-- @can('view something') --}}
-                        <li class="submenu-item">
-                            <a href="#">{{ __('Product') }}</a>
-                        </li>
-                        {{-- @endcan --}}
-                    </ul>
-                </li>
-                {{-- @endcanany --}}
-
-                {{-- don`t remove comment below "sidebarTemplate", to generate a sidebar menu --}}
-                {{-- sidebarTemplate --}}
-
-                <li class="sidebar-title">Account</li>
-
-                @can('view user')
-                    <li class="sidebar-item{{ request()->is('users*') ? ' active' : '' }}">
-                        <a href="{{ route('users.index') }}" class="sidebar-link">
-                            <i class="bi bi-people"></i>
-                            <span>{{ __('Users') }}</span>
-                        </a>
-                    </li>
-                @endcan
-
-                @can('view role')
-                    <li class="sidebar-item{{ request()->is('roles*') ? ' active' : '' }}">
-                        <a href="{{ route('roles.index') }}" class="sidebar-link">
-                            <i class="bi bi-person-check"></i>
-                            <span>{{ __('Roles & Permissions') }}</span>
-                        </a>
-                    </li>
-                @endcan
-
-                <li class="sidebar-item{{ request()->is('profile*') ? ' active' : '' }}">
-                    <a href="{{ route('profile') }}" class="sidebar-link">
-                        <i class="bi bi-person-badge"></i>
-                        <span>{{ __('Profile') }}</span>
-                    </a>
-                </li>
+                    @foreach ($sidebar['menus'] as $menu)
+                        @if ($menu['uri'] != null && empty($menu['sub_menus']))
+                            <li
+                                class="sidebar-item{{ request()->is($menu['uri'] == '/' ? $menu['uri'] : substr($menu['uri'] . '*', 1)) ? ' active' : '' }}">
+                                <a href="{{ $menu['uri'] }}" class="sidebar-link">
+                                    {!! $menu['icon'] !!}
+                                    <span>{{ __($menu['title']) }}</span>
+                                </a>
+                            </li>
+                        @else
+                            <li
+                                class="sidebar-item has-sub{{ request()->is(str()->slug($menu['title']) . '*') ? ' active' : '' }}">
+                                <a href="#" class="sidebar-link">
+                                    {!! $menu['icon'] !!}
+                                    <span>{{ __($menu['title']) }}</span>
+                                </a>
+                                <ul class="submenu ">
+                                    @foreach ($menu['sub_menus'] as $sub_menu)
+                                        <li class="submenu-item">
+                                            <a href="{{ $sub_menu['uri'] }}">
+                                                {{ __($sub_menu['title']) }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endif
+                    @endforeach
+                @endforeach
 
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('logout') }}"
