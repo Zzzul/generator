@@ -1,7 +1,6 @@
 @push('js')
     <script src="{{ asset('mazer') }}/vendors/jquery/jquery.min.js"></script>
     <script src="{{ asset('mazer') }}/vendors/fontawesome/all.min.js"></script>
-    {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
     <script src="{{ asset('mazer') }}/vendors/sweetalert2/sweetalert2.all.min.js"></script>
 
     <script>
@@ -85,7 +84,7 @@
             let index = $(this).parent().parent().parent().index()
 
             if ($(this).val() == 'enum') {
-                removeInputHidden(index)
+                removeAllInputHidden(index)
                 checkMinAndMaxLength(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
@@ -102,49 +101,34 @@
                     <option value="radio">Radio</option>
                 `)
             } else if ($(this).val() == 'date') {
-                removeInputHidden(index)
+                removeAllInputHidden(index)
                 checkMinAndMaxLength(index)
-
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" name="select_options[]" class="form-option">
-                    <input type="hidden" name="constrains[]" class="form-constrain">
-                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
-                `)
+                addDataTypeHidden(index)
 
                 $(`.form-input-types:eq(${index})`).html(`
                     <option value="" disabled selected>-- Select input type --</option>
                     <option value="date">Date</option>
                 `)
             } else if ($(this).val() == 'time') {
-                removeInputHidden(index)
+                removeAllInputHidden(index)
                 checkMinAndMaxLength(index)
-
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" name="select_options[]" class="form-option">
-                    <input type="hidden" name="constrains[]" class="form-constrain">
-                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
-                `)
+                addDataTypeHidden(index)
 
                 $(`.form-input-types:eq(${index})`).html(`
                     <option value="" disabled selected>-- Select input type --</option>
                     <option value="time">Time</option>
                 `)
             } else if ($(this).val() == 'dateTime') {
-                removeInputHidden(index)
+                removeAllInputHidden(index)
                 checkMinAndMaxLength(index)
-
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" name="select_options[]" class="form-option">
-                    <input type="hidden" name="constrains[]" class="form-constrain">
-                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
-                `)
+                addDataTypeHidden(index)
 
                 $(`.form-input-types:eq(${index})`).html(`
                     <option value="" disabled selected>-- Select input type --</option>
                     <option value="datetime-local">Datetime local</option>
                 `)
             } else if ($(this).val() == 'foreignId') {
-                removeInputHidden(index)
+                removeAllInputHidden(index)
                 checkMinAndMaxLength(index)
 
                 $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
@@ -170,14 +154,9 @@
                 $(this).val() == 'longText' ||
                 $(this).val() == 'tinyText'
             ) {
-                removeInputHidden(index)
+                removeAllInputHidden(index)
                 checkMinAndMaxLength(index)
-
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" name="select_options[]" class="form-option">
-                    <input type="hidden" name="constrains[]" class="form-constrain">
-                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
-                `)
+                addDataTypeHidden(index)
 
                 $(`.form-input-types:eq(${index})`).html(`
                     <option value="" disabled selected>-- Select input type --</option>
@@ -192,28 +171,18 @@
                 $(this).val() == 'float' ||
                 $(this).val() == 'tinyInteger'
             ) {
-                removeInputHidden(index)
+                removeAllInputHidden(index)
                 checkMinAndMaxLength(index)
-
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" name="select_options[]" class="form-option">
-                    <input type="hidden" name="constrains[]" class="form-constrain">
-                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
-                `)
+                addDataTypeHidden(index)
 
                 $(`.form-input-types:eq(${index})`).html(`
                     <option value="" disabled selected>-- Select input type --</option>
                     <option value="number">Number</option>
                 `)
             } else if ($(this).val() == 'boolean') {
-                removeInputHidden(index)
+                removeAllInputHidden(index)
                 checkMinAndMaxLength(index)
-
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" name="select_options[]" class="form-option">
-                    <input type="hidden" name="constrains[]" class="form-constrain">
-                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
-                `)
+                addDataTypeHidden(index)
 
                 $(`.form-input-types:eq(${index})`).html(`
                     <option value="" disabled selected>-- Select input type --</option>
@@ -221,14 +190,9 @@
                     <option value="radio">Radio</option>
                 `)
             } else {
-                removeInputHidden(index)
+                removeAllInputHidden(index)
                 checkMinAndMaxLength(index)
-
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-                    <input type="hidden" name="select_options[]" class="form-option">
-                    <input type="hidden" name="constrains[]" class="form-constrain">
-                    <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
-                `)
+                addDataTypeHidden(index)
 
                 $(`.form-input-types:eq(${index})`).html(`
                     <option value="" disabled selected>-- Select input type --</option>
@@ -241,19 +205,12 @@
 
         $(document).on('change', '.form-input-types', function() {
             let index = $(this).parent().parent().parent().index()
+            let minLength = $(`.form-min-lengths:eq(${index})`)
+            let maxLength = $(`.form-max-lengths:eq(${index})`)
 
-            $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-type`).remove()
-            $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-size`).remove()
-            $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-mimes`).remove()
+            removeInputTypeHidden(index)
 
             if ($(this).val() == 'file') {
-                // <option value="mimes">Mimes</option>
-                // // removeInputHidden(index)
-                // checkMinAndMaxLength(index)
-
-                let minLength = $(`.form-min-lengths:eq(${index})`)
-                let maxLength = $(`.form-max-lengths:eq(${index})`)
-
                 minLength.prop('readonly', true)
                 maxLength.prop('readonly', true)
                 minLength.val('')
@@ -271,46 +228,22 @@
                 </div>
                 `)
             } else if ($(this).val() == 'email') {
-                // // removeInputHidden(index)
-                // checkMinAndMaxLength(index)
-
-                let minLength = $(`.form-min-lengths:eq(${index})`)
-                let maxLength = $(`.form-max-lengths:eq(${index})`)
 
                 minLength.prop('readonly', true)
                 maxLength.prop('readonly', true)
                 minLength.val('')
                 maxLength.val('')
 
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
-                    `<input type="hidden" name="file_types[]" class="form-file-types">
-                    <input type="hidden" name="files_sizes[]" class="form-file-sizes">
-                    <input type="hidden" name="mimes[]" class="form-mimes">`
-                )
+                addInputTypeHidden(index)
             } else if ($(this).val() == 'text') {
-                // // removeInputHidden(index)
-                // checkMinAndMaxLength(index)
-
-                let minLength = $(`.form-min-lengths:eq(${index})`)
-                let maxLength = $(`.form-max-lengths:eq(${index})`)
 
                 minLength.prop('readonly', false)
                 maxLength.prop('readonly', false)
 
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
-                    `<input type="hidden" name="file_types[]" class="form-file-types">
-                    <input type="hidden" name="files_sizes[]" class="form-file-sizes">
-                    <input type="hidden" name="mimes[]" class="form-mimes">`
-                )
+                addInputTypeHidden(index)
             } else {
-                // // removeInputHidden(index)
-                // checkMinAndMaxLength(index)
 
-                $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
-                    `<input type="hidden" name="file_types[]" class="form-file-types">
-                    <input type="hidden" name="files_sizes[]" class="form-file-sizes">
-                    <input type="hidden" name="mimes[]" class="form-mimes">`
-                )
+                addInputTypeHidden(index)
             }
         })
 
@@ -488,14 +421,34 @@
             }
         }
 
-        function removeInputHidden(index) {
+        function removeAllInputHidden(index) {
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-constrain`).remove()
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-foreign-id`).remove()
 
+            removeInputTypeHidden(index)
+        }
+
+        function removeInputTypeHidden(index) {
             $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-types`).remove()
             $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-file-sizes`).remove()
             $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-mimes`).remove()
+        }
+
+        function addInputTypeHidden(index) {
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
+                `<input type="hidden" name="file_types[]" class="form-file-types">
+                    <input type="hidden" name="files_sizes[]" class="form-file-sizes">
+                    <input type="hidden" name="mimes[]" class="form-mimes">`
+            )
+        }
+
+        function addDataTypeHidden(index) {
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
+                <input type="hidden" name="select_options[]" class="form-option">
+                <input type="hidden" name="constrains[]" class="form-constrain">
+                <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
+            `)
         }
 
         function renderTypes() {
