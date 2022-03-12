@@ -18,10 +18,10 @@
                     <li class="sidebar-title">{{ $sidebar['header'] }}</li>
 
                     @foreach ($sidebar['menus'] as $menu)
-                        @if ($menu['uri'] != null && empty($menu['sub_menus']))
+                        @if ($menu['route'] != null && empty($menu['sub_menus']))
                             <li
-                                class="sidebar-item{{ request()->is($menu['uri'] == '/' ? $menu['uri'] : substr($menu['uri'] . '*', 1)) ? ' active' : '' }}">
-                                <a href="{{ $menu['uri'] }}" class="sidebar-link">
+                                class="sidebar-item{{ request()->is($menu['route'] == '/' ? $menu['route'] : substr($menu['route'] . '*', 1)) ? ' active' : '' }}">
+                                <a href="{{ $menu['route'] }}" class="sidebar-link">
                                     {!! $menu['icon'] !!}
                                     <span>{{ __($menu['title']) }}</span>
                                 </a>
@@ -36,7 +36,7 @@
                                 <ul class="submenu ">
                                     @foreach ($menu['sub_menus'] as $sub_menu)
                                         <li class="submenu-item">
-                                            <a href="{{ $sub_menu['uri'] }}">
+                                            <a href="{{ $sub_menu['route'] }}">
                                                 {{ __($sub_menu['title']) }}
                                             </a>
                                         </li>

@@ -115,4 +115,40 @@
             </tbody>
         </table>
     </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="menu">{{ __('Menu') }}</label>
+            <select name="menu" id="menu" class="form-select" required>
+                <option value="" disabled selected>-- {{ __('Select menu') }} --</option>
+                <option value="new">New Menu</option>
+                @foreach (config('generator.sidebars') as $keySidebar => $sidebar)
+                    @foreach ($sidebar['menus'] as $keyMenu => $menu)
+                        <option value="{{ '{"sidebar": ' . $keySidebar . ', "menus": ' . $keyMenu . '}' }}">
+                            {{ $menu['title'] }}
+                            {{ '{"sidebar": ' . $keySidebar . ', "menus": ' . $keyMenu . '}' }}
+                        </option>
+                    @endforeach
+                @endforeach
+            </select>
+        </div>
+        {{-- @php
+            $key = '{"sidebar": 0, "menus": 1}';
+        @endphp
+        @dump(json_decode($key, true))
+        @dump(config('generator.sidebars')[0]['menus'][2]['title']) --}}
+
+        {{-- <div class="form-group">
+            <label for="menu" class="form-label">{{ __('Menu') }}</label>
+            <input class="form-control" list="menu-list" id="menu" placeholder="{{ __('Type to search') }}...">
+            <datalist id="menu-list">
+                <option value="New Menu">{{ __('New Menu') }}</option>
+                @foreach (config('generator.sidebars') as $sidebar)
+                    @foreach ($sidebar['menus'] as $menu)
+                        <option value="{{ $menu['title'] }}">{{ $menu['title'] }}</option>
+                    @endforeach
+                @endforeach
+            </datalist>
+        </div> --}}
+    </div>
 </div>

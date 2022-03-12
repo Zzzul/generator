@@ -44,17 +44,22 @@ class GeneratorController extends Controller
      */
     public function store(StoreGeneratorRequest $request)
     {
-        if ($request->generate_type == 'all') {
-            $this->generateAll($request->validated());
-        } else {
-            (new ModelGenerator)->execute($request->validated());
+        $attr = $request->validated();
+        $menu =  json_decode($request->menu, true);
 
-            (new MigrationGenerator)->execute($request->validated());
-        }
+        return config('generator.sidebars')[$menu['sidebar']]['menus'][$menu['menus']]['title'];
 
-        return redirect()
-            ->route('generators.create')
-            ->with('success', __('Module created successfully.'));
+        // if ($request->generate_type == 'all') {
+        //     $this->generateAll($request->validated());
+        // } else {
+        //     (new ModelGenerator)->execute($request->validated());
+
+        //     (new MigrationGenerator)->execute($request->validated());
+        // }
+
+        // return redirect()
+        //     ->route('generators.create')
+        //     ->with('success', __('Module created successfully.'));
     }
 
     /**
@@ -98,5 +103,76 @@ class GeneratorController extends Controller
     protected function clearCache(): void
     {
         Artisan::call('optimize:clear');
+    }
+
+    public function test()
+    {
+        $config = config('generator.sidebars');
+        $route = config('generator.route');
+
+        // get data types on config(array), convert to json and convert again to string(format like an array)
+        $dataTypes = str_replace(
+            [
+                '",',
+                '"',
+                "['",
+                "']",
+                "\t'",
+            ],
+            [
+                "', \n\t",
+                "'",
+                "[\n\t'",
+                "'\n\t]",
+                "\t\t'"
+            ],
+            json_encode(config('generator.data_types'))
+        );
+
+        $search = json_encode($config[0]['menus'][2]['route']) . ',"sub_menus":[';
+
+        dump(json_encode($config));
+        dump($search);
+
+        // convert json to array
+        $replace = json_decode(str_replace(
+            $search,
+            $search . json_encode([
+                'title' => 'Books',
+                'route' => '/books'
+            ]),
+            json_encode($config)
+        ), true);
+
+        // convert json to string(format like an array)
+        $jsonToArrayText = str_replace(
+            [
+                '{',
+                '}',
+                ':',
+                '"',
+                "','",
+                "\\",
+                "='",
+                "'>"
+            ],
+            [
+                '[',
+                ']',
+                ' => ',
+                "'",
+                "', '",
+                '',
+                '="',
+                '">'
+            ],
+            json_encode($replace, JSON_PRETTY_PRINT)
+        );
+
+        $jsonToArrayText = "<?php " . PHP_EOL . "\nreturn [ " . PHP_EOL . "\t'route' => '$route'," . PHP_EOL . "\t'data_types' => $dataTypes," . PHP_EOL . "\t'sidebars' => " . $jsonToArrayText . "\n];";
+
+        file_put_contents(base_path('config/generator-test.php'), $jsonToArrayText);
+
+        dump($jsonToArrayText);
     }
 }

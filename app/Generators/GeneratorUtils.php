@@ -34,7 +34,7 @@ class GeneratorUtils
      * Check folder if doesnt exist, then make folder.
      *
      * @param string $path
-     * @return void
+     * @return mixed
      */
     public static function checkFolder(string $path)
     {

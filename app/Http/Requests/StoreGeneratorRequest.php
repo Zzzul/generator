@@ -39,6 +39,7 @@ class StoreGeneratorRequest extends FormRequest
             'constrains.*' => 'nullable|required_if:data_types.*,foreignId',
             'file_types.*' => 'nullable|required_if:input_types.*,file|in:image,mimes',
             'data_types.*' => 'required|in:' . implode(',', config('generator.data_types')),
+            'menu' => 'required|string'
         ];
     }
 }

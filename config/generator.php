@@ -29,21 +29,23 @@ return [
                 [
                     'title' => 'Dashboard',
                     'icon' => '<i class="bi bi-speedometer2"></i>',
-                    'uri' => '/',
+                    'route' => '/',
+                    'sub_menus' => [],
                 ],
                 [
                     'title' => 'Generators',
                     'icon' => '<i class="bi bi-grid"></i>',
-                    'uri' => '/generators/create',
+                    'route' => '/generators/create',
+                    'sub_menus' => [],
                 ],
                 [
-                    'title' => 'Master Data',
+                    'title' => 'Main Data',
                     'icon' => '<i class="bi bi-collection"></i>',
-                    'uri' => null,
+                    'route' => null,
                     'sub_menus' => [
                         [
                             'title' => 'Products',
-                            'uri' => '/products'
+                            'route' => '/products'
                         ]
                     ],
                 ],
@@ -55,7 +57,8 @@ return [
                 [
                     'title' => 'Users',
                     'icon' => '<i class="bi bi-people"></i>',
-                    'uri' => '/users'
+                    'route' => '/users',
+                    'sub_menus' => [],
                 ],
             ],
         ],
