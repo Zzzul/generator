@@ -288,13 +288,13 @@
         const btnSave = $('#btn-save')
         const btnAdd = $('#btn-add')
 
-        // btnBack.prop('disabled', true)
-        // btnSave.prop('disabled', true)
-        // btnAdd.prop('disabled', true)
+        btnBack.prop('disabled', true)
+        btnSave.prop('disabled', true)
+        btnAdd.prop('disabled', true)
 
-        // btnBack.text('Loading...')
-        // btnSave.text('Loading...')
-        // btnAdd.text('Loading...')
+        btnBack.text('Loading...')
+        btnSave.text('Loading...')
+        btnAdd.text('Loading...')
 
         let modules = {
             model: $('#model').val(),
@@ -346,19 +346,19 @@
             },
             data: modules,
             success: function(response) {
-                console.log(response)
+                // console.log(response)
                 $('#validation-errors').hide()
 
-                // Swal.fire({
-                //     icon: 'success',
-                //     title: 'Module generated successfully!',
-                //     text: 'Success'
-                // }).then(function() {
-                //     window.location = '{{ route('generators.create') }}'
-                // })
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Module generated successfully!',
+                    text: 'Success'
+                }).then(function() {
+                    window.location = '{{ route('generators.create') }}'
+                })
             },
             error: function(xhr, status, response) {
-                console.error(xhr.responseText)
+                // console.error(xhr.responseText)
 
                 let validationErrors = $('#validation-errors')
                 let validationUl = $('#validation-errors .alert-danger ul')
@@ -372,13 +372,11 @@
                 validationUl.html('')
                 $.each(xhr.responseJSON.errors, function(key, value) {
                     if (Array.isArray(value)) {
-                        $.each(value, function(i, v) {
-                            validationUl.append(
-                                `<li class="m-0 p-0">${v}</li>`)
+                        value.forEach((v, i) => {
+                            validationUl.append(`<li class="m-0 p-0">${v}</li>`)
                         })
                     } else {
-                        validationUl.append(
-                            `<li class="m-0 p-0">${value}</li>`)
+                        validationUl.append(`<li class="m-0 p-0">${value}</li>`)
                     }
                 })
                 $('#validation-errors').show()
@@ -390,6 +388,36 @@
                 btnBack.text('Back')
                 btnSave.text('Generate')
                 btnAdd.text('Add')
+            }
+        })
+    })
+
+    $('#select-header').change(function() {
+        let indexHeader = $(this).val()
+
+        $('#select-menu').prop('disabled', true)
+        $('#select-menu').html('<option value="" disabled selected>Loading...</option>')
+
+        $.ajax({
+            type: 'GET',
+            url: `/generators/get-sidebar-menus/${indexHeader}`,
+            success: function(res) {
+                // console.log(res)
+
+                let options =
+                    '<option value="" disabled selected>-- {{ __('Select menu') }} --</option>'
+                res.forEach((value, index) => {
+                    options +=
+                        `<option value='{"sidebar": ${indexHeader}, "menus": ${index}}'>${value.title}</option>`
+                })
+
+                // console.log(options)
+
+                $('#select-menu').html(options)
+                $('#select-menu').prop('disabled', false)
+            },
+            error: function(xhr, status, res) {
+                // console.error(xhr.responseText)
             }
         })
     })

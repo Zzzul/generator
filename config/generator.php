@@ -8,7 +8,6 @@ return [
         'text',
         'bigInteger',
         'boolean',
-        'varchar',
         'char',
         'date',
         'time',

@@ -10,7 +10,7 @@ class MigrationGenerator
      * @param array $request
      * @return void
      */
-    public function execute(array $request)
+    public function generate(array $request)
     {
         $model = GeneratorUtils::setModelName($request['model']);
         $tableNamePluralUppercase = GeneratorUtils::pluralPascalCase($model);

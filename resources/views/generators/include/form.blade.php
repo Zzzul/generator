@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <h6 class="mt-3">{{ __('Table Field') }}</h6>
+    <h6 class="mt-3">{{ __('Table Fields') }}</h6>
 
     <div class="col-md-12">
         <table class="table table-striped table-hover table-sm" id="tbl-field">
@@ -116,39 +116,26 @@
         </table>
     </div>
 
+    <h6 class="mt-3">{{ __('Sidebar Menus') }}</h6>
+
     <div class="col-md-6">
         <div class="form-group">
-            <label for="menu">{{ __('Menu') }}</label>
-            <select name="menu" id="menu" class="form-select" required>
-                <option value="" disabled selected>-- {{ __('Select menu') }} --</option>
-                <option value="new">New Menu</option>
-                @foreach (config('generator.sidebars') as $keySidebar => $sidebar)
-                    @foreach ($sidebar['menus'] as $keyMenu => $menu)
-                        <option value="{{ '{"sidebar": ' . $keySidebar . ', "menus": ' . $keyMenu . '}' }}">
-                            {{ $menu['title'] }}
-                            {{ '{"sidebar": ' . $keySidebar . ', "menus": ' . $keyMenu . '}' }}
-                        </option>
-                    @endforeach
+            <label for="header">{{ __('Header') }}</label>
+            <select name="header" id="select-header" class="form-select" required>
+                <option value="" disabled selected>-- {{ __('Select header') }} --</option>
+                @foreach (config('generator.sidebars') as $keySidebar => $header)
+                    <option value="{{ $keySidebar }}">{{ $header['header'] }}</option>
                 @endforeach
             </select>
         </div>
-        {{-- @php
-            $key = '{"sidebar": 0, "menus": 1}';
-        @endphp
-        @dump(json_decode($key, true))
-        @dump(config('generator.sidebars')[0]['menus'][2]['title']) --}}
+    </div>
 
-        {{-- <div class="form-group">
-            <label for="menu" class="form-label">{{ __('Menu') }}</label>
-            <input class="form-control" list="menu-list" id="menu" placeholder="{{ __('Type to search') }}...">
-            <datalist id="menu-list">
-                <option value="New Menu">{{ __('New Menu') }}</option>
-                @foreach (config('generator.sidebars') as $sidebar)
-                    @foreach ($sidebar['menus'] as $menu)
-                        <option value="{{ $menu['title'] }}">{{ $menu['title'] }}</option>
-                    @endforeach
-                @endforeach
-            </datalist>
-        </div> --}}
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="menu">{{ __('Menu') }}</label>
+            <select name="menu" id="select-menu" class="form-select" required disabled>
+                <option value="" disabled selected>-- {{ __('Select header first') }} --</option>
+            </select>
+        </div>
     </div>
 </div>

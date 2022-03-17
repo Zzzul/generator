@@ -39,8 +39,8 @@
     function addInputTypeHidden(index) {
         $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(
             `<input type="hidden" name="file_types[]" class="form-file-types">
-                    <input type="hidden" name="files_sizes[]" class="form-file-sizes">
-                    <input type="hidden" name="mimes[]" class="form-mimes">`
+            <input type="hidden" name="files_sizes[]" class="form-file-sizes">
+            <input type="hidden" name="mimes[]" class="form-mimes">`
         )
     }
 

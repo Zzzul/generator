@@ -12,7 +12,7 @@ class ViewComposerGenerator
      * @param array $request
      * @return void
      */
-    public function execute(array $request)
+    public function generate(array $request)
     {
         $template = "";
 

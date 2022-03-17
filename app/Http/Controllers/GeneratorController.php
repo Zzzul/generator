@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreGeneratorRequest;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Http\Request;
 use App\Generators\{
     ControllerGenerator,
+    MenuGenerator,
     ModelGenerator,
     MigrationGenerator,
     PermissionGenerator,
@@ -22,7 +25,7 @@ use App\Generators\Views\{
     ShowViewGenerator,
     SidebarViewGenerator
 };
-use Illuminate\Http\Request;
+
 
 class GeneratorController extends Controller
 {
@@ -39,27 +42,20 @@ class GeneratorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreGeneratorRequest $request)
     {
-        $attr = $request->validated();
-        $menu =  json_decode($request->menu, true);
+        if ($request->generate_type == 'all') {
+            $this->generateAll($request->validated());
+        } else {
+            (new ModelGenerator)->generate($request->validated());
 
-        return config('generator.sidebars')[$menu['sidebar']]['menus'][$menu['menus']]['title'];
+            (new MigrationGenerator)->generate($request->validated());
+        }
 
-        // if ($request->generate_type == 'all') {
-        //     $this->generateAll($request->validated());
-        // } else {
-        //     (new ModelGenerator)->execute($request->validated());
-
-        //     (new MigrationGenerator)->execute($request->validated());
-        // }
-
-        // return redirect()
-        //     ->route('generators.create')
-        //     ->with('success', __('Module created successfully.'));
+        return response()->json(['success'], Response::HTTP_OK);
     }
 
     /**
@@ -70,109 +66,37 @@ class GeneratorController extends Controller
      */
     protected function generateAll(array $request)
     {
-        (new ModelGenerator)->execute($request);
-        (new MigrationGenerator)->execute($request);
-        (new ControllerGenerator)->execute($request);
-        (new RequestGenerator)->execute($request);
+        (new ModelGenerator)->generate($request);
+        (new MigrationGenerator)->generate($request);
+        (new ControllerGenerator)->generate($request);
+        (new RequestGenerator)->generate($request);
 
-        (new IndexViewGenerator)->execute($request);
-        (new CreateViewGenerator)->execute($request);
-        (new ShowViewGenerator)->execute($request);
-        (new EditViewGenerator)->execute($request);
-        (new ActionViewGenerator)->execute($request);
-        (new FormViewGenerator)->execute($request);
-        (new SidebarViewGenerator)->execute($request);
+        (new IndexViewGenerator)->generate($request);
+        (new CreateViewGenerator)->generate($request);
+        (new ShowViewGenerator)->generate($request);
+        (new EditViewGenerator)->generate($request);
+        (new ActionViewGenerator)->generate($request);
+        (new FormViewGenerator)->generate($request);
+        // (new SidebarViewGenerator)->generate($request);
 
-        (new RouteGenerator)->execute($request);
+        (new MenuGenerator)->generate($request);
 
-        (new PermissionGenerator)->execute($request);
+        (new RouteGenerator)->generate($request);
+
+        (new PermissionGenerator)->generate($request);
 
         if (in_array('foreignId', $request['data_types'])) {
-            (new ViewComposerGenerator)->execute($request);
+            (new ViewComposerGenerator)->generate($request);
         }
 
-        $this->clearCache();
-        $this->migrateTable();
-    }
-
-    protected function migrateTable(): void
-    {
+        Artisan::call('optimize:clear');
         Artisan::call('migrate');
     }
 
-    protected function clearCache(): void
+    public function getSidebarMenus(int $index)
     {
-        Artisan::call('optimize:clear');
-    }
+        $sidebar = config('generator.sidebars')[$index];
 
-    public function test()
-    {
-        $config = config('generator.sidebars');
-        $route = config('generator.route');
-
-        // get data types on config(array), convert to json and convert again to string(format like an array)
-        $dataTypes = str_replace(
-            [
-                '",',
-                '"',
-                "['",
-                "']",
-                "\t'",
-            ],
-            [
-                "', \n\t",
-                "'",
-                "[\n\t'",
-                "'\n\t]",
-                "\t\t'"
-            ],
-            json_encode(config('generator.data_types'))
-        );
-
-        $search = json_encode($config[0]['menus'][2]['route']) . ',"sub_menus":[';
-
-        dump(json_encode($config));
-        dump($search);
-
-        // convert json to array
-        $replace = json_decode(str_replace(
-            $search,
-            $search . json_encode([
-                'title' => 'Books',
-                'route' => '/books'
-            ]),
-            json_encode($config)
-        ), true);
-
-        // convert json to string(format like an array)
-        $jsonToArrayText = str_replace(
-            [
-                '{',
-                '}',
-                ':',
-                '"',
-                "','",
-                "\\",
-                "='",
-                "'>"
-            ],
-            [
-                '[',
-                ']',
-                ' => ',
-                "'",
-                "', '",
-                '',
-                '="',
-                '">'
-            ],
-            json_encode($replace, JSON_PRETTY_PRINT)
-        );
-
-        $jsonToArrayText = "<?php " . PHP_EOL . "\nreturn [ " . PHP_EOL . "\t'route' => '$route'," . PHP_EOL . "\t'data_types' => $dataTypes," . PHP_EOL . "\t'sidebars' => " . $jsonToArrayText . "\n];";
-
-        file_put_contents(base_path('config/generator-test.php'), $jsonToArrayText);
-
-        dump($jsonToArrayText);
+        return response()->json($sidebar['menus'], Response::HTTP_OK);
     }
 }

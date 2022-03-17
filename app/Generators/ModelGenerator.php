@@ -10,7 +10,7 @@ class ModelGenerator
      * @param array $request
      * @return void
      */
-    public function execute(array $request)
+    public function generate(array $request)
     {
         $path = GeneratorUtils::getModelLocation($request['model']);
         $model = GeneratorUtils::setModelName($request['model']);
