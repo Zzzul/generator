@@ -21,7 +21,7 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::resource('roles', RoleAndPermissionController::class);
 
     Route::get('/profile', ProfileController::class)->name('profile');
-    // Route::get('/test', [GeneratorController::class, 'test'])->name('test');
+    Route::get('/test', [GeneratorController::class, 'test'])->name('test');
 
     Route::get('/generators/get-sidebar-menus/{index}', [GeneratorController::class, 'getSidebarMenus'])->name('generators.get-sidebar-menus');
     Route::resource(config('generator.route'), GeneratorController::class)->only('create', 'store');

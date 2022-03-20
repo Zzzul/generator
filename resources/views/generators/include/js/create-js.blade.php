@@ -1,5 +1,7 @@
 <script>
     const types = {!! json_encode(config('generator.data_types')) !!}
+    let selectMenu = $('#select-menu')
+    let colNewMenu = $('#col-new-menu')
 
     $('#btn-add').click(function() {
         let table = $('#tbl-field tbody')
@@ -296,57 +298,16 @@
         btnSave.text('Loading...')
         btnAdd.text('Loading...')
 
-        let modules = {
-            model: $('#model').val(),
-            generate_type: $('input[name="generate_type"]').val(),
-            menu: $('[name="menu"]').val(),
-            fields: $('input[name="fields[]"]').map(function() {
-                return $(this).val()
-            }).get(),
-            data_types: $('select[name="data_types[]"]').map(function() {
-                return $(this).val()
-            }).get(),
-            select_options: $('input[name="select_options[]"]').map(function() {
-                return $(this).val()
-            }).get(),
-            constrains: $('input[name="constrains[]"]').map(function() {
-                return $(this).val()
-            }).get(),
-            foreign_ids: $('input[name="foreign_ids[]"]').map(function() {
-                return $(this).val()
-            }).get(),
-            min_lengths: $('input[name="min_lengths[]"]').map(function() {
-                return $(this).val()
-            }).get(),
-            max_lengths: $('input[name="max_lengths[]"]').map(function() {
-                return $(this).val()
-            }).get(),
-            input_types: $('select[name="input_types[]"]').map(function() {
-                return $(this).val()
-            }).get(),
-            files_sizes: $('[name="files_sizes[]"]').map(function() {
-                return $(this).val()
-            }).get(),
-            file_types: $('[name="file_types[]"]').map(function(i) {
-                return $(this).val()
-            }).get(),
-            mimes: $('input[name="mimes[]"]').map(function() {
-                return $(this).val()
-            }).get(),
-            requireds: $('.form-check-input:checkbox:checked').map(function() {
-                return $(this).val()
-            }).get()
-        }
-
         $.ajax({
             type: 'POST',
             url: '{{ route('generators.store') }}',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            data: modules,
+            data: $(this).serialize(),
             success: function(response) {
-                // console.log(response)
+                console.log(response)
+
                 $('#validation-errors').hide()
 
                 Swal.fire({
@@ -358,7 +319,7 @@
                 })
             },
             error: function(xhr, status, response) {
-                // console.error(xhr.responseText)
+                console.error(xhr.responseText)
 
                 let validationErrors = $('#validation-errors')
                 let validationUl = $('#validation-errors .alert-danger ul')
@@ -395,30 +356,145 @@
     $('#select-header').change(function() {
         let indexHeader = $(this).val()
 
-        $('#select-menu').prop('disabled', true)
-        $('#select-menu').html('<option value="" disabled selected>Loading...</option>')
+        if (indexHeader == 'new') {
+            selectMenu.prop('disabled', true)
 
-        $.ajax({
-            type: 'GET',
-            url: `/generators/get-sidebar-menus/${indexHeader}`,
-            success: function(res) {
-                // console.log(res)
+            selectMenu.html(
+                `<option value="" disabled selected>--{{ __('Select the header first') }}--</option>
+                `)
 
-                let options =
-                    '<option value="" disabled selected>-- {{ __('Select menu') }} --</option>'
-                res.forEach((value, index) => {
-                    options +=
-                        `<option value='{"sidebar": ${indexHeader}, "menus": ${index}}'>${value.title}</option>`
-                })
+            colNewMenu.hide(300)
 
-                // console.log(options)
+            colNewMenu.html(`
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="new-header">{{ __('Header') }}</label>
+                            <input type="text" id="new-header" name="new_header" class="form-control"
+                                placeholder="{{ __('New Header') }}" required autofocus>
+                        </div>
+                    </div>
 
-                $('#select-menu').html(options)
-                $('#select-menu').prop('disabled', false)
-            },
-            error: function(xhr, status, res) {
-                // console.error(xhr.responseText)
-            }
-        })
+                    <div class="col-md-6">
+                        <div class="form-group" id="input-new-menu">
+                            <label for="new-menu">{{ __('New Menu') }}</label>
+                            <input type="text" name="new_menu" id="new-menu" class="form-control"
+                                placeholder="{{ __('Title') }}" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="new-route">{{ __('Route') }}</label>
+                            <input type="text" id="new-route" name="new_route" class="form-control"
+                                placeholder="{{ __('New Route') }}" required>
+                            <small>{{ __('If null will use the model name, ex: "/products"') }}</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="new-icon">{{ __('Icon') }}</label>
+                            <input type="text" id="new-icon" name="new_icon" class="form-control"
+                                placeholder="{{ __('New Icon') }}" required>
+                            <small>{!! __('We recomended you to use <a href="https://icons.getbootstrap.com/" target="_blank">bootstrap icon</a>, ex: ') !!} {{ '<i class="bi bi-people"></i>' }}</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="new-submenu">{{ __('Submenu') }}</label>
+                            <input type="text" id="new-submenu" name="new_submenu" class="form-control"
+                                placeholder="{{ __('New Submenu') }}">
+                            <small>{{ __('Optional.') }}</small>
+                        </div>
+                    </div>
+                </div>
+            `)
+
+            colNewMenu.show(300)
+        } else {
+            colNewMenu.hide(300)
+            colNewMenu.html('')
+            selectMenu.prop('disabled', true)
+            selectMenu.html('<option value="" disabled selected>Loading...</option>')
+
+            $.ajax({
+                type: 'GET',
+                url: `/generators/get-sidebar-menus/${indexHeader}`,
+                success: function(res) {
+                    // console.log(res)
+
+                    let options = `
+                        <option value="" disabled selected>-- {{ __('Select menu') }} --</option>
+                        <option value="new">{{ __('New menu') }}</option>
+                    `
+
+                    res.forEach((value, index) => {
+                        options +=
+                            `<option value='{"sidebar": ${indexHeader}, "menus": ${index}}'>${value.title}</option>`
+                    })
+
+                    selectMenu.html(options)
+                    selectMenu.prop('disabled', false)
+                    selectMenu.focus()
+                },
+                error: function(xhr, status, res) {
+                    console.error(xhr.responseText)
+                }
+            })
+        }
+    })
+
+    $('#select-menu').change(function() {
+        let indexMenu = $(this).val()
+
+        if (indexMenu == 'new') {
+            colNewMenu.hide(300)
+
+            colNewMenu.html(`
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" id="input-new-menu">
+                            <label for="new-menu">{{ __('New Menu') }}</label>
+                            <input type="text" name="new_menu" id="new-menu" class="form-control"
+                                placeholder="{{ __('Title') }}" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="new-route">{{ __('Route') }}</label>
+                            <input type="text" id="new-route" name="new_route" class="form-control"
+                                placeholder="{{ __('New Route') }}" required>
+                            <small>{{ __('If null will use the model name, ex: "/products"') }}</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="new-icon">{{ __('Icon') }}</label>
+                            <input type="text" id="new-icon" name="new_icon" class="form-control"
+                                placeholder="{{ __('New Icon') }}" required>
+                            <small>{!! __('We recomended you to use <a href="https://icons.getbootstrap.com/" target="_blank">bootstrap icon</a>, ex: ') !!} {{ '<i class="bi bi-people"></i>' }}</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="new-submenu">{{ __('Submenu') }}</label>
+                            <input type="text" id="new-submenu" name="new_submenu" class="form-control"
+                                placeholder="{{ __('New Submenu') }}">
+                            <small>{{ __('Optional.') }}</small>
+                        </div>
+                    </div>
+                </div>
+            `)
+
+            colNewMenu.show(300)
+        } else {
+            colNewMenu.hide(300)
+            colNewMenu.html('')
+        }
     })
 </script>

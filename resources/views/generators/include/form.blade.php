@@ -13,6 +13,7 @@
         </div>
     </div>
 
+    {{-- Generate type --}}
     <div class="col-md-7">
         <p class="mb-2">Generate Type</p>
         <div class="form-check form-check-inline">
@@ -33,6 +34,7 @@
 
     <h6 class="mt-3">{{ __('Table Fields') }}</h6>
 
+    {{-- table fields --}}
     <div class="col-md-12">
         <table class="table table-striped table-hover table-sm" id="tbl-field">
             <thead>
@@ -118,24 +120,44 @@
 
     <h6 class="mt-3">{{ __('Sidebar Menus') }}</h6>
 
+    {{-- sidebar menu --}}
     <div class="col-md-6">
-        <div class="form-group">
-            <label for="header">{{ __('Header') }}</label>
-            <select name="header" id="select-header" class="form-select" required>
-                <option value="" disabled selected>-- {{ __('Select header') }} --</option>
-                @foreach (config('generator.sidebars') as $keySidebar => $header)
-                    <option value="{{ $keySidebar }}">{{ $header['header'] }}</option>
-                @endforeach
-            </select>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="select-header">{{ __('Header') }}</label>
+                    <select name="header" id="select-header" class="form-select" required>
+                        <option value="" disabled selected>-- {{ __('Select header') }} --</option>
+                        <option value="new">{{ __('New header') }}</option>
+                        @foreach (config('generator.sidebars') as $keySidebar => $header)
+                            <option value="{{ $keySidebar }}">{{ $header['header'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="col-md-6">
-        <div class="form-group">
-            <label for="menu">{{ __('Menu') }}</label>
-            <select name="menu" id="select-menu" class="form-select" required disabled>
-                <option value="" disabled selected>-- {{ __('Select header first') }} --</option>
-            </select>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" id="input-menu">
+                    <label for="select-menu">{{ __('Menu') }}</label>
+                    <select name="menu" id="select-menu" class="form-select" required disabled>
+                        <option value="" disabled selected>-- {{ __('Select header first') }} --</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="input-new-menu" style="display: none;">
+                    <label for="new-menu">{{ __('New Menu') }}</label>
+                    <input type="text" name="new_menu" id="new-menu" class="form-control"
+                        placeholder="{{ __('Title') }}">
+                </div>
+            </div>
         </div>
     </div>
+
+    <div id="col-new-menu" style="display: none;">
+    </div>
+
 </div>
