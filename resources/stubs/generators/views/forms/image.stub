@@ -10,7 +10,7 @@
                 </div>
 
                 <div class="col-md-8">
-                    <div class="form-group">
+                    <div class="form-group ms-3">
                         <label for="{{fieldSingularSnakeCase}}">{{ __('{{fieldUcWords}}') }}</label>
                         <input type="file" name="{{fieldSingularSnakeCase}}" class="form-control @error('{{fieldSingularSnakeCase}}') is-invalid @enderror" id="{{fieldSingularSnakeCase}}">
 
