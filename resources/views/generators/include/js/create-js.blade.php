@@ -1,5 +1,4 @@
 <script>
-    const types = {!! json_encode(config('generator.data_types')) !!}
     let selectMenu = $('#select-menu')
     let colNewMenu = $('#col-new-menu')
 
@@ -47,7 +46,7 @@
                     <div class="form-group">
                         <select name="input_types[]" class="form-select form-input-types" required>
                             <option value="" disabled selected>-- Select input type --</option>
-                            <option value="" disabled>Select data type first</option>
+                            <option value="" disabled>Select the data type first</option>
                         </select>
                     </div>
                     <input type="hidden" name="mimes[]" class="form-mimes">
@@ -371,7 +370,7 @@
                         <div class="form-group">
                             <label for="new-header">{{ __('Header') }}</label>
                             <input type="text" id="new-header" name="new_header" class="form-control"
-                                placeholder="{{ __('New Header') }}" required autofocus>
+                                placeholder="{{ __('New Header') }}" value="${setNewHeaderName($('#model').val())}" required autofocus>
                         </div>
                     </div>
 
@@ -379,7 +378,8 @@
                         <div class="form-group" id="input-new-menu">
                             <label for="new-menu">{{ __('New Menu') }}</label>
                             <input type="text" name="new_menu" id="new-menu" class="form-control"
-                                placeholder="{{ __('Title') }}" required>
+                                placeholder="{{ __('Title') }}" value="${capitalizeFirstLetter(setModelName($('#model').val()))}" required>
+                            <small>{{ __('If null will use the model name, ex: "Products"') }}</small>
                         </div>
                     </div>
 
@@ -387,7 +387,7 @@
                         <div class="form-group">
                             <label for="new-route">{{ __('Route') }}</label>
                             <input type="text" id="new-route" name="new_route" class="form-control"
-                                placeholder="{{ __('New Route') }}" required>
+                                placeholder="{{ __('New Route') }}" value="${setModelName($('#model').val())}" required>
                             <small>{{ __('If null will use the model name, ex: "/products"') }}</small>
                         </div>
                     </div>
@@ -444,6 +444,8 @@
                 }
             })
         }
+
+        $('#helper-text-menu').html('')
     })
 
     $('#select-menu').change(function() {
@@ -458,7 +460,8 @@
                         <div class="form-group" id="input-new-menu">
                             <label for="new-menu">{{ __('New Menu') }}</label>
                             <input type="text" name="new_menu" id="new-menu" class="form-control"
-                                placeholder="{{ __('Title') }}" required>
+                                placeholder="{{ __('Title') }}" value="${capitalizeFirstLetter(setModelName($('#model').val()))}" required>
+                            <small>{{ __('If null will use the model name, ex: "Products"') }}</small>
                         </div>
                     </div>
 
@@ -466,7 +469,7 @@
                         <div class="form-group">
                             <label for="new-route">{{ __('Route') }}</label>
                             <input type="text" id="new-route" name="new_route" class="form-control"
-                                placeholder="{{ __('New Route') }}" required>
+                                placeholder="{{ __('New Route') }}" value="${setModelName($('#model').val())}" required>
                             <small>{{ __('If null will use the model name, ex: "/products"') }}</small>
                         </div>
                     </div>
@@ -492,9 +495,17 @@
             `)
 
             colNewMenu.show(300)
+
+            $('#helper-text-menu').html('')
         } else {
             colNewMenu.hide(300)
             colNewMenu.html('')
+
+            if ($('#model').val()) {
+                $('#helper-text-menu').html(`
+                Will generate a new submenu <b>${capitalizeFirstLetter(setModelName($('#model').val()))}</b> at <b>${$('#select-menu option:selected').text()}</b> menu.
+            `)
+            }
         }
     })
 </script>

@@ -47,6 +47,8 @@
                     @endforeach
                 @endforeach
 
+                <li class="sidebar-title">Action</li>
+
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('logout') }}"
                         onclick="event.preventDefault();document.getElementById('logout-form').submit();">

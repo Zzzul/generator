@@ -13,7 +13,7 @@
                 <div class="col-12 col-md-8 order-md-1 order-last">
                     <h3>{{ __('Module') }}</h3>
                     <p class="text-subtitle text-muted">
-                        {{ __('Create an new Module.') }}
+                        {{ __('Create a new CRUD Module.') }}
                     </p>
                 </div>
 
@@ -43,8 +43,6 @@
 
                                 <a href="{{ url()->previous() }}" id="btn-back"
                                     class="btn btn-secondary">{{ __('Back') }}</a>
-
-                                <button type="button" id="btn-add" class="btn btn-success">{{ __('Add') }}</button>
 
                                 <button type="submit" id="btn-save" class="btn btn-primary">{{ __('Generate') }}</button>
                             </form>

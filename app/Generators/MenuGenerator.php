@@ -52,8 +52,10 @@ class MenuGenerator
 
         $newRoute = $request['new_route'] ? GeneratorUtils::pluralSnakeCase($request['new_route']) : GeneratorUtils::pluralSnakeCase($model);
 
+        $newMenuTitle = $request['new_menu'] ? GeneratorUtils::pluralKebabCase($request['new_menu']) : GeneratorUtils::pluralKebabCase($model);
+
         $newMenu = $this->setNewMenu(
-            title: $request['new_menu'],
+            title: $newMenuTitle,
             icon: $request['new_icon'],
             route: '/' . $newRoute,
             submenu: isset($request['new_submenu']) ? $request['new_submenu'] : null
@@ -88,8 +90,10 @@ class MenuGenerator
         // get latest menus, convert to json(stirng) and remove latest char on the string
         $search = substr(json_encode($configSidebar[$request['header']]['menus'][$totalMenus]), 0, -1);
 
+        $newMenuTitle = $request['new_menu'] ? GeneratorUtils::pluralKebabCase($request['new_menu']) : GeneratorUtils::pluralKebabCase($model);
+
         $newMenu = $this->setNewMenu(
-            title: $request['new_menu'],
+            title: $newMenuTitle,
             icon: $request['new_icon'],
             route: '/' . $newRoute,
             submenu: isset($request['new_submenu']) ? $request['new_submenu'] : null
@@ -158,7 +162,7 @@ class MenuGenerator
      */
     protected function generateFile(string $dataTypes, string $jsonToArrayString)
     {
-        $template = "<?php " . PHP_EOL . "\nreturn [ " . PHP_EOL . "\t'route' => '" . config('generators.routes') . "'," . PHP_EOL . "\t'data_types' => $dataTypes," . PHP_EOL . "\t'sidebars' => " . $jsonToArrayString . "\n];";
+        $template = "<?php " . PHP_EOL . "\nreturn [ " . PHP_EOL . "\t'data_types' => $dataTypes," . PHP_EOL . "\t'sidebars' => " . $jsonToArrayString . "\n];";
 
         file_put_contents(base_path('config/generator.php'), $template);
     }

@@ -1,4 +1,5 @@
 <div class="row mb-2">
+    {{-- model name --}}
     <div class="col-md-5">
         <div class="form-group">
             <label for="model">{{ __('Model') }}</label>
@@ -12,8 +13,9 @@
             @enderror
         </div>
     </div>
+    {{-- end of model name --}}
 
-    {{-- Generate type --}}
+    {{-- generate type --}}
     <div class="col-md-7">
         <p class="mb-2">Generate Type</p>
         <div class="form-check form-check-inline">
@@ -31,8 +33,18 @@
             </label>
         </div>
     </div>
+    {{-- end of generate type --}}
 
-    <h6 class="mt-3">{{ __('Table Fields') }}</h6>
+    <div class="col-md-6 mt-3">
+        <h6>{{ __('Table Fields') }}</h6>
+    </div>
+
+    <div class="col-md-6 mt-3 d-flex justify-content-end">
+        <button type="button" id="btn-add" class="btn btn-success">
+            <i class="fas fa-plus"></i>
+            {{ __('Add') }}
+        </button>
+    </div>
 
     {{-- table fields --}}
     <div class="col-md-12">
@@ -89,7 +101,7 @@
                         <div class="form-group">
                             <select name="input_types[]" class="form-select form-input-types" required>
                                 <option value="" disabled selected>-- Select input type --</option>
-                                <option value="" disabled>Select data type first</option>
+                                <option value="" disabled>Select the data type first</option>
                             </select>
                         </div>
                         <input type="hidden" name="mimes[]" class="form-mimes">
@@ -117,6 +129,7 @@
             </tbody>
         </table>
     </div>
+    {{-- end of table fields --}}
 
     <h6 class="mt-3">{{ __('Sidebar Menus') }}</h6>
 
@@ -146,18 +159,12 @@
                     <select name="menu" id="select-menu" class="form-select" required disabled>
                         <option value="" disabled selected>-- {{ __('Select header first') }} --</option>
                     </select>
-                </div>
-
-                <div class="form-group" id="input-new-menu" style="display: none;">
-                    <label for="new-menu">{{ __('New Menu') }}</label>
-                    <input type="text" name="new_menu" id="new-menu" class="form-control"
-                        placeholder="{{ __('Title') }}">
+                    <small id="helper-text-menu"></small>
                 </div>
             </div>
         </div>
     </div>
+    {{-- end of sidebar menu --}}
 
-    <div id="col-new-menu" style="display: none;">
-    </div>
-
+    <div id="col-new-menu" style="display: none;"></div>
 </div>

@@ -53,9 +53,10 @@
     }
 
     function renderTypes() {
+        let listDataTypes = {!! json_encode(config('generator.data_types')) !!}
         let optionTypes = ''
 
-        $(types).each(function(i, val) {
+        $(listDataTypes).each(function(i, val) {
             optionTypes += `<option value="${val}">${capitalizeFirstLetter(val)}</option>`
         })
 
@@ -73,5 +74,48 @@
             $(this).find('td:nth-child(1)').html(no)
             no++
         })
+    }
+
+    function setModelName(string) {
+        if (string != '') {
+            let split = string.split("/")
+
+            if (split.length > 1) {
+                return convertToPlural(split[split.length - 1])
+            } else {
+                return convertToPlural(string)
+            }
+        } else {
+            return ''
+        }
+    }
+
+    function setNewHeaderName(string) {
+        if (string != '') {
+            let split = string.split("/")
+
+            if (split.length > 1) {
+                return capitalizeFirstLetter(convertToPlural(split[0]))
+            } else {
+                return capitalizeFirstLetter(convertToPlural(string))
+            }
+        } else {
+            return ''
+        }
+    }
+
+    function convertToPlural(string) {
+        if (string != '') {
+
+            let lastChar = string.substr(string.length - 1);
+
+            if (lastChar == 'y') {
+                return `${string.substr(0, string.length - 1)}ies`
+            } else {
+                return `${string}s`
+            }
+        } else {
+            return ''
+        }
     }
 </script>
