@@ -24,5 +24,5 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/test', [GeneratorController::class, 'test'])->name('test');
 
     Route::get('/generators/get-sidebar-menus/{index}', [GeneratorController::class, 'getSidebarMenus'])->name('generators.get-sidebar-menus');
-    Route::resource(config('generator.route'), GeneratorController::class)->only('create', 'store');
+    Route::resource('/generators', GeneratorController::class)->only('create', 'store');
 });
