@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'route' => 'generators',
     'data_types' => [
         'string',
         'integer',

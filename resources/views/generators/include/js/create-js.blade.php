@@ -423,7 +423,7 @@
                 type: 'GET',
                 url: `/generators/get-sidebar-menus/${indexHeader}`,
                 success: function(res) {
-                    // console.log(res)
+                    console.log(res)
 
                     let options = `
                         <option value="" disabled selected>-- {{ __('Select menu') }} --</option>
