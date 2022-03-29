@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'route' => '',
     'data_types' => [
         'string',
         'integer',
@@ -58,22 +57,6 @@ return [
                     'icon' =>  '<i class="bi bi-people"></i>',
                     'route' =>  '/users',
                     'sub_menus' =>  []
-                ]
-            ]
-        ],
-        [
-            'header' =>  'jaja',
-            'menus' =>  [
-                [
-                    'title' =>  'Awoks',
-                    'icon' =>  'awokawok',
-                    'route' =>  null,
-                    'submenus' =>  [
-                        [
-                            'title' =>  'jajajaja',
-                            'route' =>  '/jajajajas'
-                        ]
-                    ]
                 ]
             ]
         ]

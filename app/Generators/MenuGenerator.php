@@ -129,20 +129,26 @@ class MenuGenerator
         $titleMenu = GeneratorUtils::cleanPluralUcWords($model);
         $routeMenu = GeneratorUtils::cleanPluralLowerCase($model);
 
-        $search = json_encode($configSidebar[$menu['sidebar']]['menus'][$menu['menus']]['route']) . ',"sub_menus":[';
+        $indexSidebar = $menu['sidebar'];
+        $indexMenu = $menu['menus'];
 
-        // convert json to array
-        $replace = json_decode(str_replace(
-            $search,
-            $search . json_encode(['title' => $titleMenu, 'route' => "/$routeMenu"]),
-            json_encode($configSidebar)
-        ), true);
+        $totalMenus = count($configSidebar[$indexSidebar]['menus'][$indexMenu]['sub_menus']);
 
-        // sometimes will return null if exists sub_menus, this code for handle it. ad extra ',' at the end
-        if ($replace == null) {
+        if ($totalMenus > 0) {
+            // get latest menus, convert to json(stirng)
+            $search = json_encode($configSidebar[$indexSidebar]['menus'][$indexMenu]['sub_menus'][$totalMenus - 1]);
+
             $replace = json_decode(str_replace(
                 $search,
-                $search . json_encode(['title' => $titleMenu, 'route' => "/$routeMenu"]) . ',',
+                $search . ',' . json_encode(['title' => $titleMenu, 'route' => "/$routeMenu"]),
+                json_encode($configSidebar)
+            ), true);
+        } else {
+            $search = substr(json_encode($configSidebar[$indexSidebar]['menus'][$indexMenu]), 0, -2);
+
+            $replace = json_decode(str_replace(
+                $search,
+                $search . json_encode(['title' => $titleMenu, 'route' => "/$routeMenu"]),
                 json_encode($configSidebar)
             ), true);
         }
