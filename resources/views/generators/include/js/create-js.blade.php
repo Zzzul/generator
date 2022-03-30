@@ -311,8 +311,8 @@
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'Module generated successfully!',
-                    text: 'Success'
+                    title: 'Success',
+                    text: 'Module generated successfully!'
                 }).then(function() {
                     window.location = '{{ route('generators.create') }}'
                 })

@@ -67,10 +67,9 @@ class MenuGenerator
         // push new config sidebar to old config sidebar
         array_push($configSidebar, $newConfigSidebar);
 
-        $this->generateFile(
-            dataTypes: $this->getDataTypes(),
-            jsonToArrayString: $this->convertJsonToArrayString($configSidebar)
-        );
+        $stringCode = $this->convertJsonToArrayString($configSidebar);
+
+        $this->generateFile($stringCode);
     }
 
     /**
@@ -83,37 +82,20 @@ class MenuGenerator
      */
     protected function generateNewMenu(array $request, string $model, array $configSidebar)
     {
-        $totalMenus = count($configSidebar[$request['header']]['menus']) - 1;
-
         $newRoute = $request['new_route'] ? GeneratorUtils::pluralSnakeCase($request['new_route']) : GeneratorUtils::pluralSnakeCase($model);
-
-        // get latest menus, convert to json(stirng) and remove latest char on the string
-        $search = substr(json_encode($configSidebar[$request['header']]['menus'][$totalMenus]), 0, -1);
 
         $newMenuTitle = $request['new_menu'] ? GeneratorUtils::pluralKebabCase($request['new_menu']) : GeneratorUtils::pluralKebabCase($model);
 
-        $newMenu = $this->setNewMenu(
+        array_push($configSidebar[$request['header']]['menus'], $this->setNewMenu(
             title: $newMenuTitle,
             icon: $request['new_icon'],
             route: '/' . $newRoute,
             submenu: isset($request['new_submenu']) ? $request['new_submenu'] : null
-        );
+        ));
 
-        // convert json to array
-        $replace = str_replace(
-            $search,
-            // add }, to make valid json
-            $search . '},' . json_encode($newMenu),
-            json_encode($configSidebar)
-        );
+        $stringCode = $this->convertJsonToArrayString($configSidebar);
 
-        // remove ]}}]} caouse will make invalid json format and can't convert to array
-        $replace2 = json_decode(str_replace(']}}]}', ']}]}', $replace), true);
-
-        $this->generateFile(
-            dataTypes: $this->getDataTypes(),
-            jsonToArrayString: $this->convertJsonToArrayString($replace2)
-        );
+        $this->generateFile($stringCode);
     }
 
     /**
@@ -126,49 +108,28 @@ class MenuGenerator
      */
     protected function generateNewSubMenu(array $menu, string $model, array $configSidebar)
     {
-        $titleMenu = GeneratorUtils::cleanPluralUcWords($model);
-        $routeMenu = GeneratorUtils::cleanPluralLowerCase($model);
-
         $indexSidebar = $menu['sidebar'];
         $indexMenu = $menu['menus'];
 
-        $totalMenus = count($configSidebar[$indexSidebar]['menus'][$indexMenu]['sub_menus']);
+        array_push($configSidebar[$indexSidebar]['menus'][$indexMenu]['sub_menus'], [
+            'title' => GeneratorUtils::cleanPluralUcWords($model),
+            'route' => '/' . GeneratorUtils::cleanPluralLowerCase($model)
+        ]);
 
-        if ($totalMenus > 0) {
-            // get latest menus, convert to json(stirng)
-            $search = json_encode($configSidebar[$indexSidebar]['menus'][$indexMenu]['sub_menus'][$totalMenus - 1]);
+        $stringCode = $this->convertJsonToArrayString($configSidebar);
 
-            $replace = json_decode(str_replace(
-                $search,
-                $search . ',' . json_encode(['title' => $titleMenu, 'route' => "/$routeMenu"]),
-                json_encode($configSidebar)
-            ), true);
-        } else {
-            $search = substr(json_encode($configSidebar[$indexSidebar]['menus'][$indexMenu]), 0, -2);
-
-            $replace = json_decode(str_replace(
-                $search,
-                $search . json_encode(['title' => $titleMenu, 'route' => "/$routeMenu"]),
-                json_encode($configSidebar)
-            ), true);
-        }
-
-        $this->generateFile(
-            dataTypes: $this->getDataTypes(),
-            jsonToArrayString: $this->convertJsonToArrayString($replace)
-        );
+        $this->generateFile($stringCode);
     }
 
     /**
      * Replace code on config with newly string code.
      *
-     * @param string $dataTypes
      * @param string $jsonToArrayString
      * @return void
      */
-    protected function generateFile(string $dataTypes, string $jsonToArrayString)
+    protected function generateFile(string $jsonToArrayString)
     {
-        $template = "<?php " . PHP_EOL . "\nreturn [ " . PHP_EOL . "\t'data_types' => $dataTypes," . PHP_EOL . "\t'sidebars' => " . $jsonToArrayString . "\n];";
+        $template = "<?php " . PHP_EOL . "\nreturn [ " . PHP_EOL . "\t'data_types' => " . $this->getDataTypes() . "," . PHP_EOL . "\t'sidebars' => " . $jsonToArrayString . "\n];";
 
         file_put_contents(base_path('config/generator.php'), $template);
     }
