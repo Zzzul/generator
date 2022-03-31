@@ -44,11 +44,11 @@ class CreateViewGenerator
 
             GeneratorUtils::checkFolder($fullPath);
 
-            GeneratorUtils::generateTemplate($fullPath . "/create.blade.php", $template);
+            file_put_contents($fullPath . "/create.blade.php", $template);
         } else {
             GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
 
-            GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/create.blade.php"), $template);
+            file_put_contents(resource_path("/views/$modelNamePluralKebabCase/create.blade.php"), $template);
         }
     }
 }

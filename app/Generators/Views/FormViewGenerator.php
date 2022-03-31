@@ -261,11 +261,11 @@ class FormViewGenerator
 
             GeneratorUtils::checkFolder($fullPath);
 
-            GeneratorUtils::generateTemplate($fullPath . "/form.blade.php", $template);
+            file_put_contents($fullPath . "/form.blade.php", $template);
         } else {
             GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
 
-            GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/include/form.blade.php"), $template);
+            file_put_contents(resource_path("/views/$modelNamePluralKebabCase/include/form.blade.php"), $template);
         };
     }
 }

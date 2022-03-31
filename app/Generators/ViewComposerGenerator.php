@@ -78,6 +78,6 @@ class ViewComposerGenerator
             $viewProviderFile
         );
 
-        GeneratorUtils::generateTemplate($path, $viewProviderTemplate);
+        file_put_contents($path, $viewProviderTemplate);
     }
 }

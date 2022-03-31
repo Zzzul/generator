@@ -47,11 +47,11 @@ class EditViewGenerator
 
             GeneratorUtils::checkFolder($fullPath);
 
-            GeneratorUtils::generateTemplate($fullPath . "/edit.blade.php", $template);
+            file_put_contents($fullPath . "/edit.blade.php", $template);
         } else {
             GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
 
-            GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/edit.blade.php"), $template);
+            file_put_contents(resource_path("/views/$modelNamePluralKebabCase/edit.blade.php"), $template);
         }
     }
 }

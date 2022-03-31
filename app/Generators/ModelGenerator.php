@@ -108,9 +108,10 @@ class ModelGenerator
             $fullPath = app_path("/Models/$path");
 
             GeneratorUtils::checkFolder($fullPath);
-            GeneratorUtils::generateTemplate($fullPath . "/$model.php", $template);
+
+            file_put_contents($fullPath . "/$model.php", $template);
         } else {
-            GeneratorUtils::generateTemplate(app_path("/Models/$model.php"), $template);
+            file_put_contents(app_path("/Models/$model.php"), $template);
         }
     }
 }

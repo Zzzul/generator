@@ -37,7 +37,7 @@ return [
                     'sub_menus' => [
                         [
                             'title' => 'Products',
-                            'route' => '/products'
+                            'route' => '#'
                         ]
                     ],
                 ],

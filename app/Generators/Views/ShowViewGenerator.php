@@ -103,11 +103,11 @@ class ShowViewGenerator
 
             GeneratorUtils::checkFolder($fullPath);
 
-            GeneratorUtils::generateTemplate($fullPath . "/show.blade.php", $template);
+            file_put_contents($fullPath . "/show.blade.php", $template);
         } else {
             GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
 
-            GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/show.blade.php"), $template);
+            file_put_contents(resource_path("/views/$modelNamePluralKebabCase/show.blade.php"), $template);
         }
     }
 }

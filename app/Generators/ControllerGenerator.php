@@ -175,9 +175,9 @@ class ControllerGenerator
 
             GeneratorUtils::checkFolder($fullPath);
 
-            GeneratorUtils::generateTemplate("$fullPath{$modelNameSingularPascalCase}Controller.php", $template);
+            file_put_contents("$fullPath{$modelNameSingularPascalCase}Controller.php", $template);
         } else {
-            GeneratorUtils::generateTemplate(app_path("/Http/Controllers/{$modelNameSingularPascalCase}Controller.php"), $template);
+            file_put_contents(app_path("/Http/Controllers/{$modelNameSingularPascalCase}Controller.php"), $template);
         }
     }
 

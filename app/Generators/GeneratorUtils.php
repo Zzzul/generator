@@ -19,18 +19,6 @@ class GeneratorUtils
     }
 
     /**
-     * Generate string template to php file.
-     *
-     * @param string $destination
-     * @param string $template
-     * @return void
-     */
-    public static function generateTemplate(string $destination, string $template)
-    {
-        file_put_contents($destination, $template);
-    }
-
-    /**
      * Check folder if doesnt exist, then make folder.
      *
      * @param string $path
@@ -40,38 +28,6 @@ class GeneratorUtils
     {
         if (!file_exists($path)) {
             return mkdir($path, 0777, true);
-        }
-    }
-
-    /**
-     * Set input type by table field data type.
-     *
-     * @param string $dataType
-     * @param string|null $field
-     * @return string
-     */
-    public static function setInputType(string $dataType, string $field = null)
-    {
-        if (
-            str_contains($dataType, 'integer') ||
-            $dataType == 'float' ||
-            $dataType == 'double' ||
-            $dataType == 'decimal' ||
-            $dataType == 'boolean'
-        ) {
-            return 'number';
-        } elseif ($field == 'email') {
-            return 'email';
-        } elseif ($field == 'password') {
-            return 'password';
-        } elseif ($dataType == 'date') {
-            return 'date';
-        } elseif ($dataType == 'time') {
-            return 'time';
-        } elseif ($dataType == 'dateTime') {
-            return 'datetime-local';
-        } else {
-            return 'text';
         }
     }
 
@@ -228,7 +184,7 @@ class GeneratorUtils
     }
 
     /**
-     * Select id and after id column.
+     * Select id and column after id on the table.
      *
      * @param string $table
      * @return string $selectedField

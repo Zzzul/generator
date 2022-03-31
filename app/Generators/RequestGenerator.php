@@ -198,14 +198,13 @@ class RequestGenerator
 
             GeneratorUtils::checkFolder($fullPath);
 
-            GeneratorUtils::generateTemplate("$fullPath/Store{$model}Request.php", $storeRequestTemplate);
-            GeneratorUtils::generateTemplate("$fullPath/Update{$model}Request.php", $updateRequestTemplate);
+            file_put_contents("$fullPath/Store{$model}Request.php", $storeRequestTemplate);
+            file_put_contents("$fullPath/Update{$model}Request.php", $updateRequestTemplate);
         } else {
             GeneratorUtils::checkFolder(app_path('/Http/Requests'));
 
-            GeneratorUtils::generateTemplate(app_path("/Http/Requests/Store{$model}Request.php"), $storeRequestTemplate);
-
-            GeneratorUtils::generateTemplate(app_path("/Http/Requests/Update{$model}Request.php"), $updateRequestTemplate);
+            file_put_contents(app_path("/Http/Requests/Store{$model}Request.php"), $storeRequestTemplate);
+            file_put_contents(app_path("/Http/Requests/Update{$model}Request.php"), $updateRequestTemplate);
         }
     }
 }

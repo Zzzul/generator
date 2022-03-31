@@ -37,11 +37,11 @@ class ActionViewGenerator
 
             GeneratorUtils::checkFolder($fullPath);
 
-            GeneratorUtils::generateTemplate($fullPath . "/action.blade.php", $template);
+            file_put_contents($fullPath . "/action.blade.php", $template);
         } else {
             GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase/include"));
 
-            GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/include/action.blade.php"), $template);
+            file_put_contents(resource_path("/views/$modelNamePluralKebabCase/include/action.blade.php"), $template);
         };
     }
 }

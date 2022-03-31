@@ -125,11 +125,11 @@ class IndexViewGenerator
 
             GeneratorUtils::checkFolder($fullPath);
 
-            GeneratorUtils::generateTemplate($fullPath . "/index.blade.php", $template);
+            file_put_contents($fullPath . "/index.blade.php", $template);
         } else {
             GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
 
-            GeneratorUtils::generateTemplate(resource_path("/views/$modelNamePluralKebabCase/index.blade.php"), $template);
+            file_put_contents(resource_path("/views/$modelNamePluralKebabCase/index.blade.php"), $template);
         }
     }
 }
