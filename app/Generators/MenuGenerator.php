@@ -194,7 +194,7 @@ class MenuGenerator
     }
 
     /**
-     * Set new menu and check if request submenu exist or not, if exist push to menu.
+     * Set new menu and check if request submenu exist or not, if exist push submenu to menu.
      *
      * @param string $title
      * @param string $icon
@@ -209,7 +209,7 @@ class MenuGenerator
                 'title' => GeneratorUtils::cleanPluralUcWords($title),
                 'icon' => $icon,
                 'route' => null,
-                'submenus' => [
+                'sub_menus' => [
                     [
                         'title' => $submenu,
                         'route' => '/' . GeneratorUtils::pluralKebabCase($submenu)

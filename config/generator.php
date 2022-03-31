@@ -26,19 +26,13 @@ return [
             'menus' => [
                 [
                     'title' => 'Dashboard',
-                    'icon' => '<i class="bi bi-speedometer2"></i>',
+                    'icon' => '<i class="bi bi-speedometer"></i>',
                     'route' => '/',
                     'sub_menus' => [],
                 ],
                 [
-                    'title' => 'Generators',
-                    'icon' => '<i class="bi bi-grid"></i>',
-                    'route' => '/generators/create',
-                    'sub_menus' => [],
-                ],
-                [
                     'title' => 'Main Data',
-                    'icon' => '<i class="bi bi-collection"></i>',
+                    'icon' => '<i class="bi bi-collection-fill"></i>',
                     'route' => null,
                     'sub_menus' => [
                         [
@@ -46,18 +40,36 @@ return [
                             'route' => '/products'
                         ]
                     ],
+                ],
+
+            ],
+        ],
+        [
+            'header' => 'Users',
+            'menus' => [
+                [
+                    'title' => 'Users',
+                    'icon' => '<i class="bi bi-people-fill"></i>',
+                    'route' => '/users',
+                    'sub_menus' => [],
+                ],
+                [
+                    'title' => 'Roles & Permissions',
+                    'icon' => '<i class="bi bi-person-check-fill"></i>',
+                    'route' => '/roles',
+                    'sub_menus' => [],
                 ]
             ],
         ],
         [
-            'header' => 'Account',
+            'header' => 'Generators',
             'menus' => [
                 [
-                    'title' => 'Users',
-                    'icon' => '<i class="bi bi-people"></i>',
-                    'route' => '/users',
+                    'title' => 'CRUD Generator',
+                    'icon' => '<i class="bi bi-grid-fill"></i>',
+                    'route' => '/generators/create',
                     'sub_menus' => [],
-                ]
+                ],
             ],
         ],
     ],

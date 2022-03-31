@@ -47,12 +47,19 @@
                     @endforeach
                 @endforeach
 
-                <li class="sidebar-title">Action</li>
+                <li class="sidebar-title">Account</li>
+
+                <li class="sidebar-item{{ request()->is('profile') ? ' active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('profile') }}">
+                        <i class="bi bi-person-badge-fill"></i>
+                        <span> {{ __('Profile') }}</span>
+                    </a>
+                </li>
 
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('logout') }}"
                         onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                        <i class="bi bi-door-open"></i>
+                        <i class="bi bi-door-open-fill"></i>
                         <span> {{ __('Logout') }}</span>
                     </a>
 

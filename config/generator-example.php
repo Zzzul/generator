@@ -31,12 +31,6 @@ return [
                     'sub_menus' => [],
                 ],
                 [
-                    'title' => 'Generators',
-                    'icon' => '<i class="bi bi-grid"></i>',
-                    'route' => '/generators/create',
-                    'sub_menus' => [],
-                ],
-                [
                     'title' => 'Main Data',
                     'icon' => '<i class="bi bi-collection"></i>',
                     'route' => null,
@@ -46,18 +40,24 @@ return [
                             'route' => '/products'
                         ]
                     ],
-                ]
-            ],
-        ],
-        [
-            'header' => 'Account',
-            'menus' => [
+                ],
                 [
                     'title' => 'Users',
                     'icon' => '<i class="bi bi-people"></i>',
                     'route' => '/users',
                     'sub_menus' => [],
                 ]
+            ],
+        ],
+        [
+            'header' => 'Generators',
+            'menus' => [
+                [
+                    'title' => 'CRUD Generator',
+                    'icon' => '<i class="bi bi-grid"></i>',
+                    'route' => '/generators/create',
+                    'sub_menus' => [],
+                ],
             ],
         ],
     ],
