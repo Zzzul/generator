@@ -20,6 +20,7 @@ class ControllerGenerator
         $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($model);
         $modelNameSpaceLowercase = GeneratorUtils::cleanSingularLowerCase($model);
         $modelNameSingularPascalCase = GeneratorUtils::singularPascalCase($model);
+        $modelNameSingularUcWords = GeneratorUtils::cleanSingularUcWords($model);
 
         $template = "";
         $indexCode = "";
@@ -92,7 +93,7 @@ class ControllerGenerator
 
         if (in_array('file', $request['input_types'])) {
             /**
-             * with upload file controller file
+             * controller with upload file code
              */
             $template = str_replace(
                 [
@@ -112,6 +113,7 @@ class ControllerGenerator
                     '{{requestPath}}',
                     '{{modelPath}}',
                     '{{viewPath}}',
+                    '{{modelNameSingularUcWords}}'
                 ],
                 [
                     $modelNameSingularPascalCase,
@@ -130,6 +132,7 @@ class ControllerGenerator
                     $requestPath,
                     $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
                     $path != '' ? str_replace('\\', '.', strtolower($path)) . "." : '',
+                    $modelNameSingularUcWords
                 ],
                 GeneratorUtils::getTemplate('controllers/controller-with-upload-file')
             );
@@ -151,6 +154,7 @@ class ControllerGenerator
                     '{{requestPath}}',
                     '{{modelPath}}',
                     '{{viewPath}}',
+                    '{{modelNameSingularUcWords}}'
                 ],
                 [
                     $modelNameSingularPascalCase,
@@ -165,6 +169,7 @@ class ControllerGenerator
                     $requestPath,
                     $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
                     $path != '' ? str_replace('\\', '.', strtolower($path)) . "." : '',
+                    $modelNameSingularUcWords
                 ],
                 GeneratorUtils::getTemplate('controllers/controller')
             );
@@ -175,7 +180,7 @@ class ControllerGenerator
 
             GeneratorUtils::checkFolder($fullPath);
 
-            file_put_contents("$fullPath{$modelNameSingularPascalCase}Controller.php", $template);
+            file_put_contents("$fullPath" . $modelNameSingularPascalCase . "Controller.php", $template);
         } else {
             file_put_contents(app_path("/Http/Controllers/{$modelNameSingularPascalCase}Controller.php"), $template);
         }
@@ -189,7 +194,7 @@ class ControllerGenerator
      * @param null|string $model,
      * @return string
      */
-    protected function uploadFileCode(string $field, string $path, ?string $model = null)
+    protected function uploadFileCode(string $field, string $path, null|string $model = null)
     {
         $replaceString = [
             '{{fieldSingularSnakeCase}}',

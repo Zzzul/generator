@@ -57,7 +57,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
 
         return redirect()
             ->route('{{modelNamePluralKebabCase}}.index')
-            ->with('success', __('{{modelNameSpaceLowercase}} created successfully.'));
+            ->with('success', __('{{modelNameSingularUcWords}} created successfully.'));
     }
 
     /**
@@ -95,7 +95,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
 
         return redirect()
             ->route('{{modelNamePluralKebabCase}}.index')
-            ->with('success', __('{{modelNameSpaceLowercase}} updated successfully.'));
+            ->with('success', __('{{modelNameSingularUcWords}} updated successfully.'));
     }
 
     /**
@@ -110,6 +110,6 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
 
         return redirect()
             ->route('{{modelNamePluralKebabCase}}.index')
-            ->with('success', __('{{modelNameSpaceLowercase}} deleted successfully.'));
+            ->with('success', __('{{modelNameSingularUcWords}} deleted successfully.'));
     }
 }
