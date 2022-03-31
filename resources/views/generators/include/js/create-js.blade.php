@@ -288,14 +288,14 @@
         const btnBack = $('#btn-back')
         const btnSave = $('#btn-save')
         const btnAdd = $('#btn-add')
-        //
-        btnBack.prop('disabled', true)
-        // btnSave.prop('disabled', true)
-        // btnAdd.prop('disabled', true)
 
-        // btnBack.text('Loading...')
-        // btnSave.text('Loading...')
-        // btnAdd.text('Loading...')
+        btnBack.prop('disabled', true)
+        btnSave.prop('disabled', true)
+        btnAdd.prop('disabled', true)
+
+        btnBack.text('Loading...')
+        btnSave.text('Loading...')
+        btnAdd.text('Loading...')
 
         $.ajax({
             type: 'POST',

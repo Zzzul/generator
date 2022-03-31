@@ -37,10 +37,10 @@ class FormViewGenerator
                 if ($request['input_types'][$i] == 'select') {
 
                     // select
-                    foreach ($arrOption as $i => $value) {
-                        $options .= "<option value=\"" . $value . "\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '" . $value . "' ? 'selected' : (old('$fieldSnakeCase') == '" . $value . "' ? 'selected' : '') }}>" . GeneratorUtils::cleanSingularUcWords($value) . "</option>";
+                    foreach ($arrOption as $arrOptionIndex => $value) {
+                        $options .= "<option value=\"" . $value . "\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '" . $value . "' ? 'selected' : (old('$fieldSnakeCase') == '" . $value . "' ? 'selected' : '') }}>$value</option>";
 
-                        if ($i + 1 != $totalOptions) {
+                        if ($arrOptionIndex + 1 != $totalOptions) {
                             $options .= "\n\t\t";
                         } else {
                             $options .= "\t\t\t";
@@ -69,21 +69,23 @@ class FormViewGenerator
                     // radio
                     $options .= "\t<div class=\"col-md-6\">\n\t<label class=\"text-dark\">$fieldUcWords</label>\n";
 
-                    foreach ($arrOption as $i => $value) {
+                    foreach ($arrOption as $value) {
                         $options .= str_replace(
                             [
                                 '{{fieldSnakeCase}}',
                                 '{{optionKebabCase}}',
-                                '{{optionUcWords}}',
+                                '{{value}}',
                                 '{{optionLowerCase}}',
-                                '{{checked}}'
+                                '{{checked}}',
+                                '{{nullable}}'
                             ],
                             [
                                 $fieldSnakeCase,
                                 GeneratorUtils::singularKebabCase($value),
-                                GeneratorUtils::cleanSingularUcWords($value),
+                                $value,
                                 GeneratorUtils::cleanSingularLowerCase($value),
-                                "{{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$field == '$value' ? 'checked' : (old('$field') == '$value' ? 'checked' : '') }}"
+                                "{{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$field == '$value' ? 'checked' : (old('$field') == '$value' ? 'checked' : '') }}",
+                                $request['requireds'][$i] == 'yes' ? ' required' : '',
                             ],
                             GeneratorUtils::getTemplate('views/forms/radio')
                         );
