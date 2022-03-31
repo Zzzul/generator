@@ -24,8 +24,8 @@ class FormViewGenerator
 
         foreach ($request['fields'] as $i => $field) {
 
-            $fieldSnakeCase = GeneratorUtils::singularSnakeCase($field);
-            $fieldUcWords = GeneratorUtils::cleanSingularUcWords($field);
+            $fieldSnakeCase = str()->snake($field);
+            $fieldUcWords = GeneratorUtils::cleanUcWords($field);
 
             if ($request['data_types'][$i] == 'enum') {
                 $options = "";
@@ -209,7 +209,7 @@ class FormViewGenerator
                     [
                         $modelNameSingularCamelCase,
                         GeneratorUtils::pluralSnakeCase($field),
-                        GeneratorUtils::singularSnakeCase($field),
+                        str()->snake($field),
                         $fieldUcWords,
                         $request['requireds'][$i] == 'yes' ? ' required' : '',
                     ],

@@ -32,7 +32,7 @@ class IndexViewGenerator
              * <th>{{ __('Price') }}</th>
              */
             if ($request['data_types'][$i] != 'foreignId') {
-                $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($field) . "') }}</th>";
+                $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanUcWords($field) . "') }}</th>";
             }
 
             if ($request['input_types'][$i] == 'file') {
@@ -52,8 +52,8 @@ class IndexViewGenerator
                  */
 
                 $tdColumns .=  "{
-                    data: '" . GeneratorUtils::singularSnakeCase($field) . "',
-                    name: '" . GeneratorUtils::singularSnakeCase($field) . "',
+                    data: '" . str()->snake($field) . "',
+                    name: '" . str()->snake($field) . "',
                     orderable: false,
                     searchable: false,
                     render: function(data, type, full, meta) {
@@ -88,8 +88,8 @@ class IndexViewGenerator
                  * }
                  */
                 $tdColumns .= "{
-                    data: '" . GeneratorUtils::singularSnakeCase($field) . "',
-                    name: '" . GeneratorUtils::singularSnakeCase($field) . "'
+                    data: '" . str()->snake($field) . "',
+                    name: '" . str()->snake($field) . "'
                 },";
             }
 

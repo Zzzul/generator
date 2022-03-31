@@ -153,6 +153,17 @@ class GeneratorUtils
     }
 
     /**
+     * Remove special caracters, and uppercase every first letters.
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function cleanUcWords(string $string)
+    {
+        return ucwords(trim(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string)));
+    }
+
+    /**
      * Convert string to plural, remove special caracters, and lowercase.
      *
      * @param string $string

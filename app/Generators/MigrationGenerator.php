@@ -24,7 +24,7 @@ class MigrationGenerator
              * will generate like:
              * $table->string('name
              */
-            $setFields .= "\$table->" . $request['data_types'][$i] . "('" . GeneratorUtils::singularSnakeCase($field);
+            $setFields .= "\$table->" . $request['data_types'][$i] . "('" . str()->snake($field);
 
             /**
              * will generate like:

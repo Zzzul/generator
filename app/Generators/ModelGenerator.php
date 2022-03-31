@@ -29,25 +29,25 @@ class ModelGenerator
         foreach ($request['fields'] as $i => $value) {
 
             if ($i + 1 != $totalFields) {
-                $fields .= "'" . GeneratorUtils::singularSnakeCase($value) . "', ";
+                $fields .= "'" . str()->snake($value) . "', ";
             } else {
-                $fields .= "'" . GeneratorUtils::singularSnakeCase($value) . "']";
+                $fields .= "'" . str()->snake($value) . "']";
             }
 
             if ($request['data_types'][$i] == 'date') {
-                $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'date:d/m/Y', ";
+                $casts .= "'" . str()->snake($value) . "' => 'date:d/m/Y', ";
             } elseif ($request['data_types'][$i] == 'dateTime') {
-                $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'datetime:d/m/Y H:i', ";
+                $casts .= "'" . str()->snake($value) . "' => 'datetime:d/m/Y H:i', ";
             } elseif (str_contains($request['data_types'][$i], 'integer')) {
-                $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'integer', ";
+                $casts .= "'" . str()->snake($value) . "' => 'integer', ";
             } elseif ($request['data_types'][$i] == 'float') {
-                $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'float', ";
+                $casts .= "'" . str()->snake($value) . "' => 'float', ";
             } elseif ($request['data_types'][$i] == 'boolean') {
-                $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'boolean', ";
+                $casts .= "'" . str()->snake($value) . "' => 'boolean', ";
             } elseif ($request['data_types'][$i] == 'double') {
-                $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'double', ";
+                $casts .= "'" . str()->snake($value) . "' => 'double', ";
             } elseif (str_contains($request['data_types'][$i], 'string') || str_contains($request['data_types'][$i], 'text') || str_contains($request['data_types'][$i], 'char')) {
-                $casts .= "'" . GeneratorUtils::singularSnakeCase($value) . "' => 'string', ";
+                $casts .= "'" . str()->snake($value) . "' => 'string', ";
             } elseif ($request['data_types'][$i] == 'foreignId') {
                 $constrainPath = GeneratorUtils::getModelLocation($request['constrains'][$i]);
                 $constrainName = GeneratorUtils::setModelName($request['constrains'][$i]);
@@ -76,7 +76,7 @@ class ModelGenerator
                  *     return $this->belongsTo(\App\Models\Master\Product::class); or return $this->belongsTo(\App\Models\Product::class);
                  * }
                  */
-                $relations .= "public function " . GeneratorUtils::singularSnakeCase($constrainName) . "()\n\t{\n\t\treturn \$this->belongsTo(" . $constrainPath . "::class" . $foreign_id . ");\n\t}";
+                $relations .= "public function " . str()->snake($constrainName) . "()\n\t{\n\t\treturn \$this->belongsTo(" . $constrainPath . "::class" . $foreign_id . ");\n\t}";
 
                 if ($i + 1 != $totalFields) {
                     $relations .= "\n\n";

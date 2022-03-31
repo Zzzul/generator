@@ -29,7 +29,7 @@ class RequestGenerator
              * will generate like:
              * 'name' =>
              */
-            $validations .= "'" . GeneratorUtils::singularSnakeCase($field) . "' => ";
+            $validations .= "'" . str()->snake($field) . "' => ";
 
             /**
              * will generate like:
