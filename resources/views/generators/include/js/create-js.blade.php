@@ -289,13 +289,13 @@
         const btnSave = $('#btn-save')
         const btnAdd = $('#btn-add')
 
-        btnBack.prop('disabled', true)
-        btnSave.prop('disabled', true)
-        btnAdd.prop('disabled', true)
+        // btnBack.prop('disabled', true)
+        // btnSave.prop('disabled', true)
+        // btnAdd.prop('disabled', true)
 
-        btnBack.text('Loading...')
-        btnSave.text('Loading...')
-        btnAdd.text('Loading...')
+        // btnBack.text('Loading...')
+        // btnSave.text('Loading...')
+        // btnAdd.text('Loading...')
 
         $.ajax({
             type: 'POST',
@@ -314,7 +314,7 @@
                     title: 'Success',
                     text: 'Module generated successfully!'
                 }).then(function() {
-                    window.location = '{{ route('generators.create') }}'
+                    // window.location = '{{ route('generators.create') }}'
                 })
             },
             error: function(xhr, status, response) {

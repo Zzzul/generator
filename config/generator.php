@@ -50,7 +50,7 @@ return [
                     'icon' => '<i class="bi bi-people-fill"></i>',
                     'route' => '/users',
                     'permission' => 'view user',
-                    'permissions' => null,
+                    'permissions' => [],
                     'sub_menus' => [],
                 ],
                 [
@@ -58,7 +58,7 @@ return [
                     'icon' => '<i class="bi bi-person-check-fill"></i>',
                     'route' => '/roles',
                     'permission' => 'view role & permission',
-                    'permissions' => null,
+                    'permissions' => [],
                     'sub_menus' => [],
                 ]
             ],

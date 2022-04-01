@@ -46,6 +46,12 @@ class GeneratorController extends Controller
      */
     public function store(StoreGeneratorRequest $request)
     {
+        // return array_slice(config('generator.sidebars')[1]['permissions'],1);
+
+        (new MenuGenerator)->generate($request->validated());
+
+        return ['success'];
+
         if ($request->generate_type == 'all') {
             $this->generateAll($request->validated());
         } else {
