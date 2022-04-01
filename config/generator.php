@@ -23,53 +23,44 @@ return [
     'sidebars' => [
         [
             'header' => 'Main',
+            'permissions' => ['view test'],
             'menus' => [
-                [
-                    'title' => 'Dashboard',
-                    'icon' => '<i class="bi bi-speedometer"></i>',
-                    'route' => '/',
-                    'sub_menus' => [],
-                ],
                 [
                     'title' => 'Main Data',
                     'icon' => '<i class="bi bi-collection-fill"></i>',
                     'route' => null,
+                    'permission' => null,
+                    'permissions' => ['view test'],
                     'sub_menus' => [
                         [
-                            'title' => 'Products',
-                            'route' => '#'
+                            'title' => 'Tests',
+                            'route' => '/tests',
+                            'permission' => 'view test'
                         ]
                     ],
                 ],
-
             ],
         ],
         [
             'header' => 'Users',
+            'permissions' => ['view user', 'view role & permission'],
             'menus' => [
                 [
                     'title' => 'Users',
                     'icon' => '<i class="bi bi-people-fill"></i>',
                     'route' => '/users',
+                    'permission' => 'view user',
+                    'permissions' => null,
                     'sub_menus' => [],
                 ],
                 [
-                    'title' => 'Roles & Permissions',
+                    'title' => 'Roles & permissions',
                     'icon' => '<i class="bi bi-person-check-fill"></i>',
                     'route' => '/roles',
+                    'permission' => 'view role & permission',
+                    'permissions' => null,
                     'sub_menus' => [],
                 ]
-            ],
-        ],
-        [
-            'header' => 'Generators',
-            'menus' => [
-                [
-                    'title' => 'CRUD Generator',
-                    'icon' => '<i class="bi bi-grid-fill"></i>',
-                    'route' => '/generators/create',
-                    'sub_menus' => [],
-                ],
             ],
         ],
     ],

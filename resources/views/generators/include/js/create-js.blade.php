@@ -133,7 +133,7 @@
 
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
             <div class="form-group form-constrain mt-2">
-                <input type="text" name="constrains[]" class="form-control" placeholder="Constrain / model name" required>
+                <input type="text" name="constrains[]" class="form-control" placeholder="Constrain or related model name" required>
                 <small class="text-secondary">Used '/' if related model at sub folder, eg: Main/Product.</small>
             </div>
             <div class="form-group form-foreign-id mt-2">

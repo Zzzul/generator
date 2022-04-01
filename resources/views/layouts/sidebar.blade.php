@@ -13,39 +13,70 @@
         </div>
         <div class="sidebar-menu">
             <ul class="menu">
+                <li class="sidebar-item{{ request()->is('/') || request()->is('dashboard') ? ' active' : '' }}">
+                    <a class="sidebar-link" href="/">
+                        <i class="bi bi-speedometer"></i>
+                        <span> {{ __('Dashboard') }}</span>
+                    </a>
+                </li>
 
                 @foreach (config('generator.sidebars') as $sidebar)
-                    <li class="sidebar-title">{{ $sidebar['header'] }}</li>
+                    @if (!is_null($sidebar['permissions']))
+                        @canany($sidebar['permissions'])
+                            <li class="sidebar-title">{{ $sidebar['header'] }}</li>
 
-                    @foreach ($sidebar['menus'] as $menu)
-                        @if ($menu['route'] != null && empty($menu['sub_menus']))
-                            <li
-                                class="sidebar-item{{ request()->is($menu['route'] == '/' ? $menu['route'] : substr($menu['route'] . '*', 1)) ? ' active' : '' }}">
-                                <a href="{{ $menu['route'] }}" class="sidebar-link">
-                                    {!! $menu['icon'] !!}
-                                    <span>{{ __($menu['title']) }}</span>
-                                </a>
-                            </li>
-                        @else
-                            <li
-                                class="sidebar-item has-sub{{ request()->is(str()->slug($menu['title']) . '*') ? ' active' : '' }}">
-                                <a href="#" class="sidebar-link">
-                                    {!! $menu['icon'] !!}
-                                    <span>{{ __($menu['title']) }}</span>
-                                </a>
-                                <ul class="submenu ">
-                                    @foreach ($menu['sub_menus'] as $sub_menu)
-                                        <li class="submenu-item">
-                                            <a href="{{ $sub_menu['route'] }}">
-                                                {{ __($sub_menu['title']) }}
+                            @foreach ($sidebar['menus'] as $menu)
+                                @php
+                                    $permissions = is_null($menu['permission']) ? $menu['permissions'] : [$menu['permission']];
+                                @endphp
+
+                                @canany($permissions)
+                                    @if (empty($menu['sub_menus']))
+                                        @can($menu['permission'])
+                                            <li class="sidebar-item{{ request()->is(substr($menu['route'] . '*', 1)) ? ' active' : '' }}">
+                                                <a href="{{ $menu['route'] }}" class="sidebar-link">
+                                                    {!! $menu['icon'] !!}
+                                                    <span>{{ __($menu['title']) }}</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+                                    @else
+                                        <li class="sidebar-item has-sub{{ request()->is(str($menu['title'])->slug() . '*') ? ' active' : '' }}">
+                                            <a href="#" class="sidebar-link">
+                                                {!! $menu['icon'] !!}
+                                                <span>{{ __($menu['title']) }}</span>
                                             </a>
+                                            <ul class="submenu ">
+                                                @canany($menu['permissions'])
+                                                    @foreach ($menu['sub_menus'] as $sub_menu)
+                                                        @can($sub_menu['permission'])
+                                                            <li class="submenu-item">
+                                                                <a href="{{ $sub_menu['route'] }}">
+                                                                    {{ __($sub_menu['title']) }}
+                                                                </a>
+                                                            </li>
+                                                        @endcan
+                                                    @endforeach
+                                                @endcanany
+                                            </ul>
                                         </li>
-                                    @endforeach
-                                </ul>
-                            </li>
-                        @endif
-                    @endforeach
+                                    @endif
+                                @endcanany
+                            @endforeach
+                        @endcanany
+                    @endif
                 @endforeach
+
+                @if (env('APP_ENV') == 'local')
+                    <li class="sidebar-title">Generators</li>
+
+                    <li class="sidebar-item{{ request()->is('generators') ? ' active' : '' }}">
+                        <a class="sidebar-link" href="{{ route('generators.create') }}">
+                            <i class="bi bi-grid"></i>
+                            <span> {{ __('CRUD Generator') }}</span>
+                        </a>
+                    </li>
+                @endif
 
                 <li class="sidebar-title">Account</li>
 

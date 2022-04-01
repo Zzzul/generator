@@ -33,7 +33,7 @@ class PermissionGenerator
                 " => ",
                 "'",
                 ', ',
-                "]], \n\t\t// Don't remove comment below, it will generate new permissions"
+                "]], \n\t\t// Don't remove this comment, it will used as 'search param' to generate a new permission"
             ],
             json_encode([
                 'group' => $modelNamePlural,
@@ -51,7 +51,7 @@ class PermissionGenerator
 
         $newPermissionFile = str_replace(
             [
-                "// Don't remove comment below, it will generate new permissions"
+                "// Don't remove this comment, it will used as 'search param' to generate a new permission"
             ],
             [
                 $permissions
