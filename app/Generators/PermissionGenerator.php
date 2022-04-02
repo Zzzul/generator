@@ -43,7 +43,7 @@ class PermissionGenerator
                     "edit $modelNameSingular",
                     "delete $modelNameSingular",
                 ]
-            ])
+                ])
         );
 
         $path = config_path('permission.php');

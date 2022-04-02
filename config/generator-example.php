@@ -23,41 +23,44 @@ return [
     'sidebars' => [
         [
             'header' => 'Main',
+            'permissions' => ['view test'],
             'menus' => [
                 [
-                    'title' => 'Dashboard',
-                    'icon' => '<i class="bi bi-speedometer2"></i>',
-                    'route' => '/',
-                    'sub_menus' => [],
-                ],
-                [
                     'title' => 'Main Data',
-                    'icon' => '<i class="bi bi-collection"></i>',
+                    'icon' => '<i class="bi bi-collection-fill"></i>',
                     'route' => null,
+                    'permission' => null,
+                    'permissions' => ['view test'],
                     'sub_menus' => [
                         [
-                            'title' => 'Products',
-                            'route' => '/products'
+                            'title' => 'Tests',
+                            'route' => '/tests',
+                            'permission' => 'view test'
                         ]
                     ],
                 ],
-                [
-                    'title' => 'Users',
-                    'icon' => '<i class="bi bi-people"></i>',
-                    'route' => '/users',
-                    'sub_menus' => [],
-                ]
             ],
         ],
         [
-            'header' => 'Generators',
+            'header' => 'Users',
+            'permissions' => ['view user', 'view role & permission'],
             'menus' => [
                 [
-                    'title' => 'CRUD Generator',
-                    'icon' => '<i class="bi bi-grid"></i>',
-                    'route' => '/generators/create',
+                    'title' => 'Users',
+                    'icon' => '<i class="bi bi-people-fill"></i>',
+                    'route' => '/users',
+                    'permission' => 'view user',
+                    'permissions' => [],
                     'sub_menus' => [],
                 ],
+                [
+                    'title' => 'Roles & permissions',
+                    'icon' => '<i class="bi bi-person-check-fill"></i>',
+                    'route' => '/roles',
+                    'permission' => 'view role & permission',
+                    'permissions' => [],
+                    'sub_menus' => [],
+                ]
             ],
         ],
     ],

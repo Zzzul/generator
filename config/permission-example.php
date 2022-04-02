@@ -159,23 +159,31 @@ return [
         'store' => 'default',
     ],
 
-    'list_permissions' => [[
-    [
-        'group' => 'roles & permissions',
-        'lists' => [
-            'view role & permission',
-            'create role & permission',
-            'edit role & permission',
-            'delete role & permission'
-        ]
-    ],
-    [
-        'group' => 'test',
-        'lists' => [
-            'view test'
-        ]
-    ]
-],
-	// Don't remove this comment, it will used as 'search param' to generate a new permission
+    'list_permissions' => [
+        [
+            'group' => 'users',
+            'lists' => [
+                'view user',
+                'create user',
+                'edit user',
+                'delete user',
+            ]
+        ],
+        [
+            'group' => 'roles & permissions',
+            'lists' => [
+                'view role & permission',
+                'create role & permission',
+                'edit role & permission',
+                'delete role & permission',
+            ]
+        ],
+        [
+            'group' => 'test',
+            'lists' => [
+                'view test',
+            ]
+        ],
+        // Don't remove this comment, it will used as 'search param' to generate a new permission
     ],
 ];

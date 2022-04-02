@@ -7,7 +7,6 @@ use App\Http\Requests\StoreGeneratorRequest;
 use Illuminate\Support\Facades\Artisan;
 use App\Generators\{
     ControllerGenerator,
-    GeneratorUtils,
     MenuGenerator,
     ModelGenerator,
     MigrationGenerator,
@@ -46,12 +45,6 @@ class GeneratorController extends Controller
      */
     public function store(StoreGeneratorRequest $request)
     {
-        // return array_slice(config('generator.sidebars')[1]['permissions'],1);
-
-        (new MenuGenerator)->generate($request->validated());
-
-        return ['success'];
-
         if ($request->generate_type == 'all') {
             $this->generateAll($request->validated());
         } else {
@@ -106,34 +99,5 @@ class GeneratorController extends Controller
         $sidebar = config('generator.sidebars')[$index];
 
         return response()->json($sidebar['menus'], Response::HTTP_OK);
-    }
-
-    public function test()
-    {
-        // dump(config('generator.sidebars')[2]['menus'][0]);
-
-        $sidebar = "<ul>";
-        foreach (config('generator.sidebars') as $sidebar) {
-            $permissions = [];
-
-            foreach ($sidebar['menus'] as $i => $menu) {
-                if (empty($menu['sub_menus'])) {
-                    if(!is_null($menu['permission'])){
-                        $permissions[] .= "'" . $menu['permission']  . "', ";
-                    }
-                } else {
-                    foreach ($menu['sub_menus'] as $sub_menu) {
-                        if(!is_null($sub_menu['permission'])){
-                            $permissions[] .= "'" . $sub_menu['permission']  . "', ";
-                        }
-                    }
-                }
-            }
-        }
-        $sidebar .= "</ul>";
-
-        dump($permissions);
-
-        // dump("@canany([$permissions])");
     }
 }

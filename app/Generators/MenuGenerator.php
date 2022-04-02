@@ -33,7 +33,7 @@ class MenuGenerator
             $this->generateNewSubMenu(
                 menu: json_decode($request['menu'], true),
                 model: $model,
-                configSidebar: $configSidebar
+                configSidebar: $configSidebar,
             );
         }
     }
@@ -125,11 +125,10 @@ class MenuGenerator
 
         array_splice($configSidebar[$indexSidebar]['permissions'], $indexMenu, 1);
 
-        if($oldPermission = $configSidebar[$indexSidebar]['menus'][$indexMenu]['permission']){
-            Permission::where('name', 'like', '%' . str($oldPermission)->after('view ') .'%' )->delete();
+        // remove permission from database
+        if ($oldPermission = $configSidebar[$indexSidebar]['menus'][$indexMenu]['permission']) {
+            Permission::where('name', 'like', '%' . str($oldPermission)->after('view ') . '%')->delete();
         }
-
-        // $configSidebar[$indexSidebar]['permissions'] = null;
 
         // push to permissions on menus
         array_push($configSidebar[$indexSidebar]['menus'][$indexMenu]['permissions'], $newPermission);
@@ -140,8 +139,11 @@ class MenuGenerator
         // push new submenu
         array_push($configSidebar[$indexSidebar]['menus'][$indexMenu]['sub_menus'], [
             'title' => GeneratorUtils::cleanPluralUcWords($model),
-            'route' => '/' . GeneratorUtils::cleanPluralLowerCase($model)
+            'route' => '/' . GeneratorUtils::cleanPluralLowerCase($model),
+            'permission' => 'view ' . GeneratorUtils::cleanSingularLowerCase($model),
         ]);
+
+        $this->removePermissionOnConfig(str($model)->singular()->lower());
 
         $stringCode = $this->convertJsonToArrayString($configSidebar);
 
@@ -158,11 +160,11 @@ class MenuGenerator
     {
         $template = "<?php " . PHP_EOL . "\nreturn [ " . PHP_EOL . "\t'data_types' => " . $this->getDataTypes() . "," . PHP_EOL . "\t'sidebars' => " . $jsonToArrayString . "\n];";
 
-        file_put_contents(base_path('config/generator-test.php'), $template);
+        file_put_contents(base_path('config/generator.php'), $template);
     }
 
     /**
-     * Get all avaible data types on config(array), convert to json and convert again to string(format like an array)
+     * Get all avaible data types on config(array), convert to json and convert again to string with format like an array
      *
      * @return string
      */
@@ -184,39 +186,6 @@ class MenuGenerator
                 "\t\t'"
             ],
             json_encode(config('generator.data_types'))
-        );
-    }
-
-    /**
-     * Convert json to string with format like an array.
-     *
-     * @param array $replace
-     * @return string
-     */
-    protected function convertJsonToArrayString(array $replace)
-    {
-        return str_replace(
-            [
-                '{',
-                '}',
-                ':',
-                '"',
-                "','",
-                "\\",
-                "='",
-                "'>"
-            ],
-            [
-                '[',
-                ']',
-                ' =>',
-                "'",
-                "', '",
-                '',
-                '="',
-                '">'
-            ],
-            json_encode($replace, JSON_PRETTY_PRINT)
         );
     }
 
@@ -260,5 +229,65 @@ class MenuGenerator
         }
 
         return $newMenu;
+    }
+
+    protected function removePermissionOnConfig(string $permissionName)
+    {
+        $permissions = config('permission.list_permissions');
+        $permissionIndex = array_search($permissionName, array_column($permissions, 'group'));
+
+        array_splice($permissions, $permissionIndex, 1);
+
+        $permissionFile = file_get_contents(config_path('permission.php'));
+
+        $stringAfter = str($permissionFile)->after("'list_permissions' => [");
+
+        $search = str($stringAfter)->before("// Don't remove this comment, it will used as 'search param' to generate a new permission");
+
+        // remove '[' and ']' cause will make a multi-dimensional array
+        $newPermissions = substr($this->convertJsonToArrayString($permissions), 1, -1);
+
+        $replace = str_replace($search, $newPermissions, $permissionFile);
+
+        $addNewLineToComment = str_replace(
+            "// Don't remove this comment, it will used as 'search param' to generate a new permission",
+            ",\n\t// Don't remove this comment, it will used as 'search param' to generate a new permission",
+            $replace
+        );
+
+        file_put_contents(base_path('config/permission.php'), $addNewLineToComment);
+    }
+
+    /**
+     * Convert json to string with format like an array.
+     *
+     * @param array $replace
+     * @return string
+     */
+    protected function convertJsonToArrayString(array $replace)
+    {
+        return str_replace(
+            [
+                '{',
+                '}',
+                ':',
+                '"',
+                "','",
+                "\\",
+                "='",
+                "'>"
+            ],
+            [
+                '[',
+                ']',
+                ' =>',
+                "'",
+                "', '",
+                '',
+                '="',
+                '">'
+            ],
+            json_encode($replace, JSON_PRETTY_PRINT)
+        );
     }
 }
