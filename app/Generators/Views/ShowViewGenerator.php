@@ -31,34 +31,34 @@ class ShowViewGenerator
                 $trs .= "\t\t\t\t\t\t\t\t\t";
             }
 
-            $fieldSingularUcWords = GeneratorUtils::cleanSingularUcWords($field);
-            $fieldSingularSnakeCase = GeneratorUtils::singularSnakeCase($field);
+            $fieldUcWords = GeneratorUtils::cleanUcWords($field);
+            $fieldSnakeCase = str($field)->snake();
 
             if ($request['file_types'][$i] == 'image') {
                 $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('$fieldSingularUcWords') }}</td>
+                                        <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
                                         <td>
-                                            @if ($" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . " == null)
-                                            <img src=\"https://via.placeholder.com/350?text=No+Image+Available\" alt=\"$fieldSingularUcWords\"  class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
+                                            @if ($" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " == null)
+                                            <img src=\"https://via.placeholder.com/350?text=No+Image+Available\" alt=\"$fieldUcWords\"  class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
                                             @else
-                                                <img src=\"{{ asset('uploads/" . GeneratorUtils::pluralSnakeCase($field) . "/' . $" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . ") }}\" alt=\"$fieldSingularUcWords\" class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
+                                                <img src=\"{{ asset('uploads/" . str($field)->plural()->snake() . "/' . $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . ") }}\" alt=\"$fieldUcWords\" class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
                                             @endif
                                         </td>
                                     </tr>";
             } elseif ($request['data_types'][$i] == 'date') {
                 $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('$fieldSingularUcWords') }}</td>
-                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . "->format('d/m/Y') }}</td>
+                                        <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('d/m/Y') }}</td>
                                     </tr>";
             } elseif ($request['data_types'][$i] == 'dateTime') {
                 $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('$fieldSingularUcWords') }}</td>
-                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . "->format('d/m/Y H:i') }}</td>
+                                        <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('d/m/Y H:i') }}</td>
                                     </tr>";
             } elseif ($request['data_types'][$i] == 'boolean') {
                 $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('$fieldSingularUcWords') }}</td>
-                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . " == 1 ? 'True' : 'False' }}</td>
+                                        <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " == 1 ? 'True' : 'False' }}</td>
                                     </tr>";
             } elseif ($request['data_types'][$i] == 'foreignId') {
                 // remove '/' or sub folders
@@ -70,8 +70,8 @@ class ShowViewGenerator
                                     </tr>";
             } else {
                 $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('$fieldSingularUcWords') }}</td>
-                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSingularSnakeCase . " }}</td>
+                                        <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
+                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " }}</td>
                                     </tr>";
             }
 
