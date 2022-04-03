@@ -96,6 +96,8 @@ class GeneratorController extends Controller
      */
     public function getSidebarMenus(int $index)
     {
+        abort_if(!request()->ajax(), 403);
+
         $sidebar = config('generator.sidebars')[$index];
 
         return response()->json($sidebar['menus'], Response::HTTP_OK);
