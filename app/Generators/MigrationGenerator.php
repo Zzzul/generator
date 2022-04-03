@@ -13,7 +13,6 @@ class MigrationGenerator
     public function generate(array $request)
     {
         $model = GeneratorUtils::setModelName($request['model']);
-        $tableNamePluralUppercase = GeneratorUtils::pluralPascalCase($model);
         $tableNamePluralLowercase = GeneratorUtils::pluralSnakeCase($model);
 
         $setFields = '';
@@ -21,13 +20,13 @@ class MigrationGenerator
 
         foreach ($request['fields'] as $i => $field) {
             /**
-             * will generate like:
+             * will generate something like:
              * $table->string('name
              */
             $setFields .= "\$table->" . $request['data_types'][$i] . "('" . str()->snake($field);
 
             /**
-             * will generate like:
+             * will generate something like:
              * $table->string('name
              */
             if ($request['data_types'][$i] == 'enum') {
@@ -45,7 +44,7 @@ class MigrationGenerator
                 }
 
                 /**
-                 * will generate like:
+                 * will generate something like:
                  * $table->string('name', ['water', 'fire']
                  */
                 $setFields .= "', " . $enum;
@@ -54,13 +53,13 @@ class MigrationGenerator
             if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0) {
                 if ($request['data_types'][$i] == 'enum') {
                     /**
-                     * will generate like:
+                     * will generate something like:
                      * $table->string('name', ['water', 'fire'])
                      */
                     $setFields .=  ")";
                 } else {
                     /**
-                     * will generate like:
+                     * will generate something like:
                      * $table->string('name', 30)
                      */
                     $setFields .=  "', " . $request['max_lengths'][$i] . ")";
@@ -68,13 +67,13 @@ class MigrationGenerator
             } else {
                 if ($request['data_types'][$i] == 'enum') {
                     /**
-                     * will generate like:
+                     * will generate something like:
                      * $table->string('name', ['water', 'fire'])
                      */
                     $setFields .=  ")";
                 } else {
                     /**
-                     * will generate like:
+                     * will generate something like:
                      * $table->string('name')
                      */
                     $setFields .= "')";
@@ -83,7 +82,7 @@ class MigrationGenerator
 
             if ($request['requireds'][$i] != 'yes') {
                 /**
-                 * will generate like:
+                 * will generate something like:
                  * $table->string('name', 30)->nullable() or $table->string('name')->nullable()
                  */
                 $setFields .= "->nullable()";
@@ -112,12 +111,10 @@ class MigrationGenerator
 
         $template = str_replace(
             [
-                '{{tableNamePluralUppercase}}',
                 '{{tableNamePluralLowecase}}',
                 '{{fields}}'
             ],
             [
-                $tableNamePluralUppercase,
                 $tableNamePluralLowercase,
                 $setFields
             ],
