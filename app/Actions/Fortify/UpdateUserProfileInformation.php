@@ -3,7 +3,6 @@
 namespace App\Actions\Fortify;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
@@ -29,38 +28,33 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
-            'photo' => ['nullable', 'image', 'max:1024']
+            'avatar' => ['nullable', 'image', 'max:1024']
         ])->validateWithBag('updateProfileInformation');
 
-        if (isset($input['photo']) && $input['photo']->isValid()) {
+        if (isset($input['avatar']) && $input['avatar']->isValid()) {
 
-            $filename = time() . '.' . $input['photo']->getClientOriginalExtension();
+            $filename = $input['avatar']->hashName();
 
-            $destination = 'uploads/images/';
-
-            if (!file_exists($path = public_path($destination))) {
+            if (!file_exists($path = public_path('uploads/images/avatars/'))) {
                 mkdir($path, 0777, true);
             }
 
-            Image::make($input['photo']->getRealPath())->resize(500, 500, function ($constraint) {
+            Image::make($input['avatar']->getRealPath())->resize(500, 500, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->save($destination . $filename);
+            })->save('uploads/images/avatars/' . $filename);
 
-            // delete old photo from storage
-            if ($user->photo != null && file_exists(public_path("/uploads/images/$user->photo"))) {
-                unlink(public_path("/uploads/images/$user->photo"));
+            // delete old avatar from storage
+            if ($user->avatar != null && file_exists(public_path("/uploads/images/avatars/$user->avatar"))) {
+                unlink(public_path("/uploads/images/avatars/$user->avatar"));
             }
 
             $user->forceFill([
-                'photo' => $filename,
+                'avatar' => $filename,
             ])->save();
         }
 
-        if (
-            $input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail
-        ) {
+        if ($input['email'] !== $user->email && $user instanceof MustVerifyEmail) {
             $this->updateVerifiedUser($user, $input);
         } else {
             $user->forceFill([

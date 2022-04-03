@@ -77,24 +77,23 @@
                                 <div class="row">
                                     <div class="col-md-1">
                                         <div class="avatar avatar-xl mb-3">
-                                            @if (auth()->user()->photo == null)
+                                            @if (auth()->user()->avatar == null)
                                                 <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim(auth()->user()->email))) }}&s=500"
-                                                    alt="Photo">
+                                                    alt="Avatar">
                                             @else
-                                                <img src="{{ asset('uploads/images/' . auth()->user()->photo) }}"
-                                                    alt="Photo">
+                                                <img src="{{ asset('uploads/images/avatars/' . auth()->user()->avatar) }}" alt="Avatar">
                                             @endif
                                         </div>
                                     </div>
 
                                     <div class="col-md-11">
                                         <div class="form-group">
-                                            <label for="photo">{{ __('Photo') }}</label>
-                                            <input type="file" name="photo"
-                                                class="form-control @error('photo', 'updateProfileInformation') is-invalid @enderror"
-                                                id="photo">
+                                            <label for="avatar">{{ __('Avatar') }}</label>
+                                            <input type="file" name="avatar"
+                                                class="form-control @error('avatar', 'updateProfileInformation') is-invalid @enderror"
+                                                id="avatar">
 
-                                            @error('photo', 'updateProfileInformation')
+                                            @error('avatar', 'updateProfileInformation')
                                                 <div class="invalid-feedback">
                                                     <i class="bx bx-radio-circle"></i>
                                                     {{ $message }}

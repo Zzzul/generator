@@ -21,13 +21,13 @@
                 </li>
 
                 @foreach (config('generator.sidebars') as $sidebar)
-                    @if (!is_null($sidebar['permissions']))
+                    @if (isset($sidebar['permissions']))
                         @canany($sidebar['permissions'])
                             <li class="sidebar-title">{{ $sidebar['header'] }}</li>
 
                             @foreach ($sidebar['menus'] as $menu)
                                 @php
-                                    $permissions = is_null($menu['permission']) ? $menu['permissions'] : [$menu['permission']];
+                                    $permissions = empty($menu['permission']) ? $menu['permissions'] : [$menu['permission']];
                                 @endphp
 
                                 @canany($permissions)
@@ -67,12 +67,12 @@
                     @endif
                 @endforeach
 
-                @if (env('APP_ENV') == 'local')
+                @if (env('APP_ENV') === 'local')
                     <li class="sidebar-title">Generators</li>
 
                     <li class="sidebar-item{{ request()->is('generators') ? ' active' : '' }}">
                         <a class="sidebar-link" href="{{ route('generators.create') }}">
-                            <i class="bi bi-grid"></i>
+                            <i class="bi bi-grid-fill"></i>
                             <span> {{ __('CRUD Generator') }}</span>
                         </a>
                     </li>
