@@ -43,8 +43,7 @@
     <div class="col-md-6">
         <div class="form-group">
             <label for="password-confirmation">{{ __('Password Confirmation') }}</label>
-            <input type="password" name="password_confirmation" id="password-confirmation" class="form-control"
-                placeholder="{{ __('Password Confirmation') }}" {{ empty($user) ? 'required' : '' }}>
+            <input type="password" name="password_confirmation" id="password-confirmation" class="form-control" placeholder="{{ __('Password Confirmation') }}" {{ empty($user) ? 'required' : '' }}>
         </div>
     </div>
 
@@ -82,7 +81,7 @@
                     <select class="form-select" name="role" id="role" class="form-control">
                         <option value="" selected disabled>-- Select role --</option>
                         @foreach ($roles as $role)
-                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                            <option value="{{ $role->id }}" {{ $user->getRoleNames()->toArray() !== [] && $user->getRoleNames()[0] == $role->name ? 'selected' : '-' }}>{{ $role->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -91,8 +90,7 @@
             <div class="col-md-1 text-center">
                 <div class="avatar avatar-xl">
                     @if ($user->photo == null)
-                        <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim($user->email))) }}&s=500"
-                            alt="Photo">
+                        <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim($user->email))) }}&s=500" alt="Photo">
                     @else
                         <img src="{{ asset('uploads/images/' . $user->photo) }}" alt="Photo">
                     @endif

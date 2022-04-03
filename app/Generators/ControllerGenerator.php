@@ -47,13 +47,13 @@ class ControllerGenerator
 
         foreach ($request['input_types'] as $i => $input) {
             if ($input == 'file') {
-                $indexCode .= $this->uploadFileCode($request['fields'][$i], 'index');
+                $indexCode .= $this->generateUploadFileCode($request['fields'][$i], 'index');
 
-                $storeCode .= $this->uploadFileCode($request['fields'][$i], 'store');
+                $storeCode .= $this->generateUploadFileCode($request['fields'][$i], 'store');
 
-                $updateCode .= $this->uploadFileCode($request['fields'][$i], 'update', $modelNameSingularCamelCase);
+                $updateCode .= $this->generateUploadFileCode($request['fields'][$i], 'update', $modelNameSingularCamelCase);
 
-                $deleteCode .= $this->uploadFileCode($request['fields'][$i], 'delete', $modelNameSingularCamelCase);
+                $deleteCode .= $this->generateUploadFileCode($request['fields'][$i], 'delete', $modelNameSingularCamelCase);
             }
         }
 
@@ -194,7 +194,7 @@ class ControllerGenerator
      * @param null|string $model,
      * @return string
      */
-    protected function uploadFileCode(string $field, string $path, null|string $model = null)
+    protected function generateUploadFileCode(string $field, string $path, null|string $model = null)
     {
         $replaceString = [
             '{{fieldSingularSnakeCase}}',

@@ -25,11 +25,13 @@ class UserController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $users = User::query();
+            $users = User::with('roles:id,name');
 
             return Datatables::of($users)
-                ->addIndexColumn()
                 ->addColumn('action', 'users.include.action')
+                ->addColumn('role', function($row){
+                    return $row->getRoleNames()->toArray() !== [] ? $row->getRoleNames()[0] : '-';
+                })
                 ->addColumn('photo', function ($row) {
                     if ($row->photo == null) {
                         return 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($row->email))) . '&s=500';
@@ -102,6 +104,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $user->load('roles:id,name');
+
         return view('users.show', compact('user'));
     }
 
@@ -113,6 +117,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $user->load('roles:id,name');
+
         return view('users.edit', compact('user'));
     }
 

@@ -55,6 +55,10 @@
                                         <td>{{ $user->email }}</td>
                                     </tr>
                                     <tr>
+                                        <td class="fw-bold">{{ __('Role') }}</td>
+                                        <td>{{ $user->getRoleNames()->toArray() !== [] ? $user->getRoleNames()[0] : '-' }}</td>
+                                    </tr>
+                                    <tr>
                                         <td class="fw-bold">{{ __('Email verified at') }}</td>
                                         <td>{{ $user->email_verified_at ? $user->email_verified_at->format('d/m/Y H:i') : '-' }}
                                         </td>

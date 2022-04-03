@@ -89,7 +89,7 @@ class GeneratorController extends Controller
     }
 
     /**
-     * Get all sidebar menus on config.
+     * Get all sidebar menus on config by index.
      *
      * @param int $index
      * @return \Illuminate\Http\Response

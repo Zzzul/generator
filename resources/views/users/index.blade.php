@@ -41,8 +41,9 @@
                                         <tr>
                                             {{-- <th>No</th> --}}
                                             <th>{{ __('Photo') }}</th>
-                                            <th>{{ __('Email') }}</th>
                                             <th>{{ __('Name') }}</th>
+                                            <th>{{ __('Email') }}</th>
+                                            <th>{{ __('Role') }}</th>
                                             <th>{{ __('Created At') }}</th>
                                             <th>{{ __('Updated At') }}</th>
                                             <th>{{ __('Action') }}</th>
@@ -98,6 +99,10 @@
                 {
                     data: 'email',
                     name: 'email'
+                },
+                {
+                    data: 'role',
+                    name: 'role'
                 },
                 {
                     data: 'created_at',
