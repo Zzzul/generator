@@ -10,6 +10,7 @@ return [
         'char',
         'date',
         'time',
+        'year',
         'dateTime',
         'decimal',
         'double',

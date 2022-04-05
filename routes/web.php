@@ -26,10 +26,8 @@ Route::middleware(['auth', 'web'])->group(function () {
         dd('This is just a test and an example for permission and sidebar menu. You can remove this line on web.php, config/permission.php and config/generator.php');
     });
 
-    Route::group(['middleware' => 'generator-local'], function () {
+    Route::middleware('generator-local')->group(function () {
         Route::get('/generators/get-sidebar-menus/{index}', [GeneratorController::class, 'getSidebarMenus'])->name('generators.get-sidebar-menus');
         Route::resource('/generators', GeneratorController::class)->only('create', 'store');
     });
-
-    Route::get('/test', [GeneratorController::class, 'test'])->name('test');
 });

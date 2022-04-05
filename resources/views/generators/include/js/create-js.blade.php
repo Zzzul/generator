@@ -297,6 +297,7 @@
         const btnBack = $('#btn-back')
         const btnSave = $('#btn-save')
         const btnAdd = $('#btn-add')
+        let modules = $(this).serialize()
 
         btnBack.prop('disabled', true)
         btnSave.prop('disabled', true)
@@ -306,13 +307,21 @@
         btnSave.text('Loading...')
         btnAdd.text('Loading...')
 
+        $(`
+            #form-generator input,
+            #form-generator select,
+            #form-generator checkbox,
+            #form-generator radio,
+            #form-generator button
+        `).attr('disabled', true)
+
         $.ajax({
             type: 'POST',
             url: '{{ route('generators.store') }}',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            data: $(this).serialize(),
+            data: modules,
             success: function(response) {
                 console.log(response)
 
@@ -357,6 +366,14 @@
                 btnBack.text('Back')
                 btnSave.text('Generate')
                 btnAdd.text('Add')
+
+                $(`
+                    #form-generator input,
+                    #form-generator select,
+                    #form-generator checkbox,
+                    #form-generator radio,
+                    #form-generator button
+                `).attr('disabled', false)
             }
         })
     })
@@ -375,7 +392,7 @@
 
             colNewMenu.html(`
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="new-header">{{ __('Header') }}</label>
                             <input type="text" id="new-header" name="new_header" class="form-control"
@@ -383,7 +400,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group" id="input-new-menu">
                             <label for="new-menu">{{ __('New Menu') }}</label>
                             <input type="text" name="new_menu" id="new-menu" class="form-control"
@@ -392,7 +409,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="new-route">{{ __('Route') }}</label>
                             <input type="text" id="new-route" name="new_route" class="form-control"
@@ -401,7 +418,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="new-icon">{{ __('Icon') }}</label>
                             <input type="text" id="new-icon" name="new_icon" class="form-control"
@@ -410,7 +427,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="new-submenu">{{ __('Submenu') }}</label>
                             <input type="text" id="new-submenu" name="new_submenu" class="form-control"
