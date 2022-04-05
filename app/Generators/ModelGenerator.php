@@ -36,6 +36,8 @@ class ModelGenerator
 
             if ($request['data_types'][$i] == 'date') {
                 $casts .= "'" . str()->snake($value) . "' => 'date:d/m/Y', ";
+            }elseif ($request['data_types'][$i] == 'year') {
+                $casts .= "'" . str()->snake($value) . "' => 'integer', ";
             } elseif ($request['data_types'][$i] == 'dateTime') {
                 $casts .= "'" . str()->snake($value) . "' => 'datetime:d/m/Y H:i', ";
             } elseif (str_contains($request['data_types'][$i], 'integer')) {

@@ -114,6 +114,15 @@
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="time">Time</option>
             `)
+        } else if ($(this).val() == 'year') {
+            removeAllInputHidden(index)
+            checkMinAndMaxLength(index)
+            addDataTypeHidden(index)
+
+            $(`.form-input-types:eq(${index})`).html(`
+                <option value="" disabled selected>-- Select input type --</option>
+                <option value="select">Select</option>
+            `)
         } else if ($(this).val() == 'dateTime') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)

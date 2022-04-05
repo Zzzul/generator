@@ -127,6 +127,44 @@ class FormViewGenerator
                     ],
                     GeneratorUtils::getTemplate('views/forms/select')
                 );
+            } else if ($request['data_types'][$i] == 'year') {
+                /**
+                 * Will generate something like:
+                 *
+                 * <select class="form-select" name="year" id="year" class="form-control" required>
+                 * <option value="" selected disabled>-- {{ __('Select year') }} --</option>
+                 *  @foreach (range(1900, strftime('%Y', time())) as $year)
+                 *     <option value="{{ $year }}"
+                 *        {{ isset($book) && $book->year == $year ? 'selected' : (old('year') == $year ? 'selected' : '') }}>
+                 *      {{ $year }}
+                 * </option>
+                 *  @endforeach
+                 * </select>
+                 */
+                $options = "
+                @foreach (range(1900, strftime(\"%Y\", time())) as \$year)
+                    <option value=\"{{ \$year }}\" {{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == \$year ? 'selected' : (old('$fieldSnakeCase') == \$year ? 'selected' : '') }}>
+                        {{ \$year }}
+                    </option>
+                @endforeach";
+
+                $template .= str_replace(
+                    [
+                        '{{fieldLowercase}}',
+                        '{{fieldUppercase}}',
+                        '{{fieldSpaceLowercase}}',
+                        '{{options}}',
+                        '{{nullable}}'
+                    ],
+                    [
+                        $fieldSnakeCase,
+                        GeneratorUtils::cleanSingularUcWords($field),
+                        GeneratorUtils::cleanSingularLowerCase($field),
+                        $options,
+                        $request['requireds'][$i] == 'yes' ? ' required' : '',
+                    ],
+                    GeneratorUtils::getTemplate('views/forms/select')
+                );
             } else if ($request['data_types'][$i] == 'boolean') {
                 if ($request['input_types'][$i] == 'select') {
                     // select
@@ -154,13 +192,14 @@ class FormViewGenerator
                     $options = "\t<div class=\"col-md-6\">\n\t<label class=\"text-dark\">$fieldUcWords</label>";
 
                     /**
-                     * will generate
+                     * will generate something like:
+                     *
                      * <div class="form-check mb-2">
-                     *  <input class="form-check-input" type="radio" name="is_active" id="is_active-1" value="1" {{ isset(product) && product->is_active == '1' ? 'checked' : (old('is_active') == '1' ? 'checked' : '') }}>
+                     *  <input class="form-check-input" type="radio" name="is_active" id="is_active-1" value="1" {{ isset($product) && $product->is_active == '1' ? 'checked' : (old('is_active') == '1' ? 'checked' : '') }}>
                      *     <label class="form-check-label" for="is_active-1">True</label>
                      * </div>
                      *  <div class="form-check mb-2">
-                     *    <input class="form-check-input" type="radio" name="is_active" id="is_active-0" value="0" {{ isset(product) && product->is_active == '0' ? 'checked' : (old('is_active') == '0' ? 'checked' : '') }}>
+                     *    <input class="form-check-input" type="radio" name="is_active" id="is_active-0" value="0" {{ isset($product) && $product->is_active == '0' ? 'checked' : (old('is_active') == '0' ? 'checked' : '') }}>
                      *      <label class="form-check-label" for="is_active-0">False</label>
                      * </div>
                      */
@@ -216,15 +255,21 @@ class FormViewGenerator
                     GeneratorUtils::getTemplate('views/forms/image')
                 );
             } else {
-
-                // input
-                $fieldSnakeCase = $fieldSnakeCase;
-
                 $formatValue = "{{ isset($$modelNameSingularCamelCase) ? $$modelNameSingularCamelCase->$fieldSnakeCase : old('$fieldSnakeCase') }}";
 
                 if ($request['data_types'][$i] == 'dateTime') {
+                    /**
+                     * Will generate something like:
+                     *
+                     * {{ isset($book) && $book->datetime ? $book->datetime->format('Y-m-d\TH:i') : old('datetime') }}
+                     */
                     $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('Y-m-d\TH:i') : old('$fieldSnakeCase') }}";
                 } elseif ($request['data_types'][$i] == 'date') {
+                    /**
+                     * Will generate something like:
+                     *
+                     * {{ isset($book) && $book->date ? $book->date->format('Y-m-d') : old('date') }}
+                     */
                     $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('Y-m-d') : old('$fieldSnakeCase') }}";
                 }
 
