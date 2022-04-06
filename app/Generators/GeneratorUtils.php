@@ -126,7 +126,7 @@ class GeneratorUtils
      */
     public static function cleanSingularLowerCase(string $string)
     {
-        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->lower());
+        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->singular()->lower());
     }
 
     /**
