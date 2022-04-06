@@ -3,7 +3,6 @@
 namespace App\Generators;
 
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
 
 class GeneratorUtils
 {
@@ -39,7 +38,7 @@ class GeneratorUtils
      */
     public static function singularPascalCase(string $string)
     {
-        return trim(ucfirst(Str::camel(Str::singular($string))));
+        return trim(ucfirst(str($string)->singular()->camel()));
     }
 
     /**
@@ -50,7 +49,7 @@ class GeneratorUtils
      */
     public static function pluralPascalCase(string $string)
     {
-        return trim(ucfirst(Str::camel(Str::plural($string, 2))));
+        return trim(ucfirst(str($string)->plural()->camel()));
     }
 
     /**
@@ -61,7 +60,7 @@ class GeneratorUtils
      */
     public static function pluralSnakeCase(string $string)
     {
-        return trim(strtolower(Str::snake(Str::plural($string, 2))));
+        return trim(str($string)->plural()->snake()->lower());
     }
 
     /**
@@ -72,7 +71,7 @@ class GeneratorUtils
      */
     public static function singularSnakeCase(string $string)
     {
-        return trim(strtolower(Str::snake(Str::singular($string))));
+        return trim(str($string)->singular()->snake()->lower());
     }
 
     /**
@@ -83,7 +82,7 @@ class GeneratorUtils
      */
     public static function pluralCamelCase(string $string)
     {
-        return trim(Str::camel(Str::plural($string, 2)));
+        return trim(str($string)->plural()->camel());
     }
 
     /**
@@ -94,7 +93,7 @@ class GeneratorUtils
      */
     public static function singularCamelCase(string $string)
     {
-        return trim(Str::camel(Str::singular($string)));
+        return trim(str($string)->singular()->camel());
     }
 
     /**
@@ -105,7 +104,7 @@ class GeneratorUtils
      */
     public static function pluralKebabCase(string $string)
     {
-        return trim(Str::kebab(Str::plural($string, 2)));
+        return trim(str($string)->plural()->kebab());
     }
 
     /**
@@ -116,7 +115,7 @@ class GeneratorUtils
      */
     public static function singularKebabCase(string $string)
     {
-        return trim(Str::kebab(Str::singular($string)));
+        return trim(str($string)->singular()->kebab());
     }
 
     /**
@@ -127,7 +126,7 @@ class GeneratorUtils
      */
     public static function cleanSingularLowerCase(string $string)
     {
-        return Str::singular(trim(preg_replace('/[^A-Za-z0-9() -]/', ' ', strtolower($string))));
+        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->lower());
     }
 
     /**
@@ -138,7 +137,7 @@ class GeneratorUtils
      */
     public static function cleanPluralUcWords(string $string)
     {
-        return ucwords(Str::plural(trim(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string)), 2));
+        return trim(ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))));
     }
 
     /**
@@ -149,7 +148,7 @@ class GeneratorUtils
      */
     public static function cleanSingularUcWords(string $string)
     {
-        return ucwords(Str::singular(trim(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))));
+        return trim(ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->singular()));
     }
 
     /**
@@ -160,7 +159,7 @@ class GeneratorUtils
      */
     public static function cleanUcWords(string $string)
     {
-        return ucwords(trim(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string)));
+        return trim(ucwords(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string)));
     }
 
     /**
@@ -171,7 +170,7 @@ class GeneratorUtils
      */
     public static function cleanPluralLowerCase(string $string)
     {
-        return strtolower(Str::plural(trim(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string)), 2));
+        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->plural()->lower());
     }
 
     /**
@@ -227,7 +226,7 @@ class GeneratorUtils
 
         /**
          * will generate something like:
-         * Master\Product
+         * Main\Product
          */
         $path = "";
         for ($i = 0; $i < $totalArrModel - 1; $i++) {
