@@ -45,10 +45,6 @@ class GeneratorController extends Controller
      */
     public function store(StoreGeneratorRequest $request)
     {
-        (new MenuGenerator)->generate($request->validated());
-
-        return ['success'];die;
-
         if ($request->generate_type == 'all') {
             $this->generateAll($request->validated());
         } else {

@@ -137,7 +137,7 @@ class GeneratorUtils
      */
     public static function cleanPluralUcWords(string $string)
     {
-        return trim(ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))));
+        return trim(ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->plural()));
     }
 
     /**
