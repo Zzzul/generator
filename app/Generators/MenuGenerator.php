@@ -200,20 +200,18 @@ class MenuGenerator
      */
     protected function setNewMenu(string $title, string $icon, string $route, string|null $submenu = null)
     {
-        $newPermission = 'view ' .  GeneratorUtils::cleanSingularLowerCase($title);
-
         if (isset($submenu)) {
             $newMenu = [
                 'title' => GeneratorUtils::cleanPluralUcWords($title),
                 'icon' => $icon,
                 'route' => null,
                 'permission' => null,
-                'permissions' => [$newPermission],
+                'permissions' => ['view ' . GeneratorUtils::cleanSingularLowerCase($submenu)],
                 'sub_menus' => [
                     [
                         'title' =>  GeneratorUtils::cleanPluralUcWords($submenu),
-                        'route' => '/' . GeneratorUtils::pluralKebabCase($submenu),
-                        'permission' => $newPermission,
+                        'route' => '/' . str(GeneratorUtils::pluralKebabCase($submenu))->remove('/'),
+                        'permission' => 'view ' . GeneratorUtils::cleanSingularLowerCase($submenu),
                     ]
                 ]
             ];
@@ -221,8 +219,8 @@ class MenuGenerator
             $newMenu = [
                 'title' => GeneratorUtils::cleanPluralUcWords($title),
                 'icon' => $icon,
-                'route' => $route,
-                'permission' => $newPermission,
+                'route' => '/' . str(GeneratorUtils::pluralKebabCase($route))->remove('/'),
+                'permission' => 'view ' . GeneratorUtils::cleanSingularLowerCase($title),
                 'permissions' => null,
                 'sub_menus' =>  []
             ];
