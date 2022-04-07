@@ -22,18 +22,23 @@ class ControllerGenerator
         $modelNameSingularPascalCase = GeneratorUtils::singularPascalCase($model);
         $modelNameSingularUcWords = GeneratorUtils::cleanSingularUcWords($model);
 
-        $template = "";
-        $indexCode = "";
-        $storeCode = "";
-        $updateCode = "";
-        $deleteCode = "";
-        $relations = "";
-        $addColumns = "";
         $query = "$modelNameSingularPascalCase::query()";
 
         if ($path != '') {
+            /**
+             * Will generate something like:
+             *
+             * namespace App\Http\Controllers\Inventory;
+             *
+             * use App\Http\Controllers\Controller;
+             */
             $namespace = "namespace App\Http\Controllers\\$path;\n\nuse App\Http\Controllers\Controller;";
 
+            /**
+             * Will generate something like:
+             *
+             * use App\Http\Requests\Inventory\{StoreProductRequest, UpdateProductRequest};
+             */
             $requestPath = "App\Http\Requests\\" . $path . "\{Store" . $modelNameSingularPascalCase . "Request, Update" . $modelNameSingularPascalCase . "Request}";
         } else {
             $namespace = "namespace App\Http\Controllers;\n\n";
@@ -45,20 +50,31 @@ class ControllerGenerator
             $requestPath = "App\Http\Requests\{Store" . $modelNameSingularPascalCase . "Request, Update" . $modelNameSingularPascalCase . "Request}";
         }
 
-        foreach ($request['input_types'] as $i => $input) {
-            if ($input == 'file') {
-                $indexCode .= $this->generateUploadFileCode($request['fields'][$i], 'index');
+        if (in_array('file', $request['input_types'])) {
+            $indexCode = "";
+            $storeCode = "";
+            $updateCode = "";
+            $deleteCode = "";
 
-                $storeCode .= $this->generateUploadFileCode($request['fields'][$i], 'store');
+            foreach ($request['input_types'] as $i => $input) {
+                if ($input == 'file') {
+                    $indexCode .= $this->generateUploadFileCode($request['fields'][$i], 'index');
 
-                $updateCode .= $this->generateUploadFileCode($request['fields'][$i], 'update', $modelNameSingularCamelCase);
+                    $storeCode .= $this->generateUploadFileCode($request['fields'][$i], 'store');
 
-                $deleteCode .= $this->generateUploadFileCode($request['fields'][$i], 'delete', $modelNameSingularCamelCase);
+                    $updateCode .= $this->generateUploadFileCode($request['fields'][$i], 'update', $modelNameSingularCamelCase);
+
+                    $deleteCode .= $this->generateUploadFileCode($request['fields'][$i], 'delete', $modelNameSingularCamelCase);
+                }
             }
         }
 
+        $relations = "";
+        $addColumns = "";
+
         // load the relations for create, show, and edit
         if (in_array('foreignId', $request['data_types'])) {
+
             $relations .= "$" . $modelNameSingularCamelCase . "->load(";
 
             $countForeidnId = count(array_keys($request['data_types'], 'foreignId'));
@@ -77,15 +93,32 @@ class ControllerGenerator
                     $relations .= "'$constrainSnakeCase:$selectedColumns'";
 
                     if ($i + 1 < $countForeidnId) {
+                        /**
+                         * Will generate something like:
+                         *
+                         * 'category:id,name',
+                         */
                         $relations .= ", ";
                         $query .= "'$constrainSnakeCase:$selectedColumns', ";
                     } else {
+                        /**
+                         * Will generate something like:
+                         *
+                         * 'category:id,name');
+                         */
                         $relations .= ");\n\n\t\t";
                         $query .= "'$constrainSnakeCase:$selectedColumns')";
                     }
 
+                    /**
+                     * Will generate something like:
+                     *
+                     * ->addColumn('category', function($row){
+                     *     return $row->category ? $row->category->name : '-';
+                     * })
+                     */
                     $addColumns .= "->addColumn('$constrainSnakeCase', function (\$row) {
-                    return \$row->" . $constrainSnakeCase . " ? \$row->" . $constrainSnakeCase . "->$columnAfterId : '';
+                    return \$row->" . $constrainSnakeCase . " ? \$row->" . $constrainSnakeCase . "->$columnAfterId : '-';
                 })";
                 }
             }

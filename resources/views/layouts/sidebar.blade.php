@@ -71,7 +71,7 @@
                 @php
                     $generator = str(config('generator.name'))->plural();
                 @endphp
-                    <li class="sidebar-title">{{ __("$generator") }}</li>
+                    <li class="sidebar-title">{{ __(ucfirst($generator)) }}</li>
 
                     <li class="sidebar-item{{ request()->is($generator . '/create') ? ' active' : '' }}">
                         <a class="sidebar-link" href="{{ route($generator . '.create') }}">
