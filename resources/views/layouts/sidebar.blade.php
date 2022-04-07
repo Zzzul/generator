@@ -33,7 +33,7 @@
                                 @canany($permissions)
                                     @if (empty($menu['sub_menus']))
                                         @can($menu['permission'])
-                                            <li class="sidebar-item{{ request()->is(substr($menu['route'] . '*', 1)) ? ' active' : '' }}">
+                                            <li class="sidebar-item{{ \App\Generators\GeneratorUtils::isActiveMenu($menu['route']) }}">
                                                 <a href="{{ $menu['route'] }}" class="sidebar-link">
                                                     {!! $menu['icon'] !!}
                                                     <span>{{ __($menu['title']) }}</span>
@@ -41,7 +41,7 @@
                                             </li>
                                         @endcan
                                     @else
-                                        <li class="sidebar-item has-sub{{ request()->is(str($menu['title'])->slug() . '*') ? ' active' : '' }}">
+                                        <li class="sidebar-item has-sub{{ \App\Generators\GeneratorUtils::isActiveMenu($menu['permissions']) }}">
                                             <a href="#" class="sidebar-link">
                                                 {!! $menu['icon'] !!}
                                                 <span>{{ __($menu['title']) }}</span>
@@ -70,7 +70,7 @@
                 @if (env('APP_ENV') === 'local')
                     <li class="sidebar-title">Generators</li>
 
-                    <li class="sidebar-item{{ request()->is('generators') ? ' active' : '' }}">
+                    <li class="sidebar-item{{ request()->is('generators/create') ? ' active' : '' }}">
                         <a class="sidebar-link" href="{{ route('generators.create') }}">
                             <i class="bi bi-grid-fill"></i>
                             <span> {{ __('CRUD Generator') }}</span>

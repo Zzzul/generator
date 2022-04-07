@@ -23,7 +23,9 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::resource('roles', RoleAndPermissionController::class);
 
     Route::middleware(['permission:view test'])->get('/tests', function () {
-        dd('This is just a test and an example for permission and sidebar menu. You can remove this line on web.php, config/permission.php and config/generator.php');
+        // dd('This is just a test and an example for permission and sidebar menu. You can remove this line on web.php, config/permission.php and config/generator.php');
+
+        return view('dashboard');
     });
 
     Route::middleware('generator-local')->group(function () {
