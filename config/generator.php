@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'name' => 'generators',
     'data_types' => [
         'string',
         'integer',

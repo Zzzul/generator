@@ -158,7 +158,9 @@ class MenuGenerator
      */
     protected function generateFile(string $jsonToArrayString)
     {
-        $template = "<?php " . PHP_EOL . "\nreturn [ " . PHP_EOL . "\t'data_types' => " . $this->getDataTypes() . "," . PHP_EOL . "\t'sidebars' => " . $jsonToArrayString . "\n];";
+        $generatorName = config('generator.name');
+
+        $template = "<?php " . PHP_EOL . "\nreturn [ " . PHP_EOL . "\t'name' => '" . $generatorName . "'," . PHP_EOL . "\t'data_types' => " . $this->getDataTypes() . "," . PHP_EOL . "\t'sidebars' => " . $jsonToArrayString . "\n];";
 
         file_put_contents(base_path('config/generator.php'), $template);
     }
