@@ -23,13 +23,13 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::resource('roles', RoleAndPermissionController::class);
 
     Route::middleware(['permission:view test'])->get('/tests', function () {
-        // dd('This is just a test and an example for permission and sidebar menu. You can remove this line on web.php, config/permission.php and config/generator.php');
-
-        return view('dashboard');
+        dd('This is just a test and an example for permission and sidebar menu. You can remove this line on web.php, config/permission.php and config/generator.php');
     });
 
     Route::middleware('generator-local')->group(function () {
-        Route::get('/generators/get-sidebar-menus/{index}', [GeneratorController::class, 'getSidebarMenus'])->name('generators.get-sidebar-menus');
-        Route::resource('/generators', GeneratorController::class)->only('create', 'store');
+        $generator = str(config('generator.name'))->plural();
+
+        Route::get("/$generator/get-sidebar-menus/{index}", [GeneratorController::class, 'getSidebarMenus'])->name("$generator.get-sidebar-menus");
+        Route::resource("/$generator", GeneratorController::class)->only('create', 'store');
     });
 });

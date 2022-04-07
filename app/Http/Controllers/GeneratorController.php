@@ -84,7 +84,6 @@ class GeneratorController extends Controller
             (new ViewComposerGenerator)->generate($request);
         }
 
-        Artisan::call('optimize:clear');
         Artisan::call('migrate');
     }
 

@@ -256,6 +256,12 @@ class GeneratorUtils
         return GeneratorUtils::singularPascalCase($arrModel[$totalArrModel - 1]);
     }
 
+    /**
+     * Check menu if active
+     *
+     * @param string|array $route
+     * @return string
+     */
     public static function isActiveMenu(string|array $route)
     {
         $activeClass = ' active';
@@ -301,6 +307,6 @@ class GeneratorUtils
             }
         }
 
-        return false;
+        return '';
     }
 }
