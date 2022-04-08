@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\GeneratorType;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreGeneratorRequest;
 use Illuminate\Support\Facades\Artisan;
@@ -45,7 +46,7 @@ class GeneratorController extends Controller
      */
     public function store(StoreGeneratorRequest $request)
     {
-        if ($request->generate_type == 'all') {
+        if ($request->generate_type == GeneratorType::ALL->value) {
             $this->generateAll($request->validated());
         } else {
             (new ModelGenerator)->generate($request->validated());
