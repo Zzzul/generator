@@ -45,16 +45,6 @@ class ShowViewGenerator
                                             @endif
                                         </td>
                                     </tr>";
-            } elseif ($request['data_types'][$i] == 'date') {
-                $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
-                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('d/m/Y') }}</td>
-                                    </tr>";
-            } elseif ($request['data_types'][$i] == 'dateTime') {
-                $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
-                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('d/m/Y H:i') }}</td>
-                                    </tr>";
             } elseif ($request['data_types'][$i] == 'boolean') {
                 $trs .= "<tr>
                                         <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>

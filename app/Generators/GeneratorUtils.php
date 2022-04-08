@@ -230,7 +230,7 @@ class GeneratorUtils
          */
         $path = "";
         for ($i = 0; $i < $totalArrModel - 1; $i++) {
-            $path .= GeneratorUtils::singularPascalCase($arrModel[$i]);
+            $path .= GeneratorUtils::pluralPascalCase($arrModel[$i]);
             if ($i + 1 != $totalArrModel - 1) {
                 $path .= "\\";
             }
