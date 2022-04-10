@@ -10,7 +10,7 @@ https://user-images.githubusercontent.com/62506582/162600284-aa8fe74e-5dca-4d8d-
 
 [![All Contributors](https://img.shields.io/github/contributors/Zzzul/generator?style=flat-square)](https://github.com/Zzzul/generator/graphs/contributors)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Zzzul/generator.svg?style=flat-square)
-[![License](https://img.shields.io/github/license/Zzzul/generator.svg?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/github/license/zuramai/mazer.svg?style=flat-square)](LICENSE)
 [![Issues](https://img.shields.io/github/issues/Zzzul/generator?style=flat-square)](Issues)
 [![Forks](https://img.shields.io/github/forks/Zzzul/generator?style=flat-square)](Forks)
 [![Stars](https://img.shields.io/github/stars/Zzzul/generator?style=flat-square)](Stars)
@@ -80,8 +80,7 @@ Below are some codes that generate by the generator
 [MIT License](./LICENSE)
 
 ## Donation
-<a href="
-https://www.buymeacoffee.com/mzulfahmi" target="_blank">
+<a href="https://www.buymeacoffee.com/mzulfahmi" target="_blank">
 <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;">
 </a>
 
