@@ -41,8 +41,7 @@
 
                                 @include('generators.include.form')
 
-                                <a href="{{ url()->previous() }}" id="btn-back"
-                                    class="btn btn-secondary">{{ __('Back') }}</a>
+                                <a href="{{ url()->previous() }}" id="btn-back" class="btn btn-secondary">{{ __('Back') }}</a>
 
                                 <button type="submit" id="btn-save" class="btn btn-primary">{{ __('Generate') }}</button>
                             </form>
@@ -51,7 +50,6 @@
 
                     <div id="validation-errors" style="display: none;">
                         <div class="alert alert-danger fade show" role="alert">
-
                             <h4 class="alert-heading">Error</h4>
                             <ul class="mb-0"></ul>
                         </div>

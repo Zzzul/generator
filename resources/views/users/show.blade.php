@@ -37,11 +37,11 @@
                                     <tr>
                                         <td colspan="2" class="text-center">
                                             <div class="avatar avatar-xl">
-                                                @if ($user->photo == null)
+                                                @if ($user->avatar == null)
                                                     <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim($user->email))) }}&s=500"
-                                                        alt="Photo">
+                                                        alt="Avatar">
                                                 @else
-                                                    <img src="{{ asset('uploads/images/' . $user->photo) }}" alt="Photo">
+                                                    <img src="{{ asset("uploads/images/avatars/$user->avatar") }}" alt="Avatar">
                                                 @endif
                                             </div>
                                         </td>

@@ -43,7 +43,8 @@
     <div class="col-md-6">
         <div class="form-group">
             <label for="password-confirmation">{{ __('Password Confirmation') }}</label>
-            <input type="password" name="password_confirmation" id="password-confirmation" class="form-control" placeholder="{{ __('Password Confirmation') }}" {{ empty($user) ? 'required' : '' }}>
+            <input type="password" name="password_confirmation" id="password-confirmation" class="form-control"
+                placeholder="{{ __('Password Confirmation') }}" {{ empty($user) ? 'required' : '' }}>
         </div>
     </div>
 
@@ -56,15 +57,21 @@
                     @foreach ($roles as $role)
                         <option value="{{ $role->id }}">{{ $role->name }}</option>
                     @endforeach
+                    @error('role')
+                        <div class="invalid-feedback">
+                            <i class="bx bx-radio-circle"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </select>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="form-group">
-                <label for="photo">{{ __('Photo') }}</label>
-                <input type="file" name="photo" id="photo" class="form-control @error('photo') is-invalid @enderror">
-                @error('photo')
+                <label for="avatar">{{ __('Avatar') }}</label>
+                <input type="file" name="avatar" id="avatar" class="form-control @error('avatar') is-invalid @enderror">
+                @error('avatar')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
@@ -79,30 +86,38 @@
                 <div class="form-group">
                     <label for="role">{{ __('Role') }}</label>
                     <select class="form-select" name="role" id="role" class="form-control">
-                        <option value="" selected disabled>-- Select role --</option>
+                        <option value="" selected disabled>{{ __('-- Select role --') }}</option>
                         @foreach ($roles as $role)
-                            <option value="{{ $role->id }}" {{ $user->getRoleNames()->toArray() !== [] && $user->getRoleNames()[0] == $role->name ? 'selected' : '-' }}>{{ $role->name }}</option>
+                            <option value="{{ $role->id }}"
+                                {{ $user->getRoleNames()->toArray() !== [] && $user->getRoleNames()[0] == $role->name ? 'selected' : '-' }}>
+                                {{ $role->name }}</option>
                         @endforeach
                     </select>
+                    @error('role')
+                        <div class="invalid-feedback">
+                            <i class="bx bx-radio-circle"></i>
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
             </div>
 
             <div class="col-md-1 text-center">
                 <div class="avatar avatar-xl">
-                    @if ($user->photo == null)
-                        <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim($user->email))) }}&s=500" alt="Photo">
+                    @if ($user->avatar == null)
+                        <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim($user->email))) }}&s=500"
+                            alt="avatar">
                     @else
-                        <img src="{{ asset('uploads/images/' . $user->photo) }}" alt="Photo">
+                        <img src="{{ asset("uploads/images/avatars/$user->avatar") }}" alt="avatar">
                     @endif
                 </div>
             </div>
 
             <div class="col-md-5 me-0 pe-0">
                 <div class="form-group">
-                    <label for="photo">{{ __('Photo') }}</label>
-                    <input type="file" name="photo" class="form-control @error('photo') is-invalid @enderror" id="photo">
-
-                    @error('photo')
+                    <label for="avatar">{{ __('Avatar') }}</label>
+                    <input type="file" name="avatar" class="form-control @error('avatar') is-invalid @enderror" id="avatar">
+                    @error('avatar')
                         <div class="invalid-feedback">
                             <i class="bx bx-radio-circle"></i>
                             {{ $message }}

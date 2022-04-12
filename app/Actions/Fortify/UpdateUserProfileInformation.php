@@ -11,6 +11,13 @@ use Image;
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
     /**
+     * Path for user avatar file.
+     *
+     * @var string
+     */
+    protected $avatarPath = '/uploads/images/avatars/';
+
+    /**
      * Validate and update the given user's profile information.
      *
      * @param  mixed  $user
@@ -35,18 +42,18 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
             $filename = $input['avatar']->hashName();
 
-            if (!file_exists($path = public_path('uploads/images/avatars/'))) {
+            if (!file_exists($path = public_path($this->avatarPath))) {
                 mkdir($path, 0777, true);
             }
 
             Image::make($input['avatar']->getRealPath())->resize(500, 500, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->save('uploads/images/avatars/' . $filename);
+            })->save(public_path($this->avatarPath) . $filename);
 
             // delete old avatar from storage
-            if ($user->avatar != null && file_exists(public_path("/uploads/images/avatars/$user->avatar"))) {
-                unlink(public_path("/uploads/images/avatars/$user->avatar"));
+            if ($user->avatar != null && file_exists(public_path($this->avatarPath . $user->avatar))) {
+                unlink(public_path($this->avatarPath . $user->avatar));
             }
 
             $user->forceFill([

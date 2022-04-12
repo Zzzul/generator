@@ -9,6 +9,13 @@ use Image;
 
 class UserController extends Controller
 {
+    /**
+     * Path for user avatar file.
+     *
+     * @var string
+     */
+    protected $avatarPath = '/uploads/images/avatars/';
+
     public function __construct()
     {
         $this->middleware('permission:view user')->only('index', 'show');
@@ -29,15 +36,14 @@ class UserController extends Controller
 
             return Datatables::of($users)
                 ->addColumn('action', 'users.include.action')
-                ->addColumn('role', function($row){
+                ->addColumn('role', function ($row) {
                     return $row->getRoleNames()->toArray() !== [] ? $row->getRoleNames()[0] : '-';
                 })
-                ->addColumn('photo', function ($row) {
-                    if ($row->photo == null) {
+                ->addColumn('avatar', function ($row) {
+                    if ($row->avatar == null) {
                         return 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($row->email))) . '&s=500';
                     }
-
-                    return asset('uploads/images/' . $row->photo);
+                    return asset($this->avatarPath . $row->avatar);
                 })
                 ->toJson();
         }
@@ -63,28 +69,22 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $attr = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ];
+        $attr = $request->validated();
 
-        if ($request->file('photo') && $request->file('photo')->isValid()) {
+        if ($request->file('avatar') && $request->file('avatar')->isValid()) {
 
-            $filename = time() . '.' . $request->file('photo')->getClientOriginalExtension();
+            $filename = $request->file('avatar')->hashName();
 
-            $destination = 'uploads/images/';
-
-            if (!file_exists($path = public_path($destination))) {
-                mkdir($path, 0777, true);
+            if (!file_exists($folder = public_path($this->avatarPath))) {
+                mkdir($folder, 0777, true);
             }
 
-            Image::make($request->file('photo')->getRealPath())->resize(500, 500, function ($constraint) {
+            Image::make($request->file('avatar')->getRealPath())->resize(500, 500, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->save($destination . $filename);
+            })->save($this->avatarPath . $filename);
 
-            $attr['photo'] = $filename;
+            $attr['avatar'] = $filename;
         }
 
         $user = User::create($attr);
@@ -131,37 +131,37 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $attr = [
-            'name' => $request->name,
-            'email' => $request->email,
-        ];
+        $attr = $request->validated();
 
-        if ($request->file('photo') && $request->file('photo')->isValid()) {
+        if ($request->file('avatar') && $request->file('avatar')->isValid()) {
 
-            $filename = time() . '.' .  $request->file('photo')->getClientOriginalExtension();
-
-            $destination = 'uploads/images/';
+            $filename = $request->file('avatar')->hashName();
 
             // if folder dont exist, then create folder
-            if (!file_exists($path = public_path($destination))) {
-                mkdir($path, 0777, true);
+            if (!file_exists($folder = public_path($this->avatarPath))) {
+                mkdir($folder, 0777, true);
             }
 
             // Intervention Image
-            Image::make($request->file('photo')->getRealPath())->resize(500, 500, function ($constraint) {
+            Image::make($request->file('avatar')->getRealPath())->resize(500, 500, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
-            })->save($destination . $filename);
+            })->save(public_path($this->avatarPath) . $filename);
 
-            // delete old photo from storage
-            if ($user->photo != null && file_exists(public_path("/uploads/images/$user->photo"))) {
-                unlink(public_path("/uploads/images/$user->photo"));
+            // delete old avatar from storage
+            if ($user->avatar != null && file_exists($oldAvatar = public_path($this->avatarPath .
+                $user->avatar))) {
+                unlink($oldAvatar);
             }
 
-            $attr['photo'] = $filename;
+            $attr['avatar'] = $filename;
+        } else {
+            $attr['avatar'] = $user->avatar;
         }
 
-        if ($request->password) {
+        if (is_null($request->password)) {
+            unset($attr['password']);
+        } else {
             $attr['password'] = bcrypt($request->password);
         }
 
@@ -182,8 +182,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if ($user->photo != null && file_exists(public_path("/uploads/images/$user->photo"))) {
-            unlink(public_path("/uploads/images/$user->photo"));
+        if ($user->avatar != null && file_exists($oldAvatar = public_path($this->avatarPath . $user->avatar))) {
+            unlink($oldAvatar);
         }
 
         $user->delete();

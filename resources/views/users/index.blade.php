@@ -40,7 +40,7 @@
                                     <thead>
                                         <tr>
                                             {{-- <th>No</th> --}}
-                                            <th>{{ __('Photo') }}</th>
+                                            <th>{{ __('Avatar') }}</th>
                                             <th>{{ __('Name') }}</th>
                                             <th>{{ __('Email') }}</th>
                                             <th>{{ __('Role') }}</th>
@@ -82,13 +82,13 @@
                 //     searchable: false
                 // },
                 {
-                    data: 'photo',
-                    name: 'photo',
+                    data: 'avatar',
+                    name: 'avatar',
                     orderable: false,
                     searchable: false,
                     render: function(data, type, full, meta) {
                         return `<div class="avatar">
-                            <img src="${data}" alt="Photo">
+                            <img src="${data}" alt="avatar">
                         </div>`;
                     }
                 },
