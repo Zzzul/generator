@@ -46,7 +46,7 @@ https://user-images.githubusercontent.com/62506582/162600284-aa8fe74e-5dca-4d8d-
     - Dynamic sidebar menus
 
 ## Setup
-1. Clone or Or download from [releases](https://github.com/Zzzul/generator/releases)
+1. Clone or download from [Releases](https://github.com/Zzzul/generator/releases)
 ```shell
 git clone https://github.com/Zzzul/generator
 ```
