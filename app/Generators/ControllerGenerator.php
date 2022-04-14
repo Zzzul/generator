@@ -73,11 +73,11 @@ class ControllerGenerator
         $addColumns = "";
 
         // load the relations for create, show, and edit
-        if (in_array('foreignId', $request['data_types'])) {
+        if (in_array('foreignId', $request['column_types'])) {
 
             $relations .= "$" . $modelNameSingularCamelCase . "->load(";
 
-            $countForeidnId = count(array_keys($request['data_types'], 'foreignId'));
+            $countForeidnId = count(array_keys($request['column_types'], 'foreignId'));
 
             $query = "$modelNameSingularPascalCase::with(";
 

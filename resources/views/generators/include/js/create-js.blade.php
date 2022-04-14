@@ -5,7 +5,7 @@
     $('#btn-add').click(function() {
         let table = $('#tbl-field tbody')
 
-        let list = renderTypes()
+        let list = getColumnTypes()
         let no = table.find('tr').length + 1
         let tr = `
             <tr>
@@ -17,7 +17,7 @@
                 </td>
                 <td>
                     <div class="form-group">
-                        <select name="data_types[]" class="form-select form-data-types" required>
+                        <select name="column_types[]" class="form-select form-column-types" required>
                             <option value="" disabled selected>--Select type--</option>
                             ${list}
                         </select>
@@ -46,7 +46,7 @@
                     <div class="form-group">
                         <select name="input_types[]" class="form-select form-input-types" required>
                             <option value="" disabled selected>-- Select input type --</option>
-                            <option value="" disabled>Select the data type first</option>
+                            <option value="" disabled>Select the column type first</option>
                         </select>
                     </div>
                     <input type="hidden" name="mimes[]" class="form-mimes">
@@ -76,7 +76,7 @@
         table.append(tr)
     })
 
-    $(document).on('change', '.form-data-types', function() {
+    $(document).on('change', '.form-column-types', function() {
         let index = $(this).parent().parent().parent().index()
 
         if ($(this).val() == 'enum') {

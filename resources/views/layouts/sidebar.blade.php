@@ -31,7 +31,7 @@
                                 @endphp
 
                                 @canany($permissions)
-                                    @if (empty($menu['sub_menus']))
+                                    @if (empty($menu['submenus']))
                                         @can($menu['permission'])
                                             <li class="sidebar-item{{ \App\Generators\GeneratorUtils::isActiveMenu($menu['route']) }}">
                                                 <a href="{{ $menu['route'] }}" class="sidebar-link">
@@ -48,11 +48,11 @@
                                             </a>
                                             <ul class="submenu ">
                                                 @canany($menu['permissions'])
-                                                    @foreach ($menu['sub_menus'] as $sub_menu)
-                                                        @can($sub_menu['permission'])
+                                                    @foreach ($menu['submenus'] as $submenu)
+                                                        @can($submenu['permission'])
                                                             <li class="submenu-item">
-                                                                <a href="{{ $sub_menu['route'] }}">
-                                                                    {{ __($sub_menu['title']) }}
+                                                                <a href="{{ $submenu['route'] }}">
+                                                                    {{ __($submenu['title']) }}
                                                                 </a>
                                                             </li>
                                                         @endcan

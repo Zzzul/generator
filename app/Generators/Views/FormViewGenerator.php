@@ -27,7 +27,7 @@ class FormViewGenerator
             $fieldSnakeCase = str()->snake($field);
             $fieldUcWords = GeneratorUtils::cleanUcWords($field);
 
-            if ($request['data_types'][$i] == 'enum') {
+            if ($request['column_types'][$i] == 'enum') {
                 $options = "";
 
                 $arrOption = explode('|', $request['select_options'][$i]);
@@ -95,7 +95,7 @@ class FormViewGenerator
 
                     $template .= $options;
                 }
-            } else if ($request['data_types'][$i] == 'foreignId') {
+            } else if ($request['column_types'][$i] == 'foreignId') {
                 // remove '/' or sub folders
                 $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
 
@@ -127,7 +127,7 @@ class FormViewGenerator
                     ],
                     GeneratorUtils::getTemplate('views/forms/select')
                 );
-            } else if ($request['data_types'][$i] == 'year') {
+            } else if ($request['column_types'][$i] == 'year') {
                 /**
                  * Will generate something like:
                  *
@@ -165,7 +165,7 @@ class FormViewGenerator
                     ],
                     GeneratorUtils::getTemplate('views/forms/select')
                 );
-            } else if ($request['data_types'][$i] == 'boolean') {
+            } else if ($request['column_types'][$i] == 'boolean') {
                 if ($request['input_types'][$i] == 'select') {
                     // select
                     $options = "<option value=\"0\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '0' ? 'selected' : (old('$fieldSnakeCase') == '0' ? 'selected' : '') }}>{{ __('True') }}</option>\n\t\t\t\t<option value=\"1\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '1' ? 'selected' : (old('$fieldSnakeCase') == '1' ? 'selected' : '') }}>{{ __('False') }}</option>";
@@ -257,14 +257,14 @@ class FormViewGenerator
             } else {
                 $formatValue = "{{ isset($$modelNameSingularCamelCase) ? $$modelNameSingularCamelCase->$fieldSnakeCase : old('$fieldSnakeCase') }}";
 
-                if ($request['data_types'][$i] == 'dateTime') {
+                if ($request['column_types'][$i] == 'dateTime') {
                     /**
                      * Will generate something like:
                      *
                      * {{ isset($book) && $book->datetime ? $book->datetime->format('Y-m-d\TH:i') : old('datetime') }}
                      */
                     $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('Y-m-d\TH:i') : old('$fieldSnakeCase') }}";
-                } elseif ($request['data_types'][$i] == 'date') {
+                } elseif ($request['column_types'][$i] == 'date') {
                     /**
                      * Will generate something like:
                      *

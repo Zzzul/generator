@@ -81,7 +81,7 @@ class GeneratorController extends Controller
         (new RouteGenerator)->generate($request);
         (new PermissionGenerator)->generate($request);
 
-        if (in_array('foreignId', $request['data_types'])) {
+        if (in_array('foreignId', $request['column_types'])) {
             (new ViewComposerGenerator)->generate($request);
         }
 

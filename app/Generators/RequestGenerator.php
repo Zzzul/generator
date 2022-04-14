@@ -41,7 +41,7 @@ class RequestGenerator
                 $validations .= "'nullable";
             }
 
-            if ($request['data_types'][$i] == 'enum') {
+            if ($request['column_types'][$i] == 'enum') {
                 /**
                  * will generate like:
                  * 'name' => 'required|in:water,fire',
@@ -125,7 +125,7 @@ class RequestGenerator
                 $validations .= "|max:" . $request['max_lengths'][$i];
             }
 
-            if ($request['data_types'][$i] == 'foreignId') {
+            if ($request['column_types'][$i] == 'foreignId') {
                 // remove '/' or sub folders
                 $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
                 $constrainpath = GeneratorUtils::getModelLocation($request['constrains'][$i]);
