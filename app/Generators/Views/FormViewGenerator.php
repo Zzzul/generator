@@ -273,6 +273,13 @@ class FormViewGenerator
                      * {{ isset($book) && $book->date ? $book->date->format('Y-m-d') : old('date') }}
                      */
                     $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('Y-m-d') : old('$fieldSnakeCase') }}";
+                } elseif ($request['column_types'][$i] == 'time') {
+                    /**
+                     * Will generate something like:
+                     *
+                     * {{ isset($book) ? $book->time->format('H:i') : old('time') }}
+                     */
+                    $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('H:i') : old('$fieldSnakeCase') }}";
                 }
 
                 $template .= str_replace(

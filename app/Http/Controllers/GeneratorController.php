@@ -47,6 +47,10 @@ class GeneratorController extends Controller
      */
     public function store(StoreGeneratorRequest $request)
     {
+        // (new ModelGenerator)->generate($request->validated());
+        // return response()->json(['success'], Response::HTTP_OK);
+
+
         if ($request->generate_type == GeneratorType::ALL->value) {
             $this->generateAll($request->validated());
         } else {
