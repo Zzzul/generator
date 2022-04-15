@@ -28,16 +28,16 @@ class IndexViewGenerator
 
         foreach ($request['fields'] as $i => $field) {
             /**
-             * will generate like:
+             * will generate something like:
              * <th>{{ __('Price') }}</th>
              */
-            if ($request['data_types'][$i] != 'foreignId') {
+            if ($request['column_types'][$i] != 'foreignId') {
                 $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanUcWords($field) . "') }}</th>";
             }
 
             if ($request['input_types'][$i] == 'file') {
                 /**
-                 * will generate like:
+                 * will generate something like:
                  * {
                  *    data: 'photo',
                  *    name: 'photo',
@@ -62,14 +62,14 @@ class IndexViewGenerator
                         </div>`;
                         }
                     },";
-            } elseif ($request['data_types'][$i] == 'foreignId') {
+            } elseif ($request['column_types'][$i] == 'foreignId') {
                 // remove '/' or sub folders
                 $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
 
                 $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($constrainModel) . "') }}</th>";
 
                 /**
-                 * will generate like:
+                 * will generate something like:
                  * {
                  *    data: 'user',
                  *    name: 'user.name'
@@ -81,7 +81,7 @@ class IndexViewGenerator
                 },";
             } else {
                 /**
-                 * will generate like:
+                 * will generate something like:
                  * {
                  *    data: 'price',
                  *    name: 'price'

@@ -19,7 +19,7 @@ class ViewComposerGenerator
         $model = GeneratorUtils::setModelName($request['model']);
         $viewPath = GeneratorUtils::getModelLocation($request['model']);
 
-        foreach ($request['data_types'] as $i => $dataType) {
+        foreach ($request['column_types'] as $i => $dataType) {
             if ($dataType == 'foreignId') {
                 // remove '/' or sub folders
                 $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);

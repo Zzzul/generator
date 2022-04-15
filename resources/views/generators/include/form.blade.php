@@ -53,7 +53,7 @@
                 <tr>
                     <th width="30">#</th>
                     <th>{{ __('Field name') }}</th>
-                    <th>{{ __('Data Type') }}</th>
+                    <th>{{ __('Column Type') }}</th>
                     <th width="310">{{ __('Length') }}</th>
                     <th>{{ __('Input Type') }}</th>
                     <th>{{ __('Required') }}</th>
@@ -70,9 +70,9 @@
                     </td>
                     <td>
                         <div class="form-group">
-                            <select name="data_types[]" class="form-select form-data-types" required>
-                                <option value="" disabled selected>--Select data type--</option>
-                                @foreach (config('generator.data_types') as $type)
+                            <select name="column_types[]" class="form-select form-column-types" required>
+                                <option value="" disabled selected>--Select column type--</option>
+                                @foreach (config('generator.column_types') as $type)
                                     <option value="{{ $type }}">{{ ucwords($type) }}</option>
                                 @endforeach
                             </select>
@@ -101,7 +101,7 @@
                         <div class="form-group">
                             <select name="input_types[]" class="form-select form-input-types" required>
                                 <option value="" disabled selected>-- Select input type --</option>
-                                <option value="" disabled>Select the data type first</option>
+                                <option value="" disabled>Select the column type first</option>
                             </select>
                         </div>
                         <input type="hidden" name="mimes[]" class="form-mimes">

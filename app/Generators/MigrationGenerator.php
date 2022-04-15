@@ -23,13 +23,13 @@ class MigrationGenerator
              * will generate something like:
              * $table->string('name
              */
-            $setFields .= "\$table->" . $request['data_types'][$i] . "('" . str()->snake($field);
+            $setFields .= "\$table->" . $request['column_types'][$i] . "('" . str()->snake($field);
 
             /**
              * will generate something like:
              * $table->string('name
              */
-            if ($request['data_types'][$i] == 'enum') {
+            if ($request['column_types'][$i] == 'enum') {
                 $options = explode('|', $request['select_options'][$i]);
                 $totalOptions = count($options);
 
@@ -51,7 +51,7 @@ class MigrationGenerator
             }
 
             if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0) {
-                if ($request['data_types'][$i] == 'enum') {
+                if ($request['column_types'][$i] == 'enum') {
                     /**
                      * will generate something like:
                      * $table->string('name', ['water', 'fire'])
@@ -65,7 +65,7 @@ class MigrationGenerator
                     $setFields .=  "', " . $request['max_lengths'][$i] . ")";
                 }
             } else {
-                if ($request['data_types'][$i] == 'enum') {
+                if ($request['column_types'][$i] == 'enum') {
                     /**
                      * will generate something like:
                      * $table->string('name', ['water', 'fire'])
@@ -89,19 +89,19 @@ class MigrationGenerator
             }
 
             $constrainName = '';
-            if ($request['data_types'][$i] == 'foreignId') {
+            if ($request['column_types'][$i] == 'foreignId') {
                 // remove path or '/' if exists
                 $constrainName = GeneratorUtils::setModelName($request['constrains'][$i]);
             }
 
             if ($i + 1 != $totalFields) {
-                if ($request['data_types'][$i] == 'foreignId') {
+                if ($request['column_types'][$i] == 'foreignId') {
                     $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($constrainName) . "');\n\t\t\t";
                 } else {
                     $setFields .= ";\n\t\t\t";
                 }
             } else {
-                if ($request['data_types'][$i] == 'foreignId') {
+                if ($request['column_types'][$i] == 'foreignId') {
                     $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($constrainName) . "');";
                 } else {
                     $setFields .= ";";

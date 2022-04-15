@@ -34,23 +34,23 @@ class ModelGenerator
                 $fields .= "'" . str()->snake($value) . "']";
             }
 
-            if ($request['data_types'][$i] == 'date') {
+            if ($request['column_types'][$i] == 'date') {
                 $casts .= "'" . str()->snake($value) . "' => 'date:d/m/Y', ";
-            }elseif ($request['data_types'][$i] == 'year') {
+            }elseif ($request['column_types'][$i] == 'year') {
                 $casts .= "'" . str()->snake($value) . "' => 'integer', ";
-            } elseif ($request['data_types'][$i] == 'dateTime') {
+            } elseif ($request['column_types'][$i] == 'dateTime') {
                 $casts .= "'" . str()->snake($value) . "' => 'datetime:d/m/Y H:i', ";
-            } elseif (str_contains($request['data_types'][$i], 'integer')) {
+            } elseif (str_contains($request['column_types'][$i], 'integer')) {
                 $casts .= "'" . str()->snake($value) . "' => 'integer', ";
-            } elseif ($request['data_types'][$i] == 'float') {
+            } elseif ($request['column_types'][$i] == 'float') {
                 $casts .= "'" . str()->snake($value) . "' => 'float', ";
-            } elseif ($request['data_types'][$i] == 'boolean') {
+            } elseif ($request['column_types'][$i] == 'boolean') {
                 $casts .= "'" . str()->snake($value) . "' => 'boolean', ";
-            } elseif ($request['data_types'][$i] == 'double') {
+            } elseif ($request['column_types'][$i] == 'double') {
                 $casts .= "'" . str()->snake($value) . "' => 'double', ";
-            } elseif (str_contains($request['data_types'][$i], 'string') || str_contains($request['data_types'][$i], 'text') || str_contains($request['data_types'][$i], 'char')) {
+            } elseif (str_contains($request['column_types'][$i], 'string') || str_contains($request['column_types'][$i], 'text') || str_contains($request['column_types'][$i], 'char')) {
                 $casts .= "'" . str()->snake($value) . "' => 'string', ";
-            } elseif ($request['data_types'][$i] == 'foreignId') {
+            } elseif ($request['column_types'][$i] == 'foreignId') {
                 $constrainPath = GeneratorUtils::getModelLocation($request['constrains'][$i]);
                 $constrainName = GeneratorUtils::setModelName($request['constrains'][$i]);
 

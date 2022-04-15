@@ -52,8 +52,8 @@
         `)
     }
 
-    function renderTypes() {
-        let listDataTypes = {!! json_encode(config('generator.data_types')) !!}
+    function getColumnTypes() {
+        let listDataTypes = {!! json_encode(config('generator.column_types')) !!}
         let optionTypes = ''
 
         $(listDataTypes).each(function(i, val) {

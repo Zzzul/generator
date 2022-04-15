@@ -2,7 +2,7 @@
 
 return [
     'name' => 'generators',
-    'data_types' => [
+    'column_types' => [
         'string',
         'integer',
         'text',
@@ -33,7 +33,7 @@ return [
                     'route' => null,
                     'permission' => null,
                     'permissions' => ['view test'],
-                    'sub_menus' => [
+                    'submenus' => [
                         [
                             'title' => 'Tests',
                             'route' => '/tests',
@@ -53,7 +53,7 @@ return [
                     'route' => '/users',
                     'permission' => 'view user',
                     'permissions' => [],
-                    'sub_menus' => [],
+                    'submenus' => [],
                 ],
                 [
                     'title' => 'Roles & permissions',
@@ -61,7 +61,7 @@ return [
                     'route' => '/roles',
                     'permission' => 'view role & permission',
                     'permissions' => [],
-                    'sub_menus' => [],
+                    'submenus' => [],
                 ]
             ],
         ],

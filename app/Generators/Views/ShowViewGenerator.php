@@ -45,12 +45,12 @@ class ShowViewGenerator
                                             @endif
                                         </td>
                                     </tr>";
-            } elseif ($request['data_types'][$i] == 'boolean') {
+            } elseif ($request['column_types'][$i] == 'boolean') {
                 $trs .= "<tr>
                                         <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
                                         <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " == 1 ? 'True' : 'False' }}</td>
                                     </tr>";
-            } elseif ($request['data_types'][$i] == 'foreignId') {
+            } elseif ($request['column_types'][$i] == 'foreignId') {
                 // remove '/' or sub folders
                 $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
 
