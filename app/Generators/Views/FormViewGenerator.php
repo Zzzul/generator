@@ -128,6 +128,8 @@ class FormViewGenerator
                     GeneratorUtils::getTemplate('views/forms/select')
                 );
             } else if ($request['column_types'][$i] == 'year') {
+                $firstYear = is_int(config('generator.format.first_year')) ? config('generator.format.first_year') : 1900;
+
                 /**
                  * Will generate something like:
                  *
@@ -142,7 +144,7 @@ class FormViewGenerator
                  * </select>
                  */
                 $options = "
-                @foreach (range(1900, strftime(\"%Y\", time())) as \$year)
+                @foreach (range($firstYear, strftime(\"%Y\", time())) as \$year)
                     <option value=\"{{ \$year }}\" {{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == \$year ? 'selected' : (old('$fieldSnakeCase') == \$year ? 'selected' : '') }}>
                         {{ \$year }}
                     </option>
