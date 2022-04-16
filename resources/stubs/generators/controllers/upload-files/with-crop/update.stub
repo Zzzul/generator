@@ -1,0 +1,20 @@
+        if ($request->file('{{fieldSnakeCase}}') && $request->file('{{fieldSnakeCase}}')->isValid()) {
+
+            $path = {{uploadPath}}/{{fieldPluralSnakeCase}}/');
+            $filename = $request->file('{{fieldSnakeCase}}')->hashName();
+
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+
+            Image::make($request->file('{{fieldSnakeCase}}')->getRealPath())->resize({{width}}, {{height}}, function ($constraint) {
+                $constraint->upsize();{{aspectRatio}}
+            })->save($path . $filename);
+
+            // delete old {{fieldSnakeCase}} from storage
+            if (${{modelNameSingularCamelCase}}->{{fieldSnakeCase}} != null && file_exists($path . ${{modelNameSingularCamelCase}}->{{fieldSnakeCase}})) {
+                unlink($path . ${{modelNameSingularCamelCase}}->{{fieldSnakeCase}});
+            }
+
+            $attr['{{fieldSnakeCase}}'] = $filename;
+        }

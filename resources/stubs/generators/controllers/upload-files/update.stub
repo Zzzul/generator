@@ -2,7 +2,7 @@
 
             $filename = $request->file('{{fieldSingularSnakeCase}}')->hashName();
 
-            $destination = 'uploads/{{fieldPluralKebabCase}}/';
+            $destination = '{{path}}/{{fieldPluralKebabCase}}/';
 
             // if folder dont exist, then create folder
             if (!file_exists($path = public_path($destination))) {
@@ -16,8 +16,8 @@
             })->save($destination . $filename);
 
             // delete old {{fieldSingularSnakeCase}} from storage
-            if (${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}} != null && file_exists(public_path("/uploads/{{fieldPluralKebabCase}}/${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}}"))) {
-                unlink(public_path("/uploads/{{fieldPluralKebabCase}}/${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}}"));
+            if (${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}} != null && file_exists(public_path("/{{path}}/{{fieldPluralKebabCase}}/${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}}"))) {
+                unlink(public_path("/{{path}}/{{fieldPluralKebabCase}}/${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}}"));
             }
 
             $attr['{{fieldSingularSnakeCase}}'] = $filename;

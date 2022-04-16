@@ -1,0 +1,7 @@
+                ->addColumn('{{fieldSnakeCase}}', function ($row) {
+                    if ($row->{{fieldSnakeCase}} == null) {
+                        return '{{defaultImage}}';
+                    }
+
+                    return asset('{{uploadPathPublic}}/{{fieldPluralKebabCase}}/' . $row->{{fieldSnakeCase}});
+                })

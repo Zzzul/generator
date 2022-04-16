@@ -243,9 +243,11 @@ class FormViewGenerator
                     [
                         '{{modelCamelCase}}',
                         '{{fieldPluralSnakeCase}}',
-                        '{{fieldSingularSnakeCase}}',
+                        '{{fieldSnakeCase}}',
                         '{{fieldUcWords}}',
-                        '{{nullable}}'
+                        '{{nullable}}',
+                        '{{defaultImage}}',
+                        '{{uploadPathPublic}}',
                     ],
                     [
                         $modelNameSingularCamelCase,
@@ -253,6 +255,8 @@ class FormViewGenerator
                         str()->snake($field),
                         $fieldUcWords,
                         $request['requireds'][$i] == 'yes' ? ' required' : '',
+                        config('generator.image.default') ?? 'https://via.placeholder.com/350?text=No+Image+Avaiable',
+                        config('generator.image.path') == 'storage' ? "storage/uploads" : "uploads",
                     ],
                     GeneratorUtils::getTemplate('views/forms/image')
                 );

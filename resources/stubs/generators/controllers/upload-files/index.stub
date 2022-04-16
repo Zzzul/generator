@@ -1,7 +1,7 @@
                 ->addColumn('{{fieldSingularSnakeCase}}', function ($row) {
                     if ($row->{{fieldSingularSnakeCase}} == null) {
-                        return 'https://via.placeholder.com/150?text=No+Image+Available';
+                        return '{{defaultImage}}';
                     }
 
-                    return asset('uploads/{{fieldPluralKebabCase}}/' . $row->{{fieldSingularSnakeCase}});
+                    return asset('{{path}}/{{fieldPluralKebabCase}}/' . $row->{{fieldSingularSnakeCase}});
                 })

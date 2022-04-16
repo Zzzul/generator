@@ -2,7 +2,7 @@
 
             $filename = $request->file('{{fieldSingularSnakeCase}}')->hashName();
 
-            $destination = 'uploads/{{fieldPluralKebabCase}}/';
+            $destination = '{{path}}/{{fieldPluralKebabCase}}/';
 
             if (!file_exists($path = public_path($destination))) {
                 mkdir($path, 0777, true);

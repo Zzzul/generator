@@ -36,13 +36,16 @@ class ShowViewGenerator
             $fieldSnakeCase = str($field)->snake();
 
             if ($request['file_types'][$i] == 'image') {
+                $defaultImage = config('generator.image.default') ? config('generator.image.default'): 'https://via.placeholder.com/350?text=No+Image+Avaiable';
+                $uploadPath =  config('generator.image.path') == 'storage' ? "storage/uploads/" : "uploads/";
+
                 $trs .= "<tr>
                                         <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
                                         <td>
                                             @if ($" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " == null)
-                                            <img src=\"https://via.placeholder.com/350?text=No+Image+Available\" alt=\"$fieldUcWords\"  class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
+                                            <img src=\"$defaultImage\" alt=\"$fieldUcWords\"  class=\"rounded\" width=\"200\" height=\"150\" style=\"object-fit: cover\">
                                             @else
-                                                <img src=\"{{ asset('uploads/" . str($field)->plural()->snake() . "/' . $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . ") }}\" alt=\"$fieldUcWords\" class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
+                                                <img src=\"{{ asset('$uploadPath" . str($field)->plural()->snake() . "/' . $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . ") }}\" alt=\"$fieldUcWords\" class=\"rounded\" width=\"200\" height=\"150\" style=\"object-fit: cover\">
                                             @endif
                                         </td>
                                     </tr>";

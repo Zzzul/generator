@@ -50,25 +50,6 @@ class ControllerGenerator
             $requestPath = "App\Http\Requests\{Store" . $modelNameSingularPascalCase . "Request, Update" . $modelNameSingularPascalCase . "Request}";
         }
 
-        if (in_array('file', $request['input_types'])) {
-            $indexCode = "";
-            $storeCode = "";
-            $updateCode = "";
-            $deleteCode = "";
-
-            foreach ($request['input_types'] as $i => $input) {
-                if ($input == 'file') {
-                    $indexCode .= $this->generateUploadFileCode($request['fields'][$i], 'index');
-
-                    $storeCode .= $this->generateUploadFileCode($request['fields'][$i], 'store');
-
-                    $updateCode .= $this->generateUploadFileCode($request['fields'][$i], 'update', $modelNameSingularCamelCase);
-
-                    $deleteCode .= $this->generateUploadFileCode($request['fields'][$i], 'delete', $modelNameSingularCamelCase);
-                }
-            }
-        }
-
         $relations = "";
         $addColumns = "";
 
@@ -125,6 +106,23 @@ class ControllerGenerator
         }
 
         if (in_array('file', $request['input_types'])) {
+            $indexCode = "";
+            $storeCode = "";
+            $updateCode = "";
+            $deleteCode = "";
+
+            foreach ($request['input_types'] as $i => $input) {
+                if ($input == 'file') {
+                    $indexCode .= $this->generateUploadFileCode($request['fields'][$i], 'index');
+
+                    $storeCode .= $this->generateUploadFileCode($request['fields'][$i], 'store');
+
+                    $updateCode .= $this->generateUploadFileCode($request['fields'][$i], 'update', $modelNameSingularCamelCase);
+
+                    $deleteCode .= $this->generateUploadFileCode($request['fields'][$i], 'delete', $modelNameSingularCamelCase);
+                }
+            }
+
             /**
              * controller with upload file code
              */
@@ -146,7 +144,7 @@ class ControllerGenerator
                     '{{requestPath}}',
                     '{{modelPath}}',
                     '{{viewPath}}',
-                    '{{modelNameSingularUcWords}}'
+                    '{{modelNameSingularUcWords}}',
                 ],
                 [
                     $modelNameSingularPascalCase,
@@ -165,7 +163,7 @@ class ControllerGenerator
                     $requestPath,
                     $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
                     $path != '' ? str_replace('\\', '.', strtolower($path)) . "." : '',
-                    $modelNameSingularUcWords
+                    $modelNameSingularUcWords,
                 ],
                 GeneratorUtils::getTemplate('controllers/controller-with-upload-file')
             );
@@ -230,13 +228,27 @@ class ControllerGenerator
     protected function generateUploadFileCode(string $field, string $path, null|string $model = null)
     {
         $replaceString = [
-            '{{fieldSingularSnakeCase}}',
+            '{{fieldSnakeCase}}',
+            '{{fieldPluralSnakeCase}}',
             '{{fieldPluralKebabCase}}',
+            '{{defaultImage}}',
+            '{{uploadPath}}',
+            '{{uploadPathPublic}}',
+            '{{width}}',
+            '{{height}}',
+            '{{aspectRatio}}',
         ];
 
         $replaceWith = [
             GeneratorUtils::singularSnakeCase($field),
+            GeneratorUtils::pluralSnakeCase($field),
             GeneratorUtils::pluralKebabCase($field),
+            config('generator.image.default') ? config('generator.image.default') : 'https://via.placeholder.com/350?text=No+Image+Avaiable',
+            config('generator.image.path') == 'storage' ? "storage_path('app/public/uploads" : "public_path('uploads",
+            config('generator.image.path') == 'storage' ? "storage/uploads" : "uploads",
+            is_int(config('generator.image.width')) ? config('generator.image.width') : 500,
+            is_int(config('generator.image.height')) ? config('generator.image.height') : 500,
+            config('generator.image.aspect_ratio') ? "\n\t\t\t\t\$constraint->aspectRatio();" : '',
         ];
 
         if ($model != null) {
@@ -244,10 +256,18 @@ class ControllerGenerator
             array_push($replaceWith, $model);
         }
 
-        return str_replace(
-            $replaceString,
-            $replaceWith,
-            GeneratorUtils::getTemplate("controllers/upload-files/$path")
-        );
+        if (config('generator.image.crop')) {
+            return str_replace(
+                $replaceString,
+                $replaceWith,
+                GeneratorUtils::getTemplate("controllers/upload-files/with-crop/$path")
+            );
+        } else {
+            return str_replace(
+                $replaceString,
+                $replaceWith,
+                GeneratorUtils::getTemplate("controllers/upload-files/$path")
+            );
+        }
     }
 }
