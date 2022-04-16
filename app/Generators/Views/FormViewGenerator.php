@@ -128,6 +128,8 @@ class FormViewGenerator
                     GeneratorUtils::getTemplate('views/forms/select')
                 );
             } else if ($request['column_types'][$i] == 'year') {
+                $firstYear = is_int(config('generator.format.first_year')) ? config('generator.format.first_year') : 1900;
+
                 /**
                  * Will generate something like:
                  *
@@ -142,7 +144,7 @@ class FormViewGenerator
                  * </select>
                  */
                 $options = "
-                @foreach (range(1900, strftime(\"%Y\", time())) as \$year)
+                @foreach (range($firstYear, strftime(\"%Y\", time())) as \$year)
                     <option value=\"{{ \$year }}\" {{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == \$year ? 'selected' : (old('$fieldSnakeCase') == \$year ? 'selected' : '') }}>
                         {{ \$year }}
                     </option>
@@ -241,9 +243,11 @@ class FormViewGenerator
                     [
                         '{{modelCamelCase}}',
                         '{{fieldPluralSnakeCase}}',
-                        '{{fieldSingularSnakeCase}}',
+                        '{{fieldSnakeCase}}',
                         '{{fieldUcWords}}',
-                        '{{nullable}}'
+                        '{{nullable}}',
+                        '{{defaultImage}}',
+                        '{{uploadPathPublic}}',
                     ],
                     [
                         $modelNameSingularCamelCase,
@@ -251,6 +255,8 @@ class FormViewGenerator
                         str()->snake($field),
                         $fieldUcWords,
                         $request['requireds'][$i] == 'yes' ? ' required' : '',
+                        config('generator.image.default') ?? 'https://via.placeholder.com/350?text=No+Image+Avaiable',
+                        config('generator.image.path') == 'storage' ? "storage/uploads" : "uploads",
                     ],
                     GeneratorUtils::getTemplate('views/forms/image')
                 );
@@ -271,6 +277,13 @@ class FormViewGenerator
                      * {{ isset($book) && $book->date ? $book->date->format('Y-m-d') : old('date') }}
                      */
                     $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('Y-m-d') : old('$fieldSnakeCase') }}";
+                } elseif ($request['column_types'][$i] == 'time') {
+                    /**
+                     * Will generate something like:
+                     *
+                     * {{ isset($book) ? $book->time->format('H:i') : old('time') }}
+                     */
+                    $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('H:i') : old('$fieldSnakeCase') }}";
                 }
 
                 $template .= str_replace(

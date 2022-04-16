@@ -7,9 +7,11 @@
                 mkdir($path, 0777, true);
             }
 
-            $request->file('{{fieldSnakeCase}}')->move($path, $filename);
+            Image::make($request->file('{{fieldSnakeCase}}')->getRealPath())->resize({{width}}, {{height}}, function ($constraint) {
+                $constraint->upsize();{{aspectRatio}}
+            })->save($path . $filename);
 
-             // delete old {{fieldSnakeCase}} from storage
+            // delete old {{fieldSnakeCase}} from storage
             if (${{modelNameSingularCamelCase}}->{{fieldSnakeCase}} != null && file_exists($path . ${{modelNameSingularCamelCase}}->{{fieldSnakeCase}})) {
                 unlink($path . ${{modelNameSingularCamelCase}}->{{fieldSnakeCase}});
             }

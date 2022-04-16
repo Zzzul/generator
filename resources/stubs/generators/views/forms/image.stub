@@ -2,19 +2,19 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-4 text-center">
-                    @if (${{modelCamelCase}}->{{fieldSingularSnakeCase}} == null)
-                        <img src="https://via.placeholder.com/350?text=No+Image+Available" alt="{{fieldUcWords}}" class="rounded mb-2 mt-2" alt="{{fieldUcWords}}" width="200" style="object-fit: cover">
+                    @if (${{modelCamelCase}}->{{fieldSnakeCase}} == null)
+                        <img src="{{defaultImage}}" alt="{{fieldUcWords}}" class="rounded mb-2 mt-2" alt="{{fieldUcWords}}" width="200" height="150" style="object-fit: cover">
                     @else
-                        <img src="{{ asset('uploads/{{fieldPluralSnakeCase}}/' . ${{modelCamelCase}}->{{fieldSingularSnakeCase}}) }}" alt="{{fieldUcWords}}" class="rounded mb-2 mt-2" width="200" style="object-fit: cover">
+                        <img src="{{ asset('{{uploadPathPublic}}/{{fieldPluralSnakeCase}}/' . ${{modelCamelCase}}->{{fieldSnakeCase}}) }}" alt="{{fieldUcWords}}" class="rounded mb-2 mt-2" width="200" height="150" style="object-fit: cover">
                     @endif
                 </div>
 
                 <div class="col-md-8">
                     <div class="form-group ms-3">
-                        <label for="{{fieldSingularSnakeCase}}">{{ __('{{fieldUcWords}}') }}</label>
-                        <input type="file" name="{{fieldSingularSnakeCase}}" class="form-control @error('{{fieldSingularSnakeCase}}') is-invalid @enderror" id="{{fieldSingularSnakeCase}}">
+                        <label for="{{fieldSnakeCase}}">{{ __('{{fieldUcWords}}') }}</label>
+                        <input type="file" name="{{fieldSnakeCase}}" class="form-control @error('{{fieldSnakeCase}}') is-invalid @enderror" id="{{fieldSnakeCase}}">
 
-                        @error('{{fieldSingularSnakeCase}}')
+                        @error('{{fieldSnakeCase}}')
                             <div class="invalid-feedback">
                                 <i class="bx bx-radio-circle"></i>
                                 {{ $message }}
@@ -27,10 +27,10 @@
     @else
         <div class="col-md-6">
             <div class="form-group">
-                <label for="{{fieldSingularSnakeCase}}">{{ __('{{fieldUcWords}}') }}</label>
-                <input type="file" name="{{fieldSingularSnakeCase}}" class="form-control @error('{{fieldSingularSnakeCase}}') is-invalid @enderror" id="{{fieldSingularSnakeCase}}"{{nullable}}>
+                <label for="{{fieldSnakeCase}}">{{ __('{{fieldUcWords}}') }}</label>
+                <input type="file" name="{{fieldSnakeCase}}" class="form-control @error('{{fieldSnakeCase}}') is-invalid @enderror" id="{{fieldSnakeCase}}"{{nullable}}>
 
-                @error('{{fieldSingularSnakeCase}}')
+                @error('{{fieldSnakeCase}}')
                     <div class="invalid-feedback">
                         <i class="bx bx-radio-circle"></i>
                         {{ $message }}

@@ -41,15 +41,15 @@ return [
          * 1. public
          * 2. storage
          */
-        'path' => 'storage',
+        'path' => 'public',
 
         /**
          * Will used if image is nullable.
          */
-        'default' => 'https://via.placeholder.com/350?text=No+Image+Avaiable',
+        'default' => 'https://via.placeholder.com/350?text=No+Image+Available',
 
         /**
-         * Crop the uploaded image using intervention image.
+         * Crop the uploaded image used intervention image.
          *
          * when set to false will ignore config below(aspect_ratio, width, and height).
          */
@@ -132,33 +132,43 @@ return [
     'sidebars' => [
         [
             'header' => 'Main',
-            /**
-             * All permissions in menus[] and submenus[]
-             */
-            'permissions' => ['view test'],
+            'permissions' => [
+                'view test',
+                'view product'
+            ],
             'menus' => [
                 [
                     'title' => 'Main Data',
                     'icon' => '<i class="bi bi-collection-fill"></i>',
                     'route' => null,
                     'permission' => null,
-                    /**
-                     * All permissions on submenus[]
-                     */
-                    'permissions' => ['view test'],
+                    'permissions' => [
+                        'view test'
+                    ],
                     'submenus' => [
                         [
                             'title' => 'Tests',
                             'route' => '/tests',
                             'permission' => 'view test'
                         ]
-                    ],
+                    ]
                 ],
-            ],
+                [
+                    'title' => 'Products',
+                    'icon' => 'aasdasd',
+                    'route' => '/products',
+                    'permission' => 'view product',
+                    'permissions' => null,
+                    'submenus' => []
+                ]
+            ]
         ],
         [
             'header' => 'Users',
-            'permissions' => ['view user', 'view role & permission'],
+            'permissions' => [
+                'view user',
+                'view role & permission'
+            ],
             'menus' => [
                 [
                     'title' => 'Users',
@@ -166,7 +176,7 @@ return [
                     'route' => '/users',
                     'permission' => 'view user',
                     'permissions' => [],
-                    'submenus' => [],
+                    'submenus' => []
                 ],
                 [
                     'title' => 'Roles & permissions',
@@ -174,9 +184,9 @@ return [
                     'route' => '/roles',
                     'permission' => 'view role & permission',
                     'permissions' => [],
-                    'submenus' => [],
+                    'submenus' => []
                 ]
-            ],
-        ],
-    ],
+            ]
+        ]
+    ]
 ];

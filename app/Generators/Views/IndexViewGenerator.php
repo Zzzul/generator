@@ -87,9 +87,17 @@ class IndexViewGenerator
                  *    name: 'price'
                  * }
                  */
-                $tdColumns .= "{
+                // $tdColumns .= "{
+                //     data: '" . str()->snake($field) . "',
+                //     name: '" . str()->snake($field) . "'
+                // },";
+
+                $tdColumns .=  "{
                     data: '" . str()->snake($field) . "',
-                    name: '" . str()->snake($field) . "'
+                    name: '" . str()->snake($field) . "',
+                    render: function(data, type, full, meta) {
+                        return data ? data : '-';
+                    }
                 },";
             }
 

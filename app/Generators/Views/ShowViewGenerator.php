@@ -25,6 +25,7 @@ class ShowViewGenerator
 
         $trs = "";
         $totalFields = count($request['fields']);
+        $dateTimeFormat = config('generator.format.datetime') ? config('generator.format.datetime') : 'd/m/Y H:i';
 
         foreach ($request['fields'] as $i => $field) {
             if ($i >= 1) {
@@ -35,13 +36,16 @@ class ShowViewGenerator
             $fieldSnakeCase = str($field)->snake();
 
             if ($request['file_types'][$i] == 'image') {
+                $defaultImage = config('generator.image.default') ? config('generator.image.default'): 'https://via.placeholder.com/350?text=No+Image+Avaiable';
+                $uploadPath =  config('generator.image.path') == 'storage' ? "storage/uploads/" : "uploads/";
+
                 $trs .= "<tr>
                                         <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
                                         <td>
                                             @if ($" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " == null)
-                                            <img src=\"https://via.placeholder.com/350?text=No+Image+Available\" alt=\"$fieldUcWords\"  class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
+                                            <img src=\"$defaultImage\" alt=\"$fieldUcWords\"  class=\"rounded\" width=\"200\" height=\"150\" style=\"object-fit: cover\">
                                             @else
-                                                <img src=\"{{ asset('uploads/" . str($field)->plural()->snake() . "/' . $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . ") }}\" alt=\"$fieldUcWords\" class=\"rounded\" width=\"200\" style=\"object-fit: cover\">
+                                                <img src=\"{{ asset('$uploadPath" . str($field)->plural()->snake() . "/' . $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . ") }}\" alt=\"$fieldUcWords\" class=\"rounded\" width=\"200\" height=\"150\" style=\"object-fit: cover\">
                                             @endif
                                         </td>
                                     </tr>";
@@ -58,10 +62,29 @@ class ShowViewGenerator
                                         <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($constrainModel) . "') }}</td>
                                         <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($constrainModel) . " ? $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($constrainModel) . "->" . GeneratorUtils::getColumnAfterId($constrainModel) . " : '' }}</td>
                                     </tr>";
+            } elseif($request['column_types'][$i] == 'date'){
+                $dateFormat = config('generator.format.date') ? config('generator.format.date') : 'd/m/Y';
+
+                $trs .= "<tr>
+                                        <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
+                                        <td>{{ isset($" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . ") ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('$dateFormat') : '-'  }}</td>
+                                    </tr>";
+            } elseif($request['column_types'][$i] == 'dateTime'){
+                $trs .= "<tr>
+                                        <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
+                                        <td>{{ isset($" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . ") ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('$dateTimeFormat') : '-'  }}</td>
+                                    </tr>";
+            } elseif($request['column_types'][$i] == 'time'){
+                $timeFormat = config('generator.format.time') ? config('generator.format.time') : 'H:i';
+
+                $trs .= "<tr>
+                                        <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
+                                        <td>{{ isset($" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . ") ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('$timeFormat') : '-'  }}</td>
+                                    </tr>";
             } else {
                 $trs .= "<tr>
                                         <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
-                                        <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " }}</td>
+                                        <td>{{ isset($" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . ") ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " : '-' }}</td>
                                     </tr>";
             }
 
@@ -76,14 +99,16 @@ class ShowViewGenerator
                 '{{modelNameSingularLowerCase}}',
                 '{{modelNamePluralKebabCase}}',
                 '{{modelNameSingularCamelCase}}',
-                '{{trs}}'
+                '{{trs}}',
+                '{{dateTimeFormat}}'
             ],
             [
                 $modelNamePluralUcWords,
                 $modelNameSingularLowerCase,
                 $modelNamePluralKebabCase,
                 $modelNameSingularCamelCase,
-                $trs
+                $trs,
+                $dateTimeFormat
             ],
             GeneratorUtils::getTemplate('views/show')
         );

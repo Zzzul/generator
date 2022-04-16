@@ -8,6 +8,7 @@ use App\Http\Requests\StoreGeneratorRequest;
 use Illuminate\Support\Facades\Artisan;
 use App\Generators\{
     ControllerGenerator,
+    GeneratorUtils,
     MenuGenerator,
     ModelGenerator,
     MigrationGenerator,

@@ -9,7 +9,7 @@ return [
     /**
      * All avaibale column type for migration.
      */
-    'data_type' => [
+    'column_types' => [
         'string',
         'integer',
         'text',
@@ -96,12 +96,44 @@ return [
 
     /**
      * It will used for generator to manage and show menus on sidebar views.
+     *
+     * Example:
+     * [
+     *   'header' => 'Main',
+     *
+     *   // All permissions in menus[] and submenus[]
+     *   'permissions' => ['view test'],
+     *
+     *   menus' => [
+     *       [
+     *          'title' => 'Main Data',
+     *          'icon' => '<i class="bi bi-collection-fill"></i>',
+     *          'route' => null,
+     *
+     *          // permission always null when isset submenus
+     *          'permission' => null,
+     *
+     *          // All permissions on submenus[] and will empty[] when submenus equals to []
+     *          'permissions' => ['view test'],
+     *
+     *          'submenus' => [
+     *                 [
+     *                     'title' => 'Tests',
+     *                     'route' => '/tests',
+     *                     'permission' => 'view test'
+     *                  ]
+     *               ],
+     *           ],
+     *       ],
+     *  ],
+     *
+     * This code below always change when you using a generator and maybe you must to lint or format the code.
      */
     'sidebars' => [
         [
             'header' => 'Main',
             /**
-             * All permissions in menus[] and sub_menus[]
+             * All permissions in menus[] and submenus[]
              */
             'permissions' => ['view test'],
             'menus' => [
@@ -111,10 +143,10 @@ return [
                     'route' => null,
                     'permission' => null,
                     /**
-                     * All permissions on sub_menus[]
+                     * All permissions on submenus[]
                      */
                     'permissions' => ['view test'],
-                    'sub_menus' => [
+                    'submenus' => [
                         [
                             'title' => 'Tests',
                             'route' => '/tests',
@@ -134,7 +166,7 @@ return [
                     'route' => '/users',
                     'permission' => 'view user',
                     'permissions' => [],
-                    'sub_menus' => [],
+                    'submenus' => [],
                 ],
                 [
                     'title' => 'Roles & permissions',
@@ -142,7 +174,7 @@ return [
                     'route' => '/roles',
                     'permission' => 'view role & permission',
                     'permissions' => [],
-                    'sub_menus' => [],
+                    'submenus' => [],
                 ]
             ],
         ],

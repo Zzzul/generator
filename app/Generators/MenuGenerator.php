@@ -137,7 +137,7 @@ class MenuGenerator
         $configSidebar[$indexSidebar]['menus'][$indexMenu]['permission'] = null;
 
         // push new submenu
-        array_push($configSidebar[$indexSidebar]['menus'][$indexMenu]['sub_menus'], [
+        array_push($configSidebar[$indexSidebar]['menus'][$indexMenu]['submenus'], [
             'title' => GeneratorUtils::cleanPluralUcWords($model),
             'route' => '/' . GeneratorUtils::cleanPluralLowerCase($model),
             'permission' => 'view ' . GeneratorUtils::cleanSingularLowerCase($model),
@@ -158,37 +158,11 @@ class MenuGenerator
      */
     protected function generateFile(string $jsonToArrayString)
     {
-        $generatorName = config('generator.name');
+        $configStringCode = str(file_get_contents(config_path('generator.php')))->before("'sidebars' => ");
 
-        $template = "<?php " . PHP_EOL . "\nreturn [ " . PHP_EOL . "\t'name' => '" . $generatorName . "'," . PHP_EOL . "\t'column_types' => " . $this->getDataTypes() . "," . PHP_EOL . "\t'sidebars' => " . $jsonToArrayString . "\n];";
+        $template = $configStringCode . "'sidebars' => " . $jsonToArrayString . "\n];";
 
         file_put_contents(base_path('config/generator.php'), $template);
-    }
-
-    /**
-     * Get all avaible data types on config(array), convert to json and convert again to string with format like an array
-     *
-     * @return string
-     */
-    protected function getDataTypes()
-    {
-        return str_replace(
-            [
-                '",',
-                '"',
-                "['",
-                "']",
-                "\t'",
-            ],
-            [
-                "', \n\t",
-                "'",
-                "[\n\t'",
-                "'\n\t]",
-                "\t\t'"
-            ],
-            json_encode(config('generator.column_types'))
-        );
     }
 
     /**
@@ -209,7 +183,7 @@ class MenuGenerator
                 'route' => null,
                 'permission' => null,
                 'permissions' => ['view ' . GeneratorUtils::cleanSingularLowerCase($submenu)],
-                'sub_menus' => [
+                'submenus' => [
                     [
                         'title' =>  GeneratorUtils::cleanPluralUcWords($submenu),
                         'route' => '/' . str(GeneratorUtils::pluralKebabCase($submenu))->remove('/'),
@@ -224,7 +198,7 @@ class MenuGenerator
                 'route' => '/' . str(GeneratorUtils::pluralKebabCase($route))->remove('/'),
                 'permission' => 'view ' . GeneratorUtils::cleanSingularLowerCase($title),
                 'permissions' => null,
-                'sub_menus' =>  []
+                'submenus' =>  []
             ];
         }
 
@@ -275,7 +249,7 @@ class MenuGenerator
                 "','",
                 "\\",
                 "='",
-                "'>"
+                "'>",
             ],
             [
                 '[',
@@ -285,7 +259,7 @@ class MenuGenerator
                 "', '",
                 '',
                 '="',
-                '">'
+                '">',
             ],
             json_encode($replace, JSON_PRETTY_PRINT)
         );

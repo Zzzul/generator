@@ -19,6 +19,7 @@ class ModelGenerator
         $casts = "[";
         $relations = "";
         $totalFields = count($request['fields']);
+        $dateTimeFormat = config('generator.format.datetime') ? config('generator.format.datetime') : 'd/m/Y H:i';
 
         if ($path != '') {
             $namespace = "namespace App\\Models\\$path;";
@@ -35,11 +36,17 @@ class ModelGenerator
             }
 
             if ($request['column_types'][$i] == 'date') {
-                $casts .= "'" . str()->snake($value) . "' => 'date:d/m/Y', ";
-            }elseif ($request['column_types'][$i] == 'year') {
+                $dateFormat = config('generator.format.date') ? config('generator.format.date') : 'd/m/Y';
+
+                $casts .= "'" . str()->snake($value) . "' => 'date:$dateFormat', ";
+            } elseif ($request['column_types'][$i] == 'time') {
+                $timeFormat = config('generator.format.time') ? config('generator.format.time') : 'H:i';
+
+                $casts .= "'" . str()->snake($value) . "' => 'datetime:$timeFormat', ";
+            } elseif ($request['column_types'][$i] == 'year') {
                 $casts .= "'" . str()->snake($value) . "' => 'integer', ";
             } elseif ($request['column_types'][$i] == 'dateTime') {
-                $casts .= "'" . str()->snake($value) . "' => 'datetime:d/m/Y H:i', ";
+                $casts .= "'" . str()->snake($value) . "' => 'datetime:$dateTimeFormat', ";
             } elseif (str_contains($request['column_types'][$i], 'integer')) {
                 $casts .= "'" . str()->snake($value) . "' => 'integer', ";
             } elseif ($request['column_types'][$i] == 'float') {
@@ -62,7 +69,9 @@ class ModelGenerator
 
                 /**
                  * will generate something like:
-                 * \App\Models\Master\Product::class or \App\Models\Product::class
+                 * \App\Models\Master\Product::class
+                 *              or
+                 *  \App\Models\Product::class
                  */
                 if ($constrainPath != '') {
                     $constrainPath = "\\App\\Models\\$constrainPath\\$constrainName";
@@ -75,7 +84,9 @@ class ModelGenerator
                  *
                  * public function product()
                  * {
-                 *     return $this->belongsTo(\App\Models\Master\Product::class); or return $this->belongsTo(\App\Models\Product::class);
+                 *     return $this->belongsTo(\App\Models\Master\Product::class);
+                 *                              or
+                 *     return $this->belongsTo(\App\Models\Product::class);
                  * }
                  */
                 $relations .= "public function " . str()->snake($constrainName) . "()\n\t{\n\t\treturn \$this->belongsTo(" . $constrainPath . "::class" . $foreign_id . ");\n\t}";
@@ -86,7 +97,7 @@ class ModelGenerator
             }
         }
 
-        $casts .= "'created_at' => 'datetime:d/m/Y H:i', 'updated_at' => 'datetime:d/m/Y H:i']";
+        $casts .= "'created_at' => 'datetime:$dateTimeFormat', 'updated_at' => 'datetime:$dateTimeFormat']";
 
         $template = str_replace(
             [
