@@ -36,14 +36,17 @@ https://user-images.githubusercontent.com/62506582/162600284-aa8fe74e-5dca-4d8d-
     - 2FA Authentication
     - Update profile information 
 - [x] Roles and permissions ([Spatie Permissions](https://spatie.be/docs/laravel-permission/v5/introduction))
-- [x] Users
+- [x] CRUD User
 - [x] CRUD Generator
-    - Support more than [15 column type table](https://laravel.com/docs/9.x/migrations#available-column-types), like string, char, date, year, etc.
+    - Support more than [15 column type migration](https://laravel.com/docs/9.x/migrations#available-column-types), like string, char, date, year, etc.
+    - Datatables ([Yajra datatables](https://github.com/yajra/laravel-datatables))
     - BelongsTo relation
-    - Updload image
-    - Input type supported
-        - text, email, file, number, date, time, datetime-local, select, radio, textarea
+    - Upload image
     - Dynamic sidebar menus
+    - Input type supported
+        - Text, email, file, number, date, time, datetime-local, select, radio, textarea
+    - Request validations
+        - Required, in, image, min, max, string, email, number, date, exists, nullable 
 
 ## Setup
 1. Clone or download from [Releases](https://github.com/Zzzul/generator/releases)
@@ -78,10 +81,20 @@ DB_PASSWORD=
 php artisan migrate --seed
 ``` 
 
+7. Storage link
+```sh
+php artisan storage:link
+``` 
+
+8. Start local server
+```sh
+php artisan serve
+``` 
+
 ## Usage
 Go to ```/generators/create```
 
-Admin
+Login
 - Email: admin@example.com
 - Password: password
 
