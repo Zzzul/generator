@@ -1,24 +1,18 @@
-        if ($request->file('{{fieldSingularSnakeCase}}') && $request->file('{{fieldSingularSnakeCase}}')->isValid()) {
+        if ($request->file('{{fieldSnakeCase}}') && $request->file('{{fieldSnakeCase}}')->isValid()) {
 
-            $filename = $request->file('{{fieldSingularSnakeCase}}')->hashName();
+            $path = {{uploadPath}}/{{fieldPluralSnakeCase}}/');
+            $filename = $request->file('{{fieldSnakeCase}}')->hashName();
 
-            $destination = '{{path}}/{{fieldPluralKebabCase}}/';
-
-            // if folder dont exist, then create folder
-            if (!file_exists($path = public_path($destination))) {
+            if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }
 
-            // Intervention Image
-            Image::make($request->file('{{fieldSingularSnakeCase}}')->getRealPath())->resize(500, 500, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            })->save($destination . $filename);
+            $request->file('{{fieldSnakeCase}}')->move($path, $filename);
 
-            // delete old {{fieldSingularSnakeCase}} from storage
-            if (${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}} != null && file_exists(public_path("/{{path}}/{{fieldPluralKebabCase}}/${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}}"))) {
-                unlink(public_path("/{{path}}/{{fieldPluralKebabCase}}/${{modelNameSingularCamelCase}}->{{fieldSingularSnakeCase}}"));
+             // delete old {{fieldSnakeCase}} from storage
+            if (${{modelNameSingularCamelCase}}->{{fieldSnakeCase}} != null && file_exists($path . ${{modelNameSingularCamelCase}}->{{fieldSnakeCase}})) {
+                unlink($path . ${{modelNameSingularCamelCase}}->{{fieldSnakeCase}});
             }
 
-            $attr['{{fieldSingularSnakeCase}}'] = $filename;
+            $attr['{{fieldSnakeCase}}'] = $filename;
         }
