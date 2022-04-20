@@ -529,7 +529,7 @@
 
             if ($('#model').val()) {
                 $('#helper-text-menu').html(`
-                Will generate a new submenu <b>${capitalizeFirstLetter(setModelName($('#model').val()))}</b> at <b>${$('#select-menu option:selected').text()}</b> menu.
+                Will generate a new submenu <b>${capitalizeFirstLetter(setModelName($('#model').val()))}</b> in <b>${$('#select-menu option:selected').text()}</b> menu.
             `)
             }
         }
