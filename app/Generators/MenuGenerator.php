@@ -48,7 +48,7 @@ class MenuGenerator
     protected function generateNewAllMenu(array $request, string $model, array $configSidebar)
     {
         $newConfigSidebar = [
-            'header' => $request['new_header'],
+            'header' => GeneratorUtils::cleanPluralUcWords($request['new_header']),
             'permissions' => ['view ' .  GeneratorUtils::cleanSingularLowerCase($model)],
             'menus' => [],
         ];
@@ -118,32 +118,48 @@ class MenuGenerator
         $indexSidebar = $menu['sidebar'];
         $indexMenu = $menu['menus'];
 
-        $newPermission = 'view ' .  GeneratorUtils::cleanSingularLowerCase($model);
+        $newPermission = "view " .  GeneratorUtils::cleanSingularLowerCase($model);
 
-        // push to permissions on header
+        /**
+         * Push to permissions on header
+         */
         array_push($configSidebar[$indexSidebar]['permissions'], $newPermission);
 
-        array_splice($configSidebar[$indexSidebar]['permissions'], $indexMenu, 1);
+        /**
+         * If submenus[] is empty, move menu at this index into the submenus[] and make route and permission to null
+         */
+        if ($configSidebar[$indexSidebar]['menus'][$indexMenu]['submenus'] == []) {
+            array_push($configSidebar[$indexSidebar]['menus'][$indexMenu]['submenus'], [
+                'title' => $configSidebar[$indexSidebar]['menus'][$indexMenu]['title'],
+                'route' => $configSidebar[$indexSidebar]['menus'][$indexMenu]['route'],
+                'permission' => $configSidebar[$indexSidebar]['menus'][$indexMenu]['permission'],
+            ]);
 
-        // remove permission from database
-        if ($oldPermission = $configSidebar[$indexSidebar]['menus'][$indexMenu]['permission']) {
-            Permission::where('name', 'like', '%' . str($oldPermission)->after('view ') . '%')->delete();
+            /**
+             * Push to permissions on menus
+             */
+            array_push(
+                $configSidebar[$indexSidebar]['menus'][$indexMenu]['permissions'],
+                $configSidebar[$indexSidebar]['menus'][$indexMenu]['permission'] . "', '". $newPermission
+            );
+
+            $configSidebar[$indexSidebar]['menus'][$indexMenu]['route'] = null;
+            $configSidebar[$indexSidebar]['menus'][$indexMenu]['permission'] = null;
+        } else {
+            array_push(
+                $configSidebar[$indexSidebar]['menus'][$indexMenu]['permissions'],
+                $newPermission
+            );
         }
 
-        // push to permissions on menus
-        array_push($configSidebar[$indexSidebar]['menus'][$indexMenu]['permissions'], $newPermission);
-
-        $configSidebar[$indexSidebar]['menus'][$indexMenu]['route'] = null;
-        $configSidebar[$indexSidebar]['menus'][$indexMenu]['permission'] = null;
-
-        // push new submenu
+        /**
+         * Push new submenu
+         */
         array_push($configSidebar[$indexSidebar]['menus'][$indexMenu]['submenus'], [
             'title' => GeneratorUtils::cleanPluralUcWords($model),
             'route' => '/' . GeneratorUtils::cleanPluralLowerCase($model),
             'permission' => 'view ' . GeneratorUtils::cleanSingularLowerCase($model),
         ]);
-
-        $this->removePermissionOnConfig(GeneratorUtils::cleanSingularLowerCase($model));
 
         $stringCode = $this->convertJsonToArrayString($configSidebar);
 
@@ -203,33 +219,6 @@ class MenuGenerator
         }
 
         return $newMenu;
-    }
-
-    protected function removePermissionOnConfig(string $permissionName)
-    {
-        $permissions = config('permission.list_permissions');
-        $permissionIndex = array_search($permissionName, array_column($permissions, 'group'));
-
-        array_splice($permissions, $permissionIndex, 1);
-
-        $permissionFile = file_get_contents(config_path('permission.php'));
-
-        $stringAfter = str($permissionFile)->after("'list_permissions' => [");
-
-        $search = str($stringAfter)->before("// Don't remove this comment, it will used as 'search param' to generate a new permission");
-
-        // remove '[' and ']' cause will make a multi-dimensional array
-        $newPermissions = substr($this->convertJsonToArrayString($permissions), 1, -1);
-
-        $replace = str_replace($search, $newPermissions, $permissionFile);
-
-        $addNewLineToComment = str_replace(
-            "// Don't remove this comment, it will used as 'search param' to generate a new permission",
-            ",\n\t// Don't remove this comment, it will used as 'search param' to generate a new permission",
-            $replace
-        );
-
-        file_put_contents(base_path('config/permission.php'), $addNewLineToComment);
     }
 
     /**
