@@ -53,6 +53,18 @@ class ControllerGenerator
         $relations = "";
         $addColumns = "";
 
+        if (in_array('text', $request['column_types']) || in_array('longText', $request['column_types'])) {
+            $limitText = config('generator.format.limit_text') ? config('generator.format.limit_text') : 200;
+
+            foreach($request['column_types'] as $i => $type){
+                if ($type == 'text' || $type == 'longText') {
+                    $addColumns .= "->addColumn('" . str($request['fields'][$i])->snake() . "', function(\$row){
+                    return str(\$row->" . str($request['fields'][$i])->snake() . ")->limit($limitText);
+                })\n\t\t\t\t";
+                }
+            }
+        }
+
         // load the relations for create, show, and edit
         if (in_array('foreignId', $request['column_types'])) {
 

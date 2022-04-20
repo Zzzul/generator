@@ -41,15 +41,15 @@ return [
          * 1. public
          * 2. storage
          */
-        'path' => 'public',
+        'path' => 'storage',
 
         /**
          * Will used if image is nullable.
          */
-        'default' => 'https://via.placeholder.com/350?text=No+Image+Available',
+        'default' => 'https://via.placeholder.com/350?text=No+Image+Avaiable',
 
         /**
-         * Crop the uploaded image used intervention image.
+         * Crop the uploaded image using intervention image.
          *
          * when set to false will ignore config below(aspect_ratio, width, and height).
          */
@@ -91,7 +91,12 @@ return [
         /**
          * If any datetime column type or datetime-local on input format will cast and display used this format.
          */
-        'datetime' => 'd/m/Y H:i'
+        'datetime' => 'd/m/Y H:i',
+
+        /**
+         * Limit string on index view for any column type text or longtext.
+         */
+        'limit_text' => 200,
     ],
 
     /**

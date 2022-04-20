@@ -26,7 +26,6 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
             ${{modelNamePluralCamelCase}} = {{query}};
 
             return DataTables::of(${{modelNamePluralCamelCase}})
-                ->addIndexColumn()
                 {{addColumns}}->addColumn('action', '{{viewPath}}{{modelNamePluralKebabCase}}.include.action')
                 ->toJson();
         }
