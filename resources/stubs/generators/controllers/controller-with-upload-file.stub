@@ -114,11 +114,17 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function destroy({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-{{deleteCode}}
-        ${{modelNameSingularCamelCase}}->delete();
+        try {
+        {{deleteCode}}
+            ${{modelNameSingularCamelCase}}->delete();
 
-        return redirect()
-            ->route('{{modelNamePluralKebabCase}}.index')
-            ->with('success', __('{{modelNameSingularUcWords}} deleted successfully.'));
+            return redirect()
+                ->route('{{modelNamePluralKebabCase}}.index')
+                ->with('success', __('{{modelNameSingularUcWords}} deleted successfully.'));
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('{{modelNamePluralKebabCase}}.index')
+                ->with('error', __('The {{modelNameSingularUcWords}} can`t be deleted because it is related to another table.'));
+        }
     }
 }
