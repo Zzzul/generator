@@ -27,7 +27,6 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
             ${{modelNamePluralCamleCase}} = {{query}};
 
             return Datatables::of(${{modelNamePluralCamleCase}})
-                ->addIndexColumn()
                 {{addColumns}}
 {{indexCode}}
                 ->addColumn('action', '{{viewPath}}{{modelNamePluralKebabCase}}.include.action')

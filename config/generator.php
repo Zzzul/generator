@@ -91,7 +91,12 @@ return [
         /**
          * If any datetime column type or datetime-local on input format will cast and display used this format.
          */
-        'datetime' => 'd/m/Y H:i'
+        'datetime' => 'd/m/Y H:i',
+
+        /**
+         * Limit string on index view for any column type text or longtext.
+         */
+        'limit_text' => 200,
     ],
 
     /**
