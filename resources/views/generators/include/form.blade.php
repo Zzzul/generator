@@ -19,7 +19,8 @@
     <div class="col-md-7">
         <p class="mb-2">Generate Type</p>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="generate_type" id="generate-type-1" value="{{ \App\Enums\GeneratorType::ALL->value }}" checked>
+            <input class="form-check-input" type="radio" name="generate_type" id="generate-type-1"
+                value="{{ \App\Enums\GeneratorType::ALL->value }}" checked>
             <label class="form-check-label" for="generate-type-1">
                 {{ __('All (Migration, Model, View, Controller, Route, & Request)') }}
             </label>
@@ -27,7 +28,7 @@
 
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="generate_type" id="generate-type-2"
-            value="{{ \App\Enums\GeneratorType::ONLY_MODEL_AND_MIGRATION->value }}">
+                value="{{ \App\Enums\GeneratorType::ONLY_MODEL_AND_MIGRATION->value }}">
             <label class="form-check-label" for="generate-type-2">
                 {{ __('Only Model & Migration') }}
             </label>
@@ -61,7 +62,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr draggable="true" ondragstart="dragStart()" ondragover="dragOver()">
                     <td>1</td>
                     <td>
                         <div class="form-group">
@@ -121,7 +122,7 @@
                         </div>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-outline-danger btn-sm btn-delete disabled" disabled>
+                        <button type="button" class="btn btn-outline-danger btn-sm btn-delete" disabled>
                             <i class="fa fa-trash-alt"></i>
                         </button>
                     </td>

@@ -70,8 +70,13 @@
     function generateNo() {
         let no = 1
 
-        $('#tbl-field tbody tr').each(function() {
+        $('#tbl-field tbody tr').each(function(i) {
             $(this).find('td:nth-child(1)').html(no)
+            if(i < 1){
+                $(`.btn-delete:eq(${i})`).prop('disabled', true)
+            }else{
+                $(`.btn-delete:eq(${i})`).prop('disabled', false)
+            }
             no++
         })
     }
@@ -107,7 +112,7 @@
     function convertToPlural(string) {
         if (string != '') {
 
-            let lastChar = string.substr(string.length - 1);
+            let lastChar = string.substr(string.length - 1)
 
             if (lastChar == 'y') {
                 return `${string.substr(0, string.length - 1)}ies`
@@ -117,5 +122,25 @@
         } else {
             return ''
         }
+    }
+
+    let rowDrag
+
+    function dragStart() {
+        rowDrag = event.target
+    }
+
+    function dragOver() {
+        event.preventDefault()
+
+        let children = Array.from(event.target.parentNode.parentNode.children)
+
+        if (children.indexOf(event.target.parentNode) > children.indexOf(rowDrag)) {
+            event.target.parentNode.after(rowDrag)
+        } else {
+            event.target.parentNode.before(rowDrag)
+        }
+
+        generateNo()
     }
 </script>

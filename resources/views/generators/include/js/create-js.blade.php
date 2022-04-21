@@ -8,7 +8,7 @@
         let list = getColumnTypes()
         let no = table.find('tr').length + 1
         let tr = `
-            <tr>
+            <tr draggable="true" ondragstart="dragStart()" ondragover="dragOver()">
                 <td>${no}</td>
                 <td>
                     <div class="form-group">
@@ -18,7 +18,7 @@
                 <td>
                     <div class="form-group">
                         <select name="column_types[]" class="form-select form-column-types" required>
-                            <option value="" disabled selected>--Select type--</option>
+                            <option value="" disabled selected>--Select column type--</option>
                             ${list}
                         </select>
                         <input type="hidden" name="select_options[]" class="form-option">
@@ -285,10 +285,8 @@
     $(document).on('click', '.btn-delete', function() {
         let table = $('#tbl-field tbody tr')
 
-        if (table.length > 1) {
-            $(this).parent().parent().remove()
-            generateNo()
-        }
+        $(this).parent().parent().remove()
+        generateNo()
     })
 
     $('#form-generator').submit(function(e) {
