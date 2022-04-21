@@ -109,16 +109,9 @@
                         <input type="hidden" name="file_types[]" class="form-file-types">
                         <input type="hidden" name="files_sizes[]" class="form-file-sizes">
                     </td>
-                    <td>
-                        <div class="form-check">
-                            <input class="form-check-input" id="required-1" type="checkbox" name="requireds[]"
-                                value="yes" checked />
-                            <label for="required-1">Yes</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" id="nullable-1" type="checkbox" name="requireds[]"
-                                value="no" />
-                            <label for="nullable-1">No</label>
+                    <td class="mt-0 pt-0">
+                        <div class="form-check form-switch form-control-lg">
+                            <input class="form-check-input switch-requireds" type="checkbox" id="switch-1" name="requireds[]" checked>
                         </div>
                     </td>
                     <td>
