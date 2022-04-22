@@ -3,32 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Enums\GeneratorType;
-use Symfony\Component\HttpFoundation\Response;
+use App\Services\GeneratorService;
 use App\Http\Requests\StoreGeneratorRequest;
-use Illuminate\Support\Facades\Artisan;
-use App\Generators\{
-    ControllerGenerator,
-    GeneratorUtils,
-    MenuGenerator,
-    ModelGenerator,
-    MigrationGenerator,
-    PermissionGenerator,
-    RequestGenerator,
-    RouteGenerator,
-    ViewComposerGenerator
-};
-use App\Generators\Views\{
-    ActionViewGenerator,
-    CreateViewGenerator,
-    EditViewGenerator,
-    FormViewGenerator,
-    IndexViewGenerator,
-    ShowViewGenerator,
-};
-
+use Symfony\Component\HttpFoundation\Response;
 
 class GeneratorController extends Controller
 {
+    /**
+     * @var $generatorService
+     */
+    public $generatorService;
+
+    public function __construct(GeneratorService $generatorService)
+    {
+        $this->generatorService = $generatorService;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -48,45 +38,12 @@ class GeneratorController extends Controller
     public function store(StoreGeneratorRequest $request)
     {
         if ($request->generate_type == GeneratorType::ALL->value) {
-            $this->generateAll($request->validated());
+            $this->generatorService->generateAll($request->validated());
         } else {
-            (new ModelGenerator)->generate($request->validated());
-
-            (new MigrationGenerator)->generate($request->validated());
+            $this->generatorService->onlyGenerateModelAndMigration($request->validated());
         }
 
-        return response()->json(['success'], Response::HTTP_OK);
-    }
-
-    /**
-     * Generate all CRUD modules.
-     *
-     * @param array $request
-     * @return void
-     */
-    protected function generateAll(array $request)
-    {
-        (new ModelGenerator)->generate($request);
-        (new MigrationGenerator)->generate($request);
-        (new ControllerGenerator)->generate($request);
-        (new RequestGenerator)->generate($request);
-
-        (new IndexViewGenerator)->generate($request);
-        (new CreateViewGenerator)->generate($request);
-        (new ShowViewGenerator)->generate($request);
-        (new EditViewGenerator)->generate($request);
-        (new ActionViewGenerator)->generate($request);
-        (new FormViewGenerator)->generate($request);
-
-        (new MenuGenerator)->generate($request);
-        (new RouteGenerator)->generate($request);
-        (new PermissionGenerator)->generate($request);
-
-        if (in_array('foreignId', $request['column_types'])) {
-            (new ViewComposerGenerator)->generate($request);
-        }
-
-        Artisan::call('migrate');
+        return response()->json(['message' => 'success'], Response::HTTP_OK);
     }
 
     /**
@@ -97,10 +54,6 @@ class GeneratorController extends Controller
      */
     public function getSidebarMenus(int $index)
     {
-        abort_if(!request()->ajax(), 403);
-
-        $sidebar = config('generator.sidebars')[$index];
-
-        return response()->json($sidebar['menus'], Response::HTTP_OK);
+        return $this->generatorService->getSidebarMenusByIndex($index);
     }
 }

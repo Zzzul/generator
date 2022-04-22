@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class GeneratorOnlyWorkOnLocal
 {
@@ -16,7 +17,7 @@ class GeneratorOnlyWorkOnLocal
      */
     public function handle(Request $request, Closure $next)
     {
-        abort_if(env('APP_ENV') !== 'local', 403, 'Generator only work on local or development');
+        abort_if(env('APP_ENV') !== 'local', Response::HTTP_FORBIDDEN, 'Generator only work on local or development');
 
         return $next($request);
     }

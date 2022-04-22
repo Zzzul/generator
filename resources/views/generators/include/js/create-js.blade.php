@@ -8,7 +8,7 @@
         let list = getColumnTypes()
         let no = table.find('tr').length + 1
         let tr = `
-            <tr>
+            <tr draggable="true" ondragstart="dragStart()" ondragover="dragOver()">
                 <td>${no}</td>
                 <td>
                     <div class="form-group">
@@ -18,7 +18,7 @@
                 <td>
                     <div class="form-group">
                         <select name="column_types[]" class="form-select form-column-types" required>
-                            <option value="" disabled selected>--Select type--</option>
+                            <option value="" disabled selected>--Select column type--</option>
                             ${list}
                         </select>
                         <input type="hidden" name="select_options[]" class="form-option">
@@ -53,16 +53,9 @@
                     <input type="hidden" name="file_types[]" class="form-file-types">
                     <input type="hidden" name="files_sizes[]" class="form-file-sizes">
                 </td>
-                <td>
-                    <div class="form-check">
-                        <input class="form-check-input" id="required-${no}" type="checkbox" name="requireds[]"
-                            value="yes" checked />
-                        <label for="required-${no}">Yes</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" id="nullable-${no}" type="checkbox" name="requireds[]"
-                            value="no" />
-                        <label for="nullable-${no}">No</label>
+                <td class="mt-0 pt-0">
+                    <div class="form-check form-switch form-control-lg">
+                        <input class="form-check-input switch-requireds" type="checkbox" id="switch-${no}" name="requireds[]" checked>
                     </div>
                 </td>
                 <td>
@@ -285,10 +278,8 @@
     $(document).on('click', '.btn-delete', function() {
         let table = $('#tbl-field tbody tr')
 
-        if (table.length > 1) {
-            $(this).parent().parent().remove()
-            generateNo()
-        }
+        $(this).parent().parent().remove()
+        generateNo()
     })
 
     $('#form-generator').submit(function(e) {
@@ -297,7 +288,22 @@
         const btnBack = $('#btn-back')
         const btnSave = $('#btn-save')
         const btnAdd = $('#btn-add')
-        let modules = $(this).serialize()
+
+        let formData = new FormData()
+        $('.switch-requireds').each((i) => {
+            if ($('.switch-requireds').eq(i).is(':checked')) {
+                formData.append('requireds[]', 'yes')
+            } else {
+                formData.append('requireds[]', 'no')
+            }
+        })
+
+        // serialize data then append to formData
+        $(this).serializeArray().forEach((item) => {
+            if (item.name != 'requireds[]') {
+                formData.append(item.name, item.value)
+            }
+        })
 
         btnBack.prop('disabled', true)
         btnSave.prop('disabled', true)
@@ -321,7 +327,9 @@
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            data: modules,
+            data: formData,
+            processData: false,
+            contentType: false,
             success: function(response) {
                 console.log(response)
 
