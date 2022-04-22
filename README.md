@@ -41,6 +41,7 @@ https://user-images.githubusercontent.com/62506582/162600284-aa8fe74e-5dca-4d8d-
     - Support more than [15 column type migration](https://laravel.com/docs/9.x/migrations#available-column-types), like string, char, date, year, etc.
     - Datatables ([Yajra datatables](https://github.com/yajra/laravel-datatables))
     - BelongsTo relation
+    - Model casting
     - Upload image
     - Dynamic sidebar menus
     - Input type supported
@@ -81,12 +82,12 @@ DB_PASSWORD=
 php artisan migrate --seed
 ``` 
 
-7. Storage link
+7. Create the symbolic link
 ```sh
 php artisan storage:link
 ``` 
 
-8. Start local server
+8. Start development server
 ```sh
 php artisan serve
 ``` 
@@ -107,7 +108,7 @@ Below are some codes that generate by the generator
 <img width="960" alt="migration" src="https://user-images.githubusercontent.com/62506582/162600667-9686c556-f5b3-4067-bf58-f6f295d360c6.PNG">
 <img width="960" alt="blade" src="https://user-images.githubusercontent.com/62506582/162600663-5c26a238-633a-4c14-8bb0-acc6d917d221.PNG">
 
-*some code may not format perfectly, but you can format the code manually or using a formatter.
+*Some code may not format perfectly, but you can format the code manually or using a formatter.
 
 ## Screenshots
 <img width="960" alt="login page" src="https://user-images.githubusercontent.com/62506582/163182274-c1a3166e-c053-450b-bf1d-15199b6e96c5.PNG">
@@ -115,7 +116,7 @@ Below are some codes that generate by the generator
 <img width="960" alt="profile page" src="https://user-images.githubusercontent.com/62506582/163182371-9165eef5-0c78-47ce-91e3-08e3eced3b5f.PNG">
 <img width="960" alt="profile page" src="https://user-images.githubusercontent.com/62506582/163182653-04584888-837c-46fd-9406-8dc440aeba7e.png">
 <img width="960" alt="role page" src="https://user-images.githubusercontent.com/62506582/163182402-24ac870a-d4e1-4511-ad44-4c744f93c6ed.PNG">
-<img width="960" alt="crud generator page" src="https://user-images.githubusercontent.com/62506582/163182411-492fdfc3-b7a3-443c-9223-77ff0cac6ecb.PNG">
+<img width="960" alt="crud generator page" src="https://user-images.githubusercontent.com/62506582/164592245-09b67c17-f738-4e44-8951-e75a34b01287.png">
 
 
 ## License
