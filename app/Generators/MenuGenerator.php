@@ -213,7 +213,7 @@ class MenuGenerator
                 'icon' => $icon,
                 'route' => '/' . str(GeneratorUtils::pluralKebabCase($route))->remove('/'),
                 'permission' => 'view ' . GeneratorUtils::cleanSingularLowerCase($title),
-                'permissions' => null,
+                'permissions' => [],
                 'submenus' =>  []
             ];
         }
