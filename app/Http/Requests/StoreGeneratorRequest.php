@@ -47,7 +47,9 @@ class StoreGeneratorRequest extends FormRequest
             'new_icon' => ['required_if:header,new'],
             'new_menu' => ['required_if:header,new'],
             'new_route' => ['required_if:header,new'],
-            'new_submenu' => ['nullable']
+            'new_submenu' => ['nullable'],
+            'on_update_foreign' => ['nullable'],
+            'on_delete_foreign' => ['nullable'],
         ];
     }
 }

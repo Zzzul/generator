@@ -2,6 +2,8 @@
 
 namespace App\Generators;
 
+use App\Enums\ActionForeign;
+
 class MigrationGenerator
 {
     /**
@@ -96,13 +98,49 @@ class MigrationGenerator
 
             if ($i + 1 != $totalFields) {
                 if ($request['column_types'][$i] == 'foreignId') {
-                    $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($constrainName) . "');\n\t\t\t";
+                    if($request['on_delete_foreign'][$i] == ActionForeign::NULL->value){
+                        $setFields .= "->nullable()";
+                    }
+
+                    $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($constrainName) . "')";
+
+                    if($request['on_update_foreign'][$i] == ActionForeign::CASCADE->value){
+                        $setFields .= "->cascadeOnUpdate()";
+                    }elseif($request['on_update_foreign'][$i] == ActionForeign::RESTRICT->value){
+                        $setFields .= "->restrictOnUpdate()";
+                    }
+
+                    if($request['on_delete_foreign'][$i] == ActionForeign::CASCADE->value){
+                        $setFields .= "->cascadeOnDelete();\n\t\t\t";
+                    }elseif($request['on_delete_foreign'][$i] == ActionForeign::RESTRICT->value){
+                        $setFields .= "->restrictOnDelete();\n\t\t\t";
+                    }elseif($request['on_delete_foreign'][$i] == ActionForeign::NULL->value){
+                        $setFields .= "->nullOnDelete();\n\t\t\t";
+                    }else{
+                        $setFields .= ";\n\t\t\t";
+                    }
                 } else {
                     $setFields .= ";\n\t\t\t";
                 }
             } else {
                 if ($request['column_types'][$i] == 'foreignId') {
-                    $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($constrainName) . "');";
+                    $setFields .= "->constrained('" . GeneratorUtils::pluralSnakeCase($constrainName) . "')";
+
+                    if($request['on_update_foreign'][$i] == ActionForeign::CASCADE->value){
+                        $setFields .= "->cascadeOnUpdate()";
+                    }elseif($request['on_update_foreign'][$i] == ActionForeign::RESTRICT->value){
+                        $setFields .= "->restrictOnUpdate()";
+                    }
+
+                    if($request['on_delete_foreign'][$i] == ActionForeign::CASCADE->value){
+                        $setFields .= "->cascadeOnDelete();";
+                    }elseif($request['on_delete_foreign'][$i] == ActionForeign::RESTRICT->value){
+                        $setFields .= "->restrictOnDelete();";
+                    }elseif($request['on_delete_foreign'][$i] == ActionForeign::NULL->value){
+                        $setFields .= "->nullOnDelete();";
+                    }else{
+                        $setFields .= ";";
+                    }
                 } else {
                     $setFields .= ";";
                 }

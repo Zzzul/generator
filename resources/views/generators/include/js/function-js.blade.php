@@ -26,6 +26,8 @@
         $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()
         $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-constrain`).remove()
         $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-foreign-id`).remove()
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-on-update-foreign`).remove()
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-on-delete-foreign`).remove()
 
         removeInputTypeHidden(index)
     }
@@ -49,6 +51,8 @@
             <input type="hidden" name="select_options[]" class="form-option">
             <input type="hidden" name="constrains[]" class="form-constrain">
             <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
+            <input type="hidden" name="on_update_foreign[]" class="form-on-update-foreign">
+            <input type="hidden" name="on_delete_foreign[]" class="form-on-delete-foreign">
         `)
     }
 
