@@ -79,8 +79,6 @@ class GeneratorService
     {
         abort_if(!request()->ajax(), Response::HTTP_FORBIDDEN);
 
-        $sidebar = config('generator.sidebars')[$index];
-
-        return response()->json($sidebar['menus'], Response::HTTP_OK);
+        return config('generator.sidebars')[$index];
     }
 }

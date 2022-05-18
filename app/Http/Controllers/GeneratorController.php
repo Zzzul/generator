@@ -9,14 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GeneratorController extends Controller
 {
-    /**
-     * @var $generatorService
-     */
-    public $generatorService;
-
-    public function __construct(GeneratorService $generatorService)
+    public function __construct(public $generatorService = new GeneratorService())
     {
-        $this->generatorService = $generatorService;
     }
 
     /**
@@ -43,7 +37,7 @@ class GeneratorController extends Controller
             $this->generatorService->onlyGenerateModelAndMigration($request->validated());
         }
 
-        return response()->json(['message' => 'success'], Response::HTTP_OK);
+        return response()->json(['message' => 'success'], Response::HTTP_CREATED);
     }
 
     /**
@@ -54,6 +48,8 @@ class GeneratorController extends Controller
      */
     public function getSidebarMenus(int $index)
     {
-        return $this->generatorService->getSidebarMenusByIndex($index);
+        $sidebar = $this->generatorService->getSidebarMenusByIndex($index);
+
+        return response()->json($sidebar['menus'], Response::HTTP_OK);
     }
 }

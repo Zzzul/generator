@@ -5,7 +5,7 @@
             <label for="model">{{ __('Model') }}</label>
             <input type="text" name="model" id="model" class="form-control @error('model') is-invalid @enderror"
                 placeholder="{{ __('Product') }}" value="{{ old('model') }}" autofocus required>
-            <small class="text-secondary">{{ __("Used ' / ' for generate a sub folder. eg: Main/Product.") }}</small>
+            <small class="text-secondary">{{ __("Use '/' for generate a sub folder. eg: Main/Product.") }}</small>
             @error('model')
                 <div class="invalid-feedback">
                     {{ $message }}

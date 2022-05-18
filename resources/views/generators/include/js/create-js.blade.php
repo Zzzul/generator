@@ -134,13 +134,30 @@
             `)
 
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
-            <div class="form-group form-constrain mt-2">
-                <input type="text" name="constrains[]" class="form-control" placeholder="Constrain or related model name" required>
-                <small class="text-secondary">Used '/' if related model at sub folder, eg: Main/Product.</small>
-            </div>
-            <div class="form-group form-foreign-id mt-2">
-                <input type="text" name="foreign_ids[]" class="form-control" placeholder="Foreign key (optional)">
-            </div>
+                <div class="form-group form-constrain mt-2">
+                    <input type="text" name="constrains[]" class="form-control" placeholder="Constrain or related model name" required>
+                    <small class="text-secondary">Use '/' if related model at sub folder, eg: Main/Product.</small>
+                </div>
+                <div class="form-group form-foreign-id mt-2">
+                    <input type="text" name="foreign_ids[]" class="form-control" placeholder="Foreign key (optional)">
+                </div>
+                <div class="form-group form-on-update mt-2 form-on-update-foreign">
+                    <select class="form-select" name="on_update_foreign[]">
+                        <option value="" disabled selected>-- Select action on update --</option>
+                        <option value="0">Nothing</option>
+                        <option value="1">Cascade</option>
+                        <option value="2">Restrict</option>
+                    </select>
+                </div>
+                <div class="form-group form-on-delete mt-2 form-on-delete-foreign">
+                    <select class="form-select" name="on_delete_foreign[]">
+                        <option value="" disabled selected>-- Select action on delete --</option>
+                        <option value="0">Nothing</option>
+                        <option value="1">Cascade</option>
+                        <option value="2">Restrict</option>
+                        <option value="3">Null</option>
+                    </select>
+                </div>
             `)
 
             $(`.form-input-types:eq(${index})`).html(`
@@ -332,6 +349,7 @@
             contentType: false,
             success: function(response) {
                 console.log(response)
+                // console.log(formData);
 
                 $('#validation-errors').hide()
 
