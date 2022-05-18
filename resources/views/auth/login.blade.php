@@ -2,13 +2,19 @@
 
 @section('title', trans('Log in'))
 
+@push('css')
+    <link rel="stylesheet" href="{{ asset('mazer') }}/css/pages/auth.css">
+@endpush
+
 @section('content')
     <div class="row h-100">
         <div class="col-lg-6 col-12">
             <div id="auth-left">
-                {{-- <div class="auth-logo" class="mb-0">
-                        <a href="index.html"><img src="{{ asset('mazer') }}/images/logo/logo.png" alt="Logo"></a>
-                    </div> --}}
+                <div class="auth-logo" >
+                    <a href="index.html">
+                        <img src="{{ asset('mazer') }}/images/logo/logo.png" alt="Logo">
+                    </a>
+                </div>
                 <h1 class="auth-title">{{ __('Log in.') }}</h1>
                 <p class="auth-subtitle mb-3">{{ __('Log in with your data that you entered during registration.') }}</p>
 

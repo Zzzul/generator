@@ -2,6 +2,10 @@
 
 @section('title', trans('Sign Up'))
 
+@push('css')
+    <link rel="stylesheet" href="{{ asset('mazer') }}/css/pages/auth.css">
+@endpush
+
 @section('content')
     <div class="row h-100">
         <div class="col-lg-7 col-12">
