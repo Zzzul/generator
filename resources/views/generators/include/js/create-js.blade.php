@@ -78,7 +78,7 @@
 
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
             <div class="form-group form-option mt-2">
-                <input type="text" name="select_options[]" class="form-control" placeholder="Seperate with '|', eg: water|fire">
+                <input type="text" name="select_options[]" class="form-control" placeholder="Seperate with '|', e.g.: water|fire">
             </div>
             <input type="hidden" name="constrains[]" class="form-constrain">
             <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
@@ -136,7 +136,7 @@
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
                 <div class="form-group form-constrain mt-2">
                     <input type="text" name="constrains[]" class="form-control" placeholder="Constrain or related model name" required>
-                    <small class="text-secondary">Use '/' if related model at sub folder, eg: Main/Product.</small>
+                    <small class="text-secondary">Use '/' if related model at sub folder, e.g.: Main/Product.</small>
                 </div>
                 <div class="form-group form-foreign-id mt-2">
                     <input type="text" name="foreign_ids[]" class="form-control" placeholder="Foreign key (optional)">
@@ -239,7 +239,7 @@
                 </select>
             </div>
             <div class="form-group form-file-sizes">
-                <input type="number" name="files_sizes[]" class="form-control" placeholder="Max size(kb), eg: 1024" required>
+                <input type="number" name="files_sizes[]" class="form-control" placeholder="Max size(kb), e.g.: 1024" required>
             </div>
             `)
         } else if ($(this).val() == 'email') {
@@ -431,7 +431,7 @@
                             <label for="new-menu">{{ __('New Menu') }}</label>
                             <input type="text" name="new_menu" id="new-menu" class="form-control"
                                 placeholder="{{ __('Title') }}" value="${capitalizeFirstLetter(setModelName($('#model').val()))}" required>
-                            <small>{{ __('If null will use the model name, ex: "Products"') }}</small>
+                            <small>{{ __('If null will use the model name, e.g.: "Products"') }}</small>
                         </div>
                     </div>
 
@@ -440,7 +440,7 @@
                             <label for="new-route">{{ __('Route') }}</label>
                             <input type="text" id="new-route" name="new_route" class="form-control"
                                 placeholder="{{ __('New Route') }}" value="${setModelName($('#model').val())}" required>
-                            <small>{{ __('If null will use the model name, ex: "/products"') }}</small>
+                            <small>{{ __('If null will use the model name, e.g.: "/products"') }}</small>
                         </div>
                     </div>
 
@@ -449,7 +449,7 @@
                             <label for="new-icon">{{ __('Icon') }}</label>
                             <input type="text" id="new-icon" name="new_icon" class="form-control"
                                 placeholder="{{ __('New Icon') }}" required>
-                            <small>{!! __('We recomended you to use <a href="https://icons.getbootstrap.com/" target="_blank">bootstrap icon</a>, ex: ') !!} {{ '<i class="bi bi-people"></i>' }}</small>
+                            <small>{!! __('We recomended you to use <a href="https://icons.getbootstrap.com/" target="_blank">bootstrap icon</a>, e.g.: ') !!} {{ '<i class="bi bi-people"></i>' }}</small>
                         </div>
                     </div>
 
@@ -513,7 +513,7 @@
                             <label for="new-menu">{{ __('New Menu') }}</label>
                             <input type="text" name="new_menu" id="new-menu" class="form-control"
                                 placeholder="{{ __('Title') }}" value="${capitalizeFirstLetter(setModelName($('#model').val()))}" required>
-                            <small>{{ __('If null will use the model name, ex: "Products"') }}</small>
+                            <small>{{ __('If null will use the model name, e.g.: "Products"') }}</small>
                         </div>
                     </div>
 
@@ -522,7 +522,7 @@
                             <label for="new-route">{{ __('Route') }}</label>
                             <input type="text" id="new-route" name="new_route" class="form-control"
                                 placeholder="{{ __('New Route') }}" value="${setModelName($('#model').val())}" required>
-                            <small>{{ __('If null will use the model name, ex: "/products"') }}</small>
+                            <small>{{ __('If null will use the model name, e.g.: "/products"') }}</small>
                         </div>
                     </div>
 
@@ -531,7 +531,7 @@
                             <label for="new-icon">{{ __('Icon') }}</label>
                             <input type="text" id="new-icon" name="new_icon" class="form-control"
                                 placeholder="{{ __('New Icon') }}" required>
-                            <small>{!! __('We recomended you to use <a href="https://icons.getbootstrap.com/" target="_blank">bootstrap icon</a>, ex: ') !!} {{ '<i class="bi bi-people"></i>' }}</small>
+                            <small>{!! __('We recomended you to use <a href="https://icons.getbootstrap.com/" target="_blank">bootstrap icon</a>, e.g.: ') !!} {{ '<i class="bi bi-people"></i>' }}</small>
                         </div>
                     </div>
 
