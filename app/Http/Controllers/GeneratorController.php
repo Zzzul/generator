@@ -9,8 +9,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GeneratorController extends Controller
 {
-    public function __construct(public $generatorService = new GeneratorService())
+    protected $generatorService;
+
+    public function __construct()
     {
+        $this->generatorService = new GeneratorService();
     }
 
     /**
