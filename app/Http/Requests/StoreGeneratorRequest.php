@@ -33,6 +33,7 @@ class StoreGeneratorRequest extends FormRequest
             'foreign_ids.*' => ['nullable'],
             'min_lengths.*' => ['nullable'],
             'max_lengths.*' => ['nullable'],
+            'steps.*' => ['nullable'],
             'fields.*' => ['required', 'alpha_dash'],
             'requireds.*' => ['required', 'in:yes,no'],
             'mimes.*' => ['nullable', 'required_if:file_types.*,mimes'],

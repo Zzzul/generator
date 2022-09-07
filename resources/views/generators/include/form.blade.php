@@ -62,7 +62,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr draggable="true" ondragstart="dragStart()" ondragover="dragOver()">
+                <tr draggable="true" ondragstart="dragStart()" ondragover="dragOver()" style="cursor: move;">
                     <td>1</td>
                     <td>
                         <div class="form-group">
@@ -135,7 +135,7 @@
                     <label for="select-header">{{ __('Header') }}</label>
                     <select name="header" id="select-header" class="form-select" required>
                         <option value="" disabled selected>-- {{ __('Select header') }} --</option>
-                        <option value="new">{{ __('New header') }}</option>
+                        <option value="new">{{ __('Create a New Header') }}</option>
                         @foreach (config('generator.sidebars') as $keySidebar => $header)
                             <option value="{{ $keySidebar }}">{{ $header['header'] }}</option>
                         @endforeach

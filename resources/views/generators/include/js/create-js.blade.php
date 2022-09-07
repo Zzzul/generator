@@ -8,7 +8,7 @@
         let list = getColumnTypes()
         let no = table.find('tr').length + 1
         let tr = `
-            <tr draggable="true" ondragstart="dragStart()" ondragover="dragOver()">
+            <tr draggable="true" ondragstart="dragStart()" ondragover="dragOver()" style="cursor: move;">
                 <td>${no}</td>
                 <td>
                     <div class="form-group">
@@ -71,6 +71,11 @@
 
     $(document).on('change', '.form-column-types', function() {
         let index = $(this).parent().parent().parent().index()
+        let switchRequired = $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .switch-requireds`)
+
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
+        switchRequired.prop('checked', true)
+        switchRequired.prop('disabled', false)
 
         if ($(this).val() == 'enum') {
             removeAllInputHidden(index)
@@ -88,6 +93,7 @@
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="select">Select</option>
                 <option value="radio">Radio</option>
+                <option value="datalist">Datalist</option>
             `)
         } else if ($(this).val() == 'date') {
             removeAllInputHidden(index)
@@ -97,6 +103,8 @@
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="date">Date</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
             `)
         } else if ($(this).val() == 'time') {
             removeAllInputHidden(index)
@@ -115,6 +123,7 @@
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="select">Select</option>
+                <option value="datalist">Datalist</option>
             `)
         } else if ($(this).val() == 'dateTime') {
             removeAllInputHidden(index)
@@ -142,7 +151,7 @@
                     <input type="text" name="foreign_ids[]" class="form-control" placeholder="Foreign key (optional)">
                 </div>
                 <div class="form-group form-on-update mt-2 form-on-update-foreign">
-                    <select class="form-select" name="on_update_foreign[]">
+                    <select class="form-select" name="on_update_foreign[]" required>
                         <option value="" disabled selected>-- Select action on update --</option>
                         <option value="0">Nothing</option>
                         <option value="1">Cascade</option>
@@ -150,7 +159,7 @@
                     </select>
                 </div>
                 <div class="form-group form-on-delete mt-2 form-on-delete-foreign">
-                    <select class="form-select" name="on_delete_foreign[]">
+                    <select class="form-select" name="on_delete_foreign[]" required>
                         <option value="" disabled selected>-- Select action on delete --</option>
                         <option value="0">Nothing</option>
                         <option value="1">Cascade</option>
@@ -163,6 +172,7 @@
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="select">Select</option>
+                <option value="datalist">Datalist</option>
             `)
         } else if (
             $(this).val() == 'text' ||
@@ -177,6 +187,15 @@
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="text">Text</option>
                 <option value="textarea">Textarea</option>
+                <option value="email">Email</option>
+                <option value="tel">Phone</option>
+                <option value="password">Password</option>
+                <option value="url">Url</option>
+                <option value="color">Color</option>
+                <option value="search">Search</option>
+                <option value="file">File</option>
+                <option value="hidden">Hidden</option>
+                <option value="no-input">No Input</option>
             `)
         } else if (
             $(this).val() == 'integer' ||
@@ -193,6 +212,9 @@
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="number">Number</option>
+                <option value="range">Range</option>
+                <option value="hidden">Hidden</option>
+                <option value="no-input">No Input</option>
             `)
         } else if ($(this).val() == 'boolean') {
             removeAllInputHidden(index)
@@ -203,6 +225,7 @@
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="select">Select</option>
                 <option value="radio">Radio</option>
+                <option value="datalist">Datalist</option>
             `)
         } else {
             removeAllInputHidden(index)
@@ -213,7 +236,29 @@
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="text">Text</option>
                 <option value="email">Email</option>
+                <option value="tel">Phone</option>
+                <option value="password">Password</option>
+                <option value="url">Url</option>
+                <option value="color">Color</option>
+                <option value="search">Search</option>
                 <option value="file">File</option>
+                <option value="hidden">Hidden</option>
+                <option value="no-input">No Input</option>
+            `)
+
+        }
+    })
+
+    $(document).on('change', '.switch-requireds', function() {
+        let index = $(this).parent().parent().parent().index()
+
+        if ($(this).is(':checked')) {
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
+        } else {
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
+                <div class="form-group form-default-value mt-4">
+                    <input type="text" name="default_value[]" class="form-control" placeholder="Default Value (optional)">
+                </div>
             `)
         }
     })
@@ -222,8 +267,12 @@
         let index = $(this).parent().parent().parent().index()
         let minLength = $(`.form-min-lengths:eq(${index})`)
         let maxLength = $(`.form-max-lengths:eq(${index})`)
+        let switchRequired = $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .switch-requireds`)
 
         removeInputTypeHidden(index)
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
+        switchRequired.prop('checked', true)
+        switchRequired.prop('disabled', false)
 
         if ($(this).val() == 'file') {
             minLength.prop('readonly', true)
@@ -256,8 +305,32 @@
             maxLength.prop('readonly', false)
 
             addInputTypeHidden(index)
-        } else {
+        } else if ($(this).val() == 'range') {
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(4)`).append(`
+                <div class="form-group form-step mt-4">
+                    <input type="number" name="steps[]" class="form-control" placeholder="Step (optional)">
+                </div>
+            `)
 
+            minLength.prop('readonly', false)
+            maxLength.prop('readonly', false)
+
+            addInputTypeHidden(index)
+        } else if ($(this).val() == 'hidden' || $(this).val() == 'no-input') {
+            minLength.prop('readonly', true)
+            maxLength.prop('readonly', true)
+            minLength.val('')
+            maxLength.val('')
+
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
+                <div class="form-group form-default-value mt-4">
+                    <input type="text" name="default_value[]" class="form-control" placeholder="Default Value (optional)">
+                </div>
+            `)
+
+            switchRequired.prop('checked', false)
+            switchRequired.prop('disabled', true)
+        } else {
             addInputTypeHidden(index)
         }
     })
@@ -330,8 +403,7 @@
         btnSave.text('Loading...')
         btnAdd.text('Loading...')
 
-        $(`
-            #form-generator input,
+        $(`#form-generator input,
             #form-generator select,
             #form-generator checkbox,
             #form-generator radio,
@@ -349,7 +421,6 @@
             contentType: false,
             success: function(response) {
                 console.log(response)
-                // console.log(formData);
 
                 $('#validation-errors').hide()
 
@@ -358,7 +429,7 @@
                     title: 'Success',
                     text: 'Module generated successfully!'
                 }).then(function() {
-                    window.location = '{{ route('generators.create') }}'
+                    // window.location = '{{ route('generators.create') }}'
                 })
             },
             error: function(xhr, status, response) {
@@ -393,8 +464,7 @@
                 btnSave.text('Generate')
                 btnAdd.text('Add')
 
-                $(`
-                    #form-generator input,
+                $(`#form-generator input,
                     #form-generator select,
                     #form-generator checkbox,
                     #form-generator radio,
@@ -411,8 +481,7 @@
             selectMenu.prop('disabled', true)
 
             selectMenu.html(
-                `<option value="" disabled selected>--{{ __('Select the header first') }}--</option>
-                `)
+                `<option value="" disabled selected>--{{ __('Select the header first') }}--</option>`)
 
             colNewMenu.hide(300)
 
@@ -449,7 +518,9 @@
                             <label for="new-icon">{{ __('Icon') }}</label>
                             <input type="text" id="new-icon" name="new_icon" class="form-control"
                                 placeholder="{{ __('New Icon') }}" required>
-                            <small>{!! __('We recomended you to use <a href="https://icons.getbootstrap.com/" target="_blank">bootstrap icon</a>, e.g.: ') !!} {{ '<i class="bi bi-people"></i>' }}</small>
+                            <small>{!! __(
+                                'We recomended you to use <a href="https://icons.getbootstrap.com/" target="_blank">bootstrap icon</a>, e.g.: ',
+                            ) !!} {{ '<i class="bi bi-people"></i>' }}</small>
                         </div>
                     </div>
 
@@ -479,7 +550,7 @@
 
                     let options = `
                         <option value="" disabled selected>-- {{ __('Select menu') }} --</option>
-                        <option value="new">{{ __('New menu') }}</option>
+                        <option value="new">{{ __('Create a New Menu') }}</option>
                     `
 
                     res.forEach((value, index) => {
@@ -531,7 +602,9 @@
                             <label for="new-icon">{{ __('Icon') }}</label>
                             <input type="text" id="new-icon" name="new_icon" class="form-control"
                                 placeholder="{{ __('New Icon') }}" required>
-                            <small>{!! __('We recomended you to use <a href="https://icons.getbootstrap.com/" target="_blank">bootstrap icon</a>, e.g.: ') !!} {{ '<i class="bi bi-people"></i>' }}</small>
+                            <small>{!! __(
+                                'We recomended you to use <a href="https://icons.getbootstrap.com/" target="_blank">bootstrap icon</a>, e.g.: ',
+                            ) !!} {{ '<i class="bi bi-people"></i>' }}</small>
                         </div>
                     </div>
 
