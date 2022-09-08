@@ -252,7 +252,7 @@ class ControllerGenerator
         ];
 
         $replaceWith = [
-            GeneratorUtils::singularSnakeCase($field),
+            str()->snake($field),
             GeneratorUtils::pluralSnakeCase($field),
             GeneratorUtils::pluralKebabCase($field),
             config('generator.image.default') ? config('generator.image.default') : 'https://via.placeholder.com/350?text=No+Image+Avaiable',

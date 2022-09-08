@@ -35,7 +35,7 @@ class ShowViewGenerator
             $fieldUcWords = GeneratorUtils::cleanUcWords($field);
             $fieldSnakeCase = str($field)->snake();
 
-            if ($request['file_types'][$i] == 'image') {
+            if (isset($request['file_types'][$i]) && $request['file_types'][$i] == 'image') {
                 $defaultImage = config('generator.image.default') ? config('generator.image.default'): 'https://via.placeholder.com/350?text=No+Image+Avaiable';
                 $uploadPath =  config('generator.image.path') == 'storage' ? "storage/uploads/" : "uploads/";
 

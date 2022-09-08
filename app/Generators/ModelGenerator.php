@@ -43,6 +43,12 @@ class ModelGenerator
                 $timeFormat = config('generator.format.time') ? config('generator.format.time') : 'H:i';
 
                 $casts .= "'" . str()->snake($value) . "' => 'datetime:$timeFormat', ";
+            } elseif ($request['input_types'][$i] == 'month') {
+                $castFormat = config('generator.format.month') ? config('generator.format.month') : 'M/Y';
+                $casts .= "'" . str()->snake($value) . "' => 'datetime:$castFormat', ";
+            } elseif ($request['input_types'][$i] == 'week') {
+                $castFormat = config('generator.format.week') ? config('generator.format.week') : 'Y-\WW';
+                $casts .= "'" . str()->snake($value) . "' => 'datetime:$castFormat', ";
             } elseif ($request['column_types'][$i] == 'year') {
                 $casts .= "'" . str()->snake($value) . "' => 'integer', ";
             } elseif ($request['column_types'][$i] == 'dateTime') {
@@ -55,7 +61,7 @@ class ModelGenerator
                 $casts .= "'" . str()->snake($value) . "' => 'boolean', ";
             } elseif ($request['column_types'][$i] == 'double') {
                 $casts .= "'" . str()->snake($value) . "' => 'double', ";
-            } elseif (str_contains($request['column_types'][$i], 'string') || str_contains($request['column_types'][$i], 'text') || str_contains($request['column_types'][$i], 'char')) {
+            } elseif (str_contains($request['column_types'][$i], 'string') || str_contains($request['column_types'][$i], 'text') || str_contains($request['column_types'][$i], 'char') && $request['input_types'][$i] !== 'month') {
                 $casts .= "'" . str()->snake($value) . "' => 'string', ";
             } elseif ($request['column_types'][$i] == 'foreignId') {
                 $constrainPath = GeneratorUtils::getModelLocation($request['constrains'][$i]);
@@ -117,14 +123,15 @@ class ModelGenerator
             GeneratorUtils::getTemplate('model')
         );
 
-        if ($path != '') {
-            $fullPath = app_path("/Models/$path");
-
-            GeneratorUtils::checkFolder($fullPath);
-
-            file_put_contents($fullPath . "/$model.php", $template);
-        } else {
-            file_put_contents(app_path("/Models/$model.php"), $template);
+        switch ($path) {
+            case '':
+                $fullPath = app_path("/Models/$path");
+                GeneratorUtils::checkFolder($fullPath);
+                file_put_contents($fullPath . "/$model.php", $template);
+                break;
+            default:
+                file_put_contents(app_path("/Models/$model.php"), $template);
+                break;
         }
     }
 }

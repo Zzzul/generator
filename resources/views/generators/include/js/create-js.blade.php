@@ -80,13 +80,12 @@
         if ($(this).val() == 'enum') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
+            addDataTypeHidden(index)
 
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
             <div class="form-group form-option mt-2">
                 <input type="text" name="select_options[]" class="form-control" placeholder="Seperate with '|', e.g.: water|fire">
             </div>
-            <input type="hidden" name="constrains[]" class="form-constrain">
-            <input type="hidden" name="foreign_ids[]" class="form-foreign-id">
             `)
 
             $(`.form-input-types:eq(${index})`).html(`
@@ -103,7 +102,6 @@
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="date">Date</option>
-                <option value="week">Week</option>
                 <option value="month">Month</option>
             `)
         } else if ($(this).val() == 'time') {
@@ -188,7 +186,7 @@
                 <option value="text">Text</option>
                 <option value="textarea">Textarea</option>
                 <option value="email">Email</option>
-                <option value="tel">Phone</option>
+                <option value="tel">Telepon</option>
                 <option value="password">Password</option>
                 <option value="url">Url</option>
                 <option value="color">Color</option>
@@ -236,9 +234,10 @@
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="text">Text</option>
                 <option value="email">Email</option>
-                <option value="tel">Phone</option>
+                <option value="tel">Telepon</option>
                 <option value="password">Password</option>
                 <option value="url">Url</option>
+                <option value="week">Week</option>
                 <option value="color">Color</option>
                 <option value="search">Search</option>
                 <option value="file">File</option>
@@ -257,7 +256,7 @@
         } else {
             $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
                 <div class="form-group form-default-value mt-4">
-                    <input type="text" name="default_value[]" class="form-control" placeholder="Default Value (optional)">
+                    <input type="text" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
                 </div>
             `)
         }
@@ -299,7 +298,7 @@
             maxLength.val('')
 
             addInputTypeHidden(index)
-        } else if ($(this).val() == 'text') {
+        } else if ($(this).val() == 'text' || $(this).val() == 'tel' || $(this).val() == 'color') {
 
             minLength.prop('readonly', false)
             maxLength.prop('readonly', false)
@@ -310,12 +309,17 @@
                 <div class="form-group form-step mt-4">
                     <input type="number" name="steps[]" class="form-control" placeholder="Step (optional)">
                 </div>
+                <input type="hidden" name="file_types[]" class="form-file-types">
+                <input type="hidden" name="files_sizes[]" class="form-file-sizes">
+                <input type="hidden" name="mimes[]" class="form-mimes">
             `)
 
             minLength.prop('readonly', false)
             maxLength.prop('readonly', false)
+            minLength.prop('required', true)
+            maxLength.prop('required', true)
 
-            addInputTypeHidden(index)
+            // addInputTypeHidden(index)
         } else if ($(this).val() == 'hidden' || $(this).val() == 'no-input') {
             minLength.prop('readonly', true)
             maxLength.prop('readonly', true)
@@ -324,12 +328,13 @@
 
             $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
                 <div class="form-group form-default-value mt-4">
-                    <input type="text" name="default_value[]" class="form-control" placeholder="Default Value (optional)">
+                    <input type="text" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
                 </div>
             `)
 
             switchRequired.prop('checked', false)
             switchRequired.prop('disabled', true)
+            addInputTypeHidden(index)
         } else {
             addInputTypeHidden(index)
         }
@@ -403,12 +408,12 @@
         btnSave.text('Loading...')
         btnAdd.text('Loading...')
 
-        $(`#form-generator input,
-            #form-generator select,
-            #form-generator checkbox,
-            #form-generator radio,
-            #form-generator button
-        `).attr('disabled', true)
+        // $(`#form-generator input,
+        //     #form-generator select,
+        //     #form-generator checkbox,
+        //     #form-generator radio,
+        //     #form-generator button
+        // `).attr('disabled', true)
 
         $.ajax({
             type: 'POST',
@@ -500,7 +505,7 @@
                             <label for="new-menu">{{ __('New Menu') }}</label>
                             <input type="text" name="new_menu" id="new-menu" class="form-control"
                                 placeholder="{{ __('Title') }}" value="${capitalizeFirstLetter(setModelName($('#model').val()))}" required>
-                            <small>{{ __('If null will use the model name, e.g.: "Products"') }}</small>
+                            <small>{{ __('If null will used the model name, e.g.: "Products"') }}</small>
                         </div>
                     </div>
 
@@ -509,7 +514,7 @@
                             <label for="new-route">{{ __('Route') }}</label>
                             <input type="text" id="new-route" name="new_route" class="form-control"
                                 placeholder="{{ __('New Route') }}" value="${setModelName($('#model').val())}" required>
-                            <small>{{ __('If null will use the model name, e.g.: "/products"') }}</small>
+                            <small>{{ __('If null will used the model name, e.g.: "/products"') }}</small>
                         </div>
                     </div>
 
@@ -584,7 +589,7 @@
                             <label for="new-menu">{{ __('New Menu') }}</label>
                             <input type="text" name="new_menu" id="new-menu" class="form-control"
                                 placeholder="{{ __('Title') }}" value="${capitalizeFirstLetter(setModelName($('#model').val()))}" required>
-                            <small>{{ __('If null will use the model name, e.g.: "Products"') }}</small>
+                            <small>{{ __('If null will used the model name, e.g.: "Products"') }}</small>
                         </div>
                     </div>
 
@@ -593,7 +598,7 @@
                             <label for="new-route">{{ __('Route') }}</label>
                             <input type="text" id="new-route" name="new_route" class="form-control"
                                 placeholder="{{ __('New Route') }}" value="${setModelName($('#model').val())}" required>
-                            <small>{{ __('If null will use the model name, e.g.: "/products"') }}</small>
+                            <small>{{ __('If null will used the model name, e.g.: "/products"') }}</small>
                         </div>
                     </div>
 

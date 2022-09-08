@@ -7,6 +7,11 @@ return [
     'name' => 'generators',
 
     /**
+     * Set limit of fields in index view datatables, all fields can see in show page.
+     */
+    'limit_fields_datatable' => 6,
+
+    /**
      * All avaibale column type for migration.
      */
     'column_types' => [

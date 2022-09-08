@@ -52,7 +52,7 @@ class MigrationGenerator
                 $setFields .= "', " . $enum;
             }
 
-            if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0) {
+            if (isset($request['max_lengths'][$i]) && $request['max_lengths'][$i] >= 0) {
                 if ($request['column_types'][$i] == 'enum') {
                     /**
                      * will generate something like:
@@ -64,7 +64,14 @@ class MigrationGenerator
                      * will generate something like:
                      * $table->string('name', 30)
                      */
-                    $setFields .=  "', " . $request['max_lengths'][$i] . ")";
+                    switch ($request['input_types'][$i]) {
+                        case 'range':
+                            $setFields .= "')";
+                            break;
+                        default:
+                            $setFields .=  "', " . $request['max_lengths'][$i] . ")";
+                            break;
+                    }
                 }
             } else {
                 if ($request['column_types'][$i] == 'enum') {
@@ -88,6 +95,22 @@ class MigrationGenerator
                  * $table->string('name', 30)->nullable() or $table->string('name')->nullable()
                  */
                 $setFields .= "->nullable()";
+            }
+
+            if (isset($request['default_values'][$i])) {
+                /**
+                 * will generate something like:
+                 * $table->string('name', 30)->nullable() or $table->string('name')->nullable()
+                 */
+                $setFields .= '->default('. $request['default_values'][$i] .')';
+            }
+
+            if ($request['input_types'][$i] === 'email') {
+                /**
+                 * will generate something like:
+                 * ->unique()
+                 */
+                $setFields .= "->unique()";
             }
 
             $constrainName = '';

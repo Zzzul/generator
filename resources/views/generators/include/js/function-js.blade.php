@@ -29,6 +29,8 @@
         $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-on-update-foreign`).remove()
         $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-on-delete-foreign`).remove()
 
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
+
         removeInputTypeHidden(index)
     }
 
@@ -56,6 +58,8 @@
             <input type="hidden" name="on_update_foreign[]" class="form-on-update-foreign">
             <input type="hidden" name="on_delete_foreign[]" class="form-on-delete-foreign">
         `)
+
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`<input type="hidden" name="default_values[]" class="form-default-value">`)
     }
 
     function getColumnTypes() {
