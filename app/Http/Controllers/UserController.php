@@ -87,6 +87,8 @@ class UserController extends Controller
             $attr['avatar'] = $filename;
         }
 
+        $attr['password'] = bcrypt($request->password);
+
         $user = User::create($attr);
 
         $user->assignRole($request->role);
