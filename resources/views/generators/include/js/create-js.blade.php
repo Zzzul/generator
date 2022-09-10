@@ -175,7 +175,8 @@
         } else if (
             $(this).val() == 'text' ||
             $(this).val() == 'longText' ||
-            $(this).val() == 'tinyText'
+            $(this).val() == 'tinyText' ||
+            $(this).val() == 'string'
         ) {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
@@ -189,7 +190,6 @@
                 <option value="tel">Telepon</option>
                 <option value="password">Password</option>
                 <option value="url">Url</option>
-                <option value="color">Color</option>
                 <option value="search">Search</option>
                 <option value="file">File</option>
                 <option value="hidden">Hidden</option>
@@ -235,7 +235,6 @@
                 <option value="text">Text</option>
                 <option value="email">Email</option>
                 <option value="tel">Telepon</option>
-                <option value="password">Password</option>
                 <option value="url">Url</option>
                 <option value="week">Week</option>
                 <option value="color">Color</option>
@@ -290,7 +289,7 @@
                 <input type="number" name="files_sizes[]" class="form-control" placeholder="Max size(kb), e.g.: 1024" required>
             </div>
             `)
-        } else if ($(this).val() == 'email') {
+        } else if ($(this).val() == 'email' || $(this).val() == 'select' || $(this).val() == 'datalist' || $(this).val() == 'radio' || $(this).val() == 'date' || $(this).val() == 'month' || $(this).val() == 'password' || $(this).val() == 'number') {
 
             minLength.prop('readonly', true)
             maxLength.prop('readonly', true)
@@ -298,7 +297,7 @@
             maxLength.val('')
 
             addInputTypeHidden(index)
-        } else if ($(this).val() == 'text' || $(this).val() == 'tel' || $(this).val() == 'color') {
+        } else if ($(this).val() == 'text' || $(this).val() == 'tel') {
 
             minLength.prop('readonly', false)
             maxLength.prop('readonly', false)
@@ -337,6 +336,8 @@
             addInputTypeHidden(index)
         } else {
             addInputTypeHidden(index)
+            minLength.prop('readonly', false)
+            maxLength.prop('readonly', false)
         }
     })
 

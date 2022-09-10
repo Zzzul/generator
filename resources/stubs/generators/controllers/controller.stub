@@ -52,7 +52,8 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function store(Store{{modelNameSingularPascalCase}}Request $request)
     {
-        {{modelNameSingularPascalCase}}::create($request->validated());
+        {{passwordFieldStore}}
+        {{insertDataAction}}
 
         return redirect()
             ->route('{{modelNamePluralKebabCase}}.index')
@@ -90,7 +91,8 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function update(Update{{modelNameSingularPascalCase}}Request $request, {{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-        ${{modelNameSingularCamelCase}}->update($request->validated());
+        {{passwordFieldUpdate}}
+        {{updateDataAction}}
 
         return redirect()
             ->route('{{modelNamePluralKebabCase}}.index')

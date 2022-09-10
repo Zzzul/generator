@@ -56,7 +56,7 @@ class ControllerGenerator
         if (in_array('text', $request['column_types']) || in_array('longText', $request['column_types'])) {
             $limitText = config('generator.format.limit_text') ? config('generator.format.limit_text') : 200;
 
-            foreach($request['column_types'] as $i => $type){
+            foreach ($request['column_types'] as $i => $type) {
                 if ($type == 'text' || $type == 'longText') {
                     $addColumns .= "->addColumn('" . str($request['fields'][$i])->snake() . "', function(\$row){
                     return str(\$row->" . str($request['fields'][$i])->snake() . ")->limit($limitText);
@@ -117,115 +117,203 @@ class ControllerGenerator
             }
         }
 
-        if (in_array('file', $request['input_types'])) {
-            $indexCode = "";
-            $storeCode = "";
-            $updateCode = "";
-            $deleteCode = "";
+        $passwordFieldStore = "";
+        $passwordFieldUpdate = "";
+
+        /**
+         * will generate something like:
+         *
+         * User::create($request->validated());
+         * $user->update($request->validated());
+         */
+        $insertDataAction = $modelNameSingularPascalCase  . "::create(\$request->validated());";
+        $updateDataAction = "\$"  .  $modelNameSingularPascalCase  .  "->update(\$request->validated());";
+
+        if (in_array('password', $request['input_types'])) {
+            $passwordFieldStore .= "\$attr = \$request->validated();\n\n";
+            $passwordFieldUpdate .= "\$attr = \$request->validated();\n";
 
             foreach ($request['input_types'] as $i => $input) {
-                if ($input == 'file') {
-                    $indexCode .= $this->generateUploadFileCode($request['fields'][$i], 'index');
+                if ($input === 'password') {
+                    /**
+                     * will generate something like:
+                     *
+                     * $attr['password'] = bcrypt($request->password);
+                     */
+                    $passwordFieldStore .= "\t\t\$attr['" . str()->snake($request['fields'][$i]) . "'] = bcrypt(\$request->" . str()->snake($request['fields'][$i]) . ");\n";
 
-                    $storeCode .= $this->generateUploadFileCode($request['fields'][$i], 'store');
-
-                    $updateCode .= $this->generateUploadFileCode($request['fields'][$i], 'update', $modelNameSingularCamelCase);
-
-                    $deleteCode .= $this->generateUploadFileCode($request['fields'][$i], 'delete', $modelNameSingularCamelCase);
+                    /**
+                     * will generate something like:
+                     *
+                     * switch (is_null($request->password)) {
+                     *   case true:
+                     *      unset($attr['password']);
+                     *       break;
+                     *   default:
+                     *       $attr['password'] = bcrypt($request->password);
+                     *       break;
+                     *   }
+                     */
+                    $passwordFieldUpdate .= "
+        switch (is_null(\$request->" . str()->snake($request['fields'][$i]) . ")) {
+        case true:
+            unset(\$attr['" . str()->snake($request['fields'][$i]) . "']);
+            break;
+        default:
+            \$attr['" . str()->snake($request['fields'][$i]) . "'] = bcrypt(\$request->" . str()->snake($request['fields'][$i]) . ");
+            break;
+        }\n";
                 }
             }
 
             /**
-             * controller with upload file code
+             * will generate something like:
+             *
+             *  User::create($attr);
+             *  $user->update($attr);
              */
-            $template = str_replace(
-                [
-                    '{{modelNameSingularPascalCase}}',
-                    '{{modelNameSingularCamelCase}}',
-                    '{{modelNamePluralCamleCase}}',
-                    '{{modelNamePluralKebabCase}}',
-                    '{{modelNameSpaceLowercase}}',
-                    '{{indexCode}}',
-                    '{{storeCode}}',
-                    '{{updateCode}}',
-                    '{{deleteCode}}',
-                    '{{loadRelation}}',
-                    '{{addColumns}}',
-                    '{{query}}',
-                    '{{namespace}}',
-                    '{{requestPath}}',
-                    '{{modelPath}}',
-                    '{{viewPath}}',
-                    '{{modelNameSingularUcWords}}',
-                ],
-                [
-                    $modelNameSingularPascalCase,
-                    $modelNameSingularCamelCase,
-                    $modelNamePluralCamelCase,
-                    $modelNamePluralKebabCase,
-                    $modelNameSpaceLowercase,
-                    $indexCode,
-                    $storeCode,
-                    $updateCode,
-                    $deleteCode,
-                    $relations,
-                    $addColumns,
-                    $query,
-                    $namespace,
-                    $requestPath,
-                    $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
-                    $path != '' ? str_replace('\\', '.', strtolower($path)) . "." : '',
-                    $modelNameSingularUcWords,
-                ],
-                GeneratorUtils::getTemplate('controllers/controller-with-upload-file')
-            );
-        } else {
-            /**
-             * default controller
-             */
-            $template = str_replace(
-                [
-                    '{{modelNameSingularPascalCase}}',
-                    '{{modelNameSingularCamelCase}}',
-                    '{{modelNamePluralCamelCase}}',
-                    '{{modelNamePluralKebabCase}}',
-                    '{{modelNameSpaceLowercase}}',
-                    '{{loadRelation}}',
-                    '{{addColumns}}',
-                    '{{query}}',
-                    '{{namespace}}',
-                    '{{requestPath}}',
-                    '{{modelPath}}',
-                    '{{viewPath}}',
-                    '{{modelNameSingularUcWords}}'
-                ],
-                [
-                    $modelNameSingularPascalCase,
-                    $modelNameSingularCamelCase,
-                    $modelNamePluralCamelCase,
-                    $modelNamePluralKebabCase,
-                    $modelNameSpaceLowercase,
-                    $relations,
-                    $addColumns,
-                    $query,
-                    $namespace,
-                    $requestPath,
-                    $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
-                    $path != '' ? str_replace('\\', '.', strtolower($path)) . "." : '',
-                    $modelNameSingularUcWords
-                ],
-                GeneratorUtils::getTemplate('controllers/controller')
-            );
+            $insertDataAction = $modelNameSingularPascalCase  . "::create(\$attr);";
+            $updateDataAction = "\$"  .  $modelNameSingularCamelCase  .  "->update(\$attr);";
+        }
+        /**
+         * Generate a codes for upload file.
+         */
+        switch (in_array('file', $request['input_types'])) {
+            case true:
+                $indexCode = "";
+                $storeCode = "";
+                $updateCode = "";
+                $deleteCode = "";
+
+                foreach ($request['input_types'] as $i => $input) {
+                    if ($input == 'file') {
+                        $indexCode .= $this->generateUploadFileCode($request['fields'][$i], 'index');
+
+                        $storeCode .= $this->generateUploadFileCode($request['fields'][$i], 'store');
+
+                        $updateCode .= $this->generateUploadFileCode($request['fields'][$i], 'update', $modelNameSingularCamelCase);
+
+                        $deleteCode .= $this->generateUploadFileCode($request['fields'][$i], 'delete', $modelNameSingularCamelCase);
+                    }
+                }
+
+                /**
+                 * Remove $attr = $request->validated(); because is already exist in template
+                 */
+                $passwordFieldStore = str_replace('$attr = $request->validated();', '', $passwordFieldStore);
+                $passwordFieldUpdate = str_replace('$attr = $request->validated();', '', $passwordFieldUpdate);
+
+                /**
+                 * controller with upload file code
+                 */
+                $template = str_replace(
+                    [
+                        '{{modelNameSingularPascalCase}}',
+                        '{{modelNameSingularCamelCase}}',
+                        '{{modelNamePluralCamleCase}}',
+                        '{{modelNamePluralKebabCase}}',
+                        '{{modelNameSpaceLowercase}}',
+                        '{{indexCode}}',
+                        '{{storeCode}}',
+                        '{{updateCode}}',
+                        '{{deleteCode}}',
+                        '{{loadRelation}}',
+                        '{{addColumns}}',
+                        '{{query}}',
+                        '{{namespace}}',
+                        '{{requestPath}}',
+                        '{{modelPath}}',
+                        '{{viewPath}}',
+                        '{{modelNameSingularUcWords}}',
+                        '{{passwordFieldStore}}',
+                        '{{passwordFieldUpdate}}',
+                        '{{updateDataAction}}'
+                    ],
+                    [
+                        $modelNameSingularPascalCase,
+                        $modelNameSingularCamelCase,
+                        $modelNamePluralCamelCase,
+                        $modelNamePluralKebabCase,
+                        $modelNameSpaceLowercase,
+                        $indexCode,
+                        $storeCode,
+                        $updateCode,
+                        $deleteCode,
+                        $relations,
+                        $addColumns,
+                        $query,
+                        $namespace,
+                        $requestPath,
+                        $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
+                        $path != '' ? str_replace('\\', '.', strtolower($path)) . "." : '',
+                        $modelNameSingularUcWords,
+                        $passwordFieldStore,
+                        $passwordFieldUpdate,
+                        $updateDataAction,
+                    ],
+                    GeneratorUtils::getTemplate('controllers/controller-with-upload-file')
+                );
+                break;
+            default:
+                /**
+                 * default controller
+                 */
+                $template = str_replace(
+                    [
+                        '{{modelNameSingularPascalCase}}',
+                        '{{modelNameSingularCamelCase}}',
+                        '{{modelNamePluralCamelCase}}',
+                        '{{modelNamePluralKebabCase}}',
+                        '{{modelNameSpaceLowercase}}',
+                        '{{loadRelation}}',
+                        '{{addColumns}}',
+                        '{{query}}',
+                        '{{namespace}}',
+                        '{{requestPath}}',
+                        '{{modelPath}}',
+                        '{{viewPath}}',
+                        '{{modelNameSingularUcWords}}',
+                        '{{passwordFieldStore}}',
+                        '{{passwordFieldUpdate}}',
+                        '{{insertDataAction}}',
+                        '{{updateDataAction}}'
+                    ],
+                    [
+                        $modelNameSingularPascalCase,
+                        $modelNameSingularCamelCase,
+                        $modelNamePluralCamelCase,
+                        $modelNamePluralKebabCase,
+                        $modelNameSpaceLowercase,
+                        $relations,
+                        $addColumns,
+                        $query,
+                        $namespace,
+                        $requestPath,
+                        $path != '' ? "App\Models\\$path\\$modelNameSingularPascalCase" : "App\Models\\$modelNameSingularPascalCase",
+                        $path != '' ? str_replace('\\', '.', strtolower($path)) . "." : '',
+                        $modelNameSingularUcWords,
+                        $passwordFieldStore,
+                        $passwordFieldUpdate,
+                        $insertDataAction,
+                        $updateDataAction,
+                    ],
+                    GeneratorUtils::getTemplate('controllers/controller')
+                );
+                break;
         }
 
-        if ($path != '') {
-            $fullPath = app_path("/Http/Controllers/$path/");
-
-            GeneratorUtils::checkFolder($fullPath);
-
-            file_put_contents("$fullPath" . $modelNameSingularPascalCase . "Controller.php", $template);
-        } else {
-            file_put_contents(app_path("/Http/Controllers/{$modelNameSingularPascalCase}Controller.php"), $template);
+        /**
+         * Create a controller file.
+         */
+        switch ($path) {
+            case '':
+                $fullPath = app_path("/Http/Controllers/$path/");
+                GeneratorUtils::checkFolder($fullPath);
+                file_put_contents("$fullPath" . $modelNameSingularPascalCase . "Controller.php", $template);
+                break;
+            default:
+                file_put_contents(app_path("/Http/Controllers/{$modelNameSingularPascalCase}Controller.php"), $template);
+                break;
         }
     }
 
