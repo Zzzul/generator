@@ -82,7 +82,7 @@ class RequestGenerator
                 $validations .= "|string";
             }
 
-            if ($request['input_types'][$i] == 'number') {
+            if ($request['input_types'][$i] == 'number' || $request['column_types'][$i] == 'year') {
                 /**
                  * will generate like:
                  * 'name' => 'required|numeric',

@@ -97,12 +97,12 @@ class MigrationGenerator
                 $setFields .= "->nullable()";
             }
 
-            if (isset($request['default_values'][$i])) {
+            if ($request['default_values'][$i]) {
                 /**
                  * will generate something like:
                  * $table->string('name', 30)->nullable() or $table->string('name')->nullable()
                  */
-                $setFields .= '->default('. $request['default_values'][$i] .')';
+                $setFields .= "->default('". $request['default_values'][$i] ."')";
             }
 
             if ($request['input_types'][$i] === 'email') {

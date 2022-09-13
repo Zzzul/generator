@@ -127,7 +127,7 @@ class ControllerGenerator
          * $user->update($request->validated());
          */
         $insertDataAction = $modelNameSingularPascalCase  . "::create(\$request->validated());";
-        $updateDataAction = "\$"  .  $modelNameSingularPascalCase  .  "->update(\$request->validated());";
+        $updateDataAction = "\$"  .  $modelNameSingularCamelCase  .  "->update(\$request->validated());";
 
         if (in_array('password', $request['input_types'])) {
             $passwordFieldStore .= "\$attr = \$request->validated();\n\n";
@@ -356,18 +356,21 @@ class ControllerGenerator
             array_push($replaceWith, $model);
         }
 
-        if (config('generator.image.crop')) {
-            return str_replace(
-                $replaceString,
-                $replaceWith,
-                GeneratorUtils::getTemplate("controllers/upload-files/with-crop/$path")
-            );
-        } else {
-            return str_replace(
-                $replaceString,
-                $replaceWith,
-                GeneratorUtils::getTemplate("controllers/upload-files/$path")
-            );
+        switch (config('generator.image.crop')) {
+            case true:
+                return str_replace(
+                    $replaceString,
+                    $replaceWith,
+                    GeneratorUtils::getTemplate("controllers/upload-files/with-crop/$path")
+                );
+                break;
+            default:
+                return str_replace(
+                    $replaceString,
+                    $replaceWith,
+                    GeneratorUtils::getTemplate("controllers/upload-files/$path")
+                );
+                break;
         }
     }
 }

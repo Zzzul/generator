@@ -52,10 +52,14 @@
                     <input type="hidden" name="mimes[]" class="form-mimes">
                     <input type="hidden" name="file_types[]" class="form-file-types">
                     <input type="hidden" name="files_sizes[]" class="form-file-sizes">
+                    <input type="hidden" name="steps[]" class="form-step" placeholder="step">
                 </td>
                 <td class="mt-0 pt-0">
                     <div class="form-check form-switch form-control-lg">
                         <input class="form-check-input switch-requireds" type="checkbox" id="switch-${no}" name="requireds[]" checked>
+                    </div>
+                    <div class="form-group form-default-value mt-4">
+                        <input type="hidden" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
                     </div>
                 </td>
                 <td>
@@ -73,7 +77,6 @@
         let index = $(this).parent().parent().parent().index()
         let switchRequired = $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .switch-requireds`)
 
-        $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
         switchRequired.prop('checked', true)
         switchRequired.prop('disabled', false)
 
@@ -243,15 +246,19 @@
                 <option value="hidden">Hidden</option>
                 <option value="no-input">No Input</option>
             `)
-
         }
     })
 
     $(document).on('change', '.switch-requireds', function() {
         let index = $(this).parent().parent().parent().index()
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
 
         if ($(this).is(':checked')) {
-            $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
+                <div class="form-group form-default-value mt-4">
+                    <input type="hidden" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
+                </div>
+            `)
         } else {
             $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
                 <div class="form-group form-default-value mt-4">
@@ -268,7 +275,7 @@
         let switchRequired = $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .switch-requireds`)
 
         removeInputTypeHidden(index)
-        $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
+        // $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
         switchRequired.prop('checked', true)
         switchRequired.prop('disabled', false)
 
@@ -289,7 +296,16 @@
                 <input type="number" name="files_sizes[]" class="form-control" placeholder="Max size(kb), e.g.: 1024" required>
             </div>
             `)
-        } else if ($(this).val() == 'email' || $(this).val() == 'select' || $(this).val() == 'datalist' || $(this).val() == 'radio' || $(this).val() == 'date' || $(this).val() == 'month' || $(this).val() == 'password' || $(this).val() == 'number') {
+        } else if (
+            $(this).val() == 'email' ||
+            $(this).val() == 'select' ||
+            $(this).val() == 'datalist' ||
+            $(this).val() == 'radio' ||
+            $(this).val() == 'date' ||
+            $(this).val() == 'month' ||
+            $(this).val() == 'password' ||
+            $(this).val() == 'number'
+        ) {
 
             minLength.prop('readonly', true)
             maxLength.prop('readonly', true)

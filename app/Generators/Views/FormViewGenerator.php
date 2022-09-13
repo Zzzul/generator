@@ -70,7 +70,7 @@ class FormViewGenerator
                             break;
                         case 'datalist':
                             foreach ($arrOption as $arrOptionIndex => $value) {
-                                $options .= "<option value=\"" . $value . "\" {{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase == '" . $value . "' ? 'selected' : (old('$fieldSnakeCase') == '" . $value . "' ? 'selected' : '') }}>$value</option>";
+                                $options .= "<option value=\"" . $value . "\">$value</option>";
 
                                 if ($arrOptionIndex + 1 != $totalOptions) {
                                     $options .= "\n\t\t";
@@ -86,7 +86,8 @@ class FormViewGenerator
                                     '{{fieldUcWords}}',
                                     '{{fieldSnakeCase}}',
                                     '{{options}}',
-                                    '{{nullable}}'
+                                    '{{nullable}}',
+                                    '{{value}}',
                                 ],
                                 [
                                     GeneratorUtils::singularKebabCase($field),
@@ -95,6 +96,7 @@ class FormViewGenerator
                                     $fieldSnakeCase,
                                     $options,
                                     $request['requireds'][$i] == 'yes' ? ' required' : '',
+                                    "{{ isset($". $modelNameSingularCamelCase .") && $". $modelNameSingularCamelCase ."->". $fieldSnakeCase ." ? $". $modelNameSingularCamelCase ."->". $fieldSnakeCase ." : old('". $fieldSnakeCase ."') }}"
                                 ],
                                 GeneratorUtils::getTemplate('views/forms/datalist')
                             );
@@ -154,7 +156,8 @@ class FormViewGenerator
                                     '{{fieldUcWords}}',
                                     '{{fieldCamelCase}}',
                                     '{{options}}',
-                                    '{{nullable}}'
+                                    '{{nullable}}',
+                                    '{{value}}',
                                 ],
                                 [
                                     GeneratorUtils::singularKebabCase($field),
@@ -163,6 +166,7 @@ class FormViewGenerator
                                     GeneratorUtils::singularCamelCase($field),
                                     $options,
                                     $request['requireds'][$i] == 'yes' ? ' required' : '',
+                                    "{{ isset($". $modelNameSingularCamelCase .") && $". $modelNameSingularCamelCase ."->". $fieldSnakeCase ." ? $". $modelNameSingularCamelCase ."->". $fieldSnakeCase ." : old('". $fieldSnakeCase ."') }}"
                                 ],
                                 GeneratorUtils::getTemplate('views/forms/datalist')
                             );
@@ -220,7 +224,8 @@ class FormViewGenerator
                                     '{{fieldUcWords}}',
                                     '{{fieldSnakeCase}}',
                                     '{{options}}',
-                                    '{{nullable}}'
+                                    '{{nullable}}',
+                                    '{{value}}',
                                 ],
                                 [
                                     GeneratorUtils::singularKebabCase($field),
@@ -229,6 +234,7 @@ class FormViewGenerator
                                     $fieldSnakeCase,
                                     $options,
                                     $request['requireds'][$i] == 'yes' ? ' required' : '',
+                                    "{{ isset($". $modelNameSingularCamelCase .") && $". $modelNameSingularCamelCase ."->". $fieldSnakeCase ." ? $". $modelNameSingularCamelCase ."->". $fieldSnakeCase ." : old('". $fieldSnakeCase ."') }}"
                                 ],
                                 GeneratorUtils::getTemplate('views/forms/datalist')
                             );
@@ -379,7 +385,7 @@ class FormViewGenerator
                     $formatValue = "{{ isset($$modelNameSingularCamelCase) ? $$modelNameSingularCamelCase->$fieldSnakeCase : old('$fieldSnakeCase') }}";
 
                     switch ($request['input_types'][$i]) {
-                        case 'dateTime':
+                        case 'datetime-local':
                             /**
                              * Will generate something like:
                              *

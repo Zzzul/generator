@@ -66,13 +66,13 @@
                     <td>1</td>
                     <td>
                         <div class="form-group">
-                            <input type="text" name="fields[]" class="form-control" placeholder="Field Name" required>
+                            <input type="text" name="fields[]" class="form-control" placeholder="{{ __('Field Name') }}" required>
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
                             <select name="column_types[]" class="form-select form-column-types" required>
-                                <option value="" disabled selected>--Select column type--</option>
+                                <option value="" disabled selected>--{{ __('Select column type') }}--</option>
                                 @foreach (config('generator.column_types') as $type)
                                     <option value="{{ $type }}">{{ ucwords($type) }}</option>
                                 @endforeach
@@ -101,18 +101,20 @@
                     <td>
                         <div class="form-group">
                             <select name="input_types[]" class="form-select form-input-types" required>
-                                <option value="" disabled selected>-- Select input type --</option>
-                                <option value="" disabled>Select the column type first</option>
+                                <option value="" disabled selected>-- {{ __('Select input type') }} --</option>
+                                <option value="" disabled>{{ __('Select the column type first') }}</option>
                             </select>
                         </div>
                         <input type="hidden" name="mimes[]" class="form-mimes">
                         <input type="hidden" name="file_types[]" class="form-file-types">
                         <input type="hidden" name="files_sizes[]" class="form-file-sizes">
+                        <input type="hidden" name="steps[]" class="form-step" placeholder="step">
                     </td>
                     <td class="mt-0 pt-0">
                         <div class="form-check form-switch form-control-lg">
                             <input class="form-check-input switch-requireds" type="checkbox" id="switch-1" name="requireds[]" checked>
                         </div>
+                        <input type="hidden" name="default_values[]" class="form-default-value" placeholder="{{ __('Default Value (optional)') }}">
                     </td>
                     <td>
                         <button type="button" class="btn btn-outline-danger btn-sm btn-delete" disabled>
