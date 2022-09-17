@@ -52,7 +52,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function store(Store{{modelNameSingularPascalCase}}Request $request)
     {
-        {{passwordFieldStore}}
+        {{passwordFieldStore}}{{inputMonths}}
         {{insertDataAction}}
 
         return redirect()
@@ -91,7 +91,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function update(Update{{modelNameSingularPascalCase}}Request $request, {{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-        {{passwordFieldUpdate}}
+        {{passwordFieldUpdate}}{{inputMonths}}
         {{updateDataAction}}
 
         return redirect()

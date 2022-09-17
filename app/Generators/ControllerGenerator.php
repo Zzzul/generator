@@ -24,30 +24,34 @@ class ControllerGenerator
 
         $query = "$modelNameSingularPascalCase::query()";
 
-        if ($path != '') {
-            /**
-             * Will generate something like:
-             *
-             * namespace App\Http\Controllers\Inventory;
-             *
-             * use App\Http\Controllers\Controller;
-             */
-            $namespace = "namespace App\Http\Controllers\\$path;\n\nuse App\Http\Controllers\Controller;";
+        switch ($path) {
+            case '':
+                $namespace = "namespace App\Http\Controllers;\n\n";
 
-            /**
-             * Will generate something like:
-             *
-             * use App\Http\Requests\Inventory\{StoreProductRequest, UpdateProductRequest};
-             */
-            $requestPath = "App\Http\Requests\\" . $path . "\{Store" . $modelNameSingularPascalCase . "Request, Update" . $modelNameSingularPascalCase . "Request}";
-        } else {
-            $namespace = "namespace App\Http\Controllers;\n\n";
+                /**
+                 * will generate something like:
+                 *
+                 * use App\Http\Requests\{StoreProductRequest, UpdateProductRequest};
+                 */
+                $requestPath = "App\Http\Requests\{Store" . $modelNameSingularPascalCase . "Request, Update" . $modelNameSingularPascalCase . "Request}";
+                break;
+            default:
+                /**
+                 * Will generate something like:
+                 *
+                 * namespace App\Http\Controllers\Inventory;
+                 *
+                 * use App\Http\Controllers\Controller;
+                 */
+                $namespace = "namespace App\Http\Controllers\\$path;\n\nuse App\Http\Controllers\Controller;";
 
-            /**
-             * will generate something like:
-             * use App\Http\Requests\{StoreProductRequest, UpdateProductRequest};
-             */
-            $requestPath = "App\Http\Requests\{Store" . $modelNameSingularPascalCase . "Request, Update" . $modelNameSingularPascalCase . "Request}";
+                /**
+                 * Will generate something like:
+                 *
+                 * use App\Http\Requests\Inventory\{StoreProductRequest, UpdateProductRequest};
+                 */
+                $requestPath = "App\Http\Requests\\" . $path . "\{Store" . $modelNameSingularPascalCase . "Request, Update" . $modelNameSingularPascalCase . "Request}";
+                break;
         }
 
         $relations = "";
@@ -56,6 +60,13 @@ class ControllerGenerator
         if (in_array('text', $request['column_types']) || in_array('longText', $request['column_types'])) {
             $limitText = config('generator.format.limit_text') ? config('generator.format.limit_text') : 200;
 
+            /**
+             * will generate something like:
+             *
+             * ->addColumn('role', function ($row) {
+             *       return str($row->body)->limit($limitText);
+             *  })
+             */
             foreach ($request['column_types'] as $i => $type) {
                 if ($type == 'text' || $type == 'longText') {
                     $addColumns .= "->addColumn('" . str($request['fields'][$i])->snake() . "', function(\$row){
@@ -117,9 +128,6 @@ class ControllerGenerator
             }
         }
 
-        $passwordFieldStore = "";
-        $passwordFieldUpdate = "";
-
         /**
          * will generate something like:
          *
@@ -128,10 +136,25 @@ class ControllerGenerator
          */
         $insertDataAction = $modelNameSingularPascalCase  . "::create(\$request->validated());";
         $updateDataAction = "\$"  .  $modelNameSingularCamelCase  .  "->update(\$request->validated());";
+        $requestValidatedAttr = "";
 
+        if (in_array('password', $request['input_types']) || in_array('month', $request['input_types'])) {
+            /**
+             * * will generate something like:
+             *
+             *  User::create($attr);
+             *  $user->update($attr);
+             */
+            $insertDataAction = $modelNameSingularPascalCase  . "::create(\$attr);";
+            $updateDataAction = "\$"  .  $modelNameSingularCamelCase  .  "->update(\$attr);";
+            $requestValidatedAttr = "\$attr = \$request->validated();\n";
+        }
+
+        $passwordFieldStore = "";
+        $passwordFieldUpdate = "";
         if (in_array('password', $request['input_types'])) {
-            $passwordFieldStore .= "\$attr = \$request->validated();\n\n";
-            $passwordFieldUpdate .= "\$attr = \$request->validated();\n";
+            $passwordFieldStore .= $requestValidatedAttr;
+            $passwordFieldUpdate .= $requestValidatedAttr;
 
             foreach ($request['input_types'] as $i => $input) {
                 if ($input === 'password') {
@@ -156,25 +179,42 @@ class ControllerGenerator
                      */
                     $passwordFieldUpdate .= "
         switch (is_null(\$request->" . str()->snake($request['fields'][$i]) . ")) {
-        case true:
-            unset(\$attr['" . str()->snake($request['fields'][$i]) . "']);
-            break;
-        default:
-            \$attr['" . str()->snake($request['fields'][$i]) . "'] = bcrypt(\$request->" . str()->snake($request['fields'][$i]) . ");
-            break;
+            case true:
+                unset(\$attr['" . str()->snake($request['fields'][$i]) . "']);
+                break;
+            default:
+                \$attr['" . str()->snake($request['fields'][$i]) . "'] = bcrypt(\$request->" . str()->snake($request['fields'][$i]) . ");
+                break;
         }\n";
                 }
             }
-
-            /**
-             * will generate something like:
-             *
-             *  User::create($attr);
-             *  $user->update($attr);
-             */
-            $insertDataAction = $modelNameSingularPascalCase  . "::create(\$attr);";
-            $updateDataAction = "\$"  .  $modelNameSingularCamelCase  .  "->update(\$attr);";
         }
+
+        /**
+         * Generate code for insert input type month to fields with datatype date.
+         * by default will getting an error, cause invalid format.
+         */
+        $inputMonths = "";
+        if (in_array('month', $request['input_types'])) {
+            if (!in_array('password', $request['input_types'])) {
+                /**
+                 * dont concat string if any input type password, cause already concating ahead.
+                 */
+                $inputMonths .= $requestValidatedAttr;
+            }
+
+            foreach ($request['input_types'] as $i => $input) {
+                if ($input === 'month') {
+                    /**
+                     * will generate something like:
+                     *
+                     * $attr['month'] = \Carbon\Carbon::createFromFormat('Y-m', $attr['month'])->toDateTimeString();
+                     */
+                    $inputMonths .= "\t\t\$attr['" . str()->snake($request['fields'][$i]) . "'] = \Carbon\Carbon::createFromFormat('Y-m', \$attr['" . str()->snake($request['fields'][$i]) . "'])->toDateTimeString();\n";
+                }
+            }
+        }
+
         /**
          * Generate a codes for upload file.
          */
@@ -198,10 +238,12 @@ class ControllerGenerator
                 }
 
                 /**
-                 * Remove $attr = $request->validated(); because is already exist in template
+                 * Remove $attr = $request->validated(); because is already exist in template (.stub)
                  */
                 $passwordFieldStore = str_replace('$attr = $request->validated();', '', $passwordFieldStore);
                 $passwordFieldUpdate = str_replace('$attr = $request->validated();', '', $passwordFieldUpdate);
+
+                $inputMonths = str_replace('$attr = $request->validated();', '', $inputMonths);
 
                 /**
                  * controller with upload file code
@@ -227,7 +269,8 @@ class ControllerGenerator
                         '{{modelNameSingularUcWords}}',
                         '{{passwordFieldStore}}',
                         '{{passwordFieldUpdate}}',
-                        '{{updateDataAction}}'
+                        '{{updateDataAction}}',
+                        '{{inputMonths}}',
                     ],
                     [
                         $modelNameSingularPascalCase,
@@ -250,6 +293,7 @@ class ControllerGenerator
                         $passwordFieldStore,
                         $passwordFieldUpdate,
                         $updateDataAction,
+                        $inputMonths
                     ],
                     GeneratorUtils::getTemplate('controllers/controller-with-upload-file')
                 );
@@ -276,7 +320,8 @@ class ControllerGenerator
                         '{{passwordFieldStore}}',
                         '{{passwordFieldUpdate}}',
                         '{{insertDataAction}}',
-                        '{{updateDataAction}}'
+                        '{{updateDataAction}}',
+                        '{{inputMonths}}',
                     ],
                     [
                         $modelNameSingularPascalCase,
@@ -296,6 +341,7 @@ class ControllerGenerator
                         $passwordFieldUpdate,
                         $insertDataAction,
                         $updateDataAction,
+                        $inputMonths
                     ],
                     GeneratorUtils::getTemplate('controllers/controller')
                 );
@@ -307,12 +353,12 @@ class ControllerGenerator
          */
         switch ($path) {
             case '':
+                file_put_contents(app_path("/Http/Controllers/{$modelNameSingularPascalCase}Controller.php"), $template);
+                break;
+            default:
                 $fullPath = app_path("/Http/Controllers/$path/");
                 GeneratorUtils::checkFolder($fullPath);
                 file_put_contents("$fullPath" . $modelNameSingularPascalCase . "Controller.php", $template);
-                break;
-            default:
-                file_put_contents(app_path("/Http/Controllers/{$modelNameSingularPascalCase}Controller.php"), $template);
                 break;
         }
     }

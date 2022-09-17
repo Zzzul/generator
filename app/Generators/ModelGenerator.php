@@ -61,7 +61,7 @@ class ModelGenerator
                 $casts .= "'" . str()->snake($value) . "' => 'boolean', ";
             } elseif ($request['column_types'][$i] == 'double') {
                 $casts .= "'" . str()->snake($value) . "' => 'double', ";
-            } elseif (str_contains($request['column_types'][$i], 'string') || str_contains($request['column_types'][$i], 'text') || str_contains($request['column_types'][$i], 'char') && $request['input_types'][$i] !== 'month') {
+            } elseif (str_contains($request['column_types'][$i], 'string') || str_contains($request['column_types'][$i], 'text') || str_contains($request['column_types'][$i], 'char')) {
                 $casts .= "'" . str()->snake($value) . "' => 'string', ";
             } elseif ($request['column_types'][$i] == 'foreignId') {
                 $constrainPath = GeneratorUtils::getModelLocation($request['constrains'][$i]);
@@ -75,7 +75,7 @@ class ModelGenerator
 
                 /**
                  * will generate something like:
-                 * \App\Models\Master\Product::class
+                 * \App\Models\Main\Product::class
                  *              or
                  *  \App\Models\Product::class
                  */
@@ -90,7 +90,7 @@ class ModelGenerator
                  *
                  * public function product()
                  * {
-                 *     return $this->belongsTo(\App\Models\Master\Product::class);
+                 *     return $this->belongsTo(\App\Models\Main\Product::class);
                  *                              or
                  *     return $this->belongsTo(\App\Models\Product::class);
                  * }
@@ -125,12 +125,12 @@ class ModelGenerator
 
         switch ($path) {
             case '':
+                file_put_contents(app_path("/Models/$model.php"), $template);
+                break;
+            default:
                 $fullPath = app_path("/Models/$path");
                 GeneratorUtils::checkFolder($fullPath);
                 file_put_contents($fullPath . "/$model.php", $template);
-                break;
-            default:
-                file_put_contents(app_path("/Models/$model.php"), $template);
                 break;
         }
     }
