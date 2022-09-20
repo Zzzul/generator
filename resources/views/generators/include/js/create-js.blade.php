@@ -80,10 +80,13 @@
         switchRequired.prop('checked', true)
         switchRequired.prop('disabled', false)
 
+
         if ($(this).val() == 'enum') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
             addDataTypeHidden(index)
+
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()
 
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
             <div class="form-group form-option mt-2">
@@ -138,6 +141,8 @@
         } else if ($(this).val() == 'foreignId') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
+
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()
 
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
                 <input type="hidden" name="select_options[]" class="form-option">
@@ -275,7 +280,6 @@
         let switchRequired = $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .switch-requireds`)
 
         removeInputTypeHidden(index)
-        // $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
         switchRequired.prop('checked', true)
         switchRequired.prop('disabled', false)
 
@@ -295,6 +299,8 @@
             <div class="form-group form-file-sizes">
                 <input type="number" name="files_sizes[]" class="form-control" placeholder="Max size(kb), e.g.: 1024" required>
             </div>
+            <input type="hidden" name="mimes[]" class="form-mimes">
+            <input type="hidden" name="steps[]" class="form-step">
             `)
         } else if (
             $(this).val() == 'email' ||
@@ -340,6 +346,8 @@
             maxLength.prop('readonly', true)
             minLength.val('')
             maxLength.val('')
+
+            $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
 
             $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
                 <div class="form-group form-default-value mt-4">
