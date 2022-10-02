@@ -80,6 +80,12 @@
         switchRequired.prop('checked', true)
         switchRequired.prop('disabled', false)
 
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
+            <div class="form-group form-default-value mt-4">
+                <input type="hidden" name="default_values[]">
+            </div>
+        `)
 
         if ($(this).val() == 'enum') {
             removeAllInputHidden(index)
@@ -258,16 +264,18 @@
         let index = $(this).parent().parent().parent().index()
         $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
 
+        let inputTypeDefaultValue = setInputTypeDefaultValue(index)
+
         if ($(this).is(':checked')) {
             $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
                 <div class="form-group form-default-value mt-4">
-                    <input type="hidden" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
+                    <input type="hidden" name="default_values[]">
                 </div>
             `)
         } else {
             $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
                 <div class="form-group form-default-value mt-4">
-                    <input type="text" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
+                    <input type="${inputTypeDefaultValue}" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
                 </div>
             `)
         }
@@ -282,6 +290,13 @@
         removeInputTypeHidden(index)
         switchRequired.prop('checked', true)
         switchRequired.prop('disabled', false)
+
+        // $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
+        // $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
+        //     <div class="form-group form-default-value mt-4">
+        //         <input type="hidden" name="default_values[]">
+        //     </div>
+        // `)
 
         if ($(this).val() == 'file') {
             minLength.prop('readonly', true)
@@ -347,11 +362,13 @@
             minLength.val('')
             maxLength.val('')
 
+            let inputTypeDefaultValue = setInputTypeDefaultValue(index)
+
             $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
 
             $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
                 <div class="form-group form-default-value mt-4">
-                    <input type="text" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
+                    <input type="${inputTypeDefaultValue}" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
                 </div>
             `)
 

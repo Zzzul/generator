@@ -1,8 +1,12 @@
 <?php
 
 return [
-    /**
-     * Its used for route and sidebar menu name.
+    /*
+    |--------------------------------------------------------------------------
+    | Generator Name
+    |--------------------------------------------------------------------------
+    |
+    | Its used for route and sidebar menu name.
      */
     'name' => 'generators',
 

@@ -82,9 +82,9 @@
 
         $('#tbl-field tbody tr').each(function(i) {
             $(this).find('td:nth-child(1)').html(no)
-            if(i < 1){
+            if (i < 1) {
                 $(`.btn-delete:eq(${i})`).prop('disabled', true)
-            }else{
+            } else {
                 $(`.btn-delete:eq(${i})`).prop('disabled', false)
             }
             no++
@@ -132,6 +132,25 @@
         } else {
             return ''
         }
+    }
+
+    function setInputTypeDefaultValue(index) {
+        let checkColumnyType = $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-column-types`).val()
+        let inputTypeDefaultValue = 'text'
+
+        if (
+            checkColumnyType == 'integer' ||
+            checkColumnyType == 'bigInteger' ||
+            checkColumnyType == 'boolean' ||
+            checkColumnyType == 'decimal' ||
+            checkColumnyType == 'double' ||
+            checkColumnyType == 'float' ||
+            checkColumnyType == 'tinyInteger'
+        ) {
+            inputTypeDefaultValue = 'number'
+        }
+
+        return inputTypeDefaultValue
     }
 
     let rowDrag
