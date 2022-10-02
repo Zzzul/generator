@@ -4,8 +4,8 @@
                 {{value}}
             </label>
             @error('{{fieldSnakeCase}}')
-                <div class="invalid-feedback">
+                <span class="text-danger">
                     {{ $message }}
-                </div>
+                </span>
             @enderror
         </div>

@@ -15,10 +15,9 @@
                         <input type="file" name="{{fieldSnakeCase}}" class="form-control @error('{{fieldSnakeCase}}') is-invalid @enderror" id="{{fieldSnakeCase}}">
 
                         @error('{{fieldSnakeCase}}')
-                            <div class="invalid-feedback">
-                                <i class="bx bx-radio-circle"></i>
+                          <span class="text-danger">
                                 {{ $message }}
-                            </div>
+                           </span>
                         @enderror
                     </div>
                 </div>
@@ -31,10 +30,9 @@
                 <input type="file" name="{{fieldSnakeCase}}" class="form-control @error('{{fieldSnakeCase}}') is-invalid @enderror" id="{{fieldSnakeCase}}"{{nullable}}>
 
                 @error('{{fieldSnakeCase}}')
-                    <div class="invalid-feedback">
-                        <i class="bx bx-radio-circle"></i>
+                   <span class="text-danger">
                         {{ $message }}
-                    </div>
+                    </span>
                 @enderror
             </div>
         </div>
