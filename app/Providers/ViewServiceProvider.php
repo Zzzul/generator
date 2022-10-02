@@ -31,7 +31,7 @@ class ViewServiceProvider extends ServiceProvider
         ], function ($view) {
             return $view->with(
                 'roles',
-                Role::get()
+                Role::select('id','name')->get()
             );
         });
 

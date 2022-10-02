@@ -56,6 +56,7 @@ class RequestGenerator
                     if ($key + 1 != $totalOptions) {
                         $in .= $option . ",";
                     } else {
+                        // for latest validation
                         $in .= $option;
                     }
                 }
@@ -64,11 +65,13 @@ class RequestGenerator
             }
 
             if ($request['input_types'][$i] == 'email') {
+                $uniqueValidation = 'unique:' . GeneratorUtils::pluralSnakeCase($model) . ',' . GeneratorUtils::singularSnakeCase($field);
+
                 /**
                  * will generate like:
                  * 'name' => 'required|email',
                  */
-                $validations .= "|email";
+                $validations .= "|email|" . $uniqueValidation;
             }
 
             if ($request['input_types'][$i] == 'string') {
@@ -79,7 +82,7 @@ class RequestGenerator
                 $validations .= "|string";
             }
 
-            if ($request['input_types'][$i] == 'number') {
+            if ($request['input_types'][$i] == 'number' || $request['column_types'][$i] == 'year') {
                 /**
                  * will generate like:
                  * 'name' => 'required|numeric',
@@ -173,10 +176,27 @@ class RequestGenerator
         /**
          * on update request if any image validation, then set 'required' to nullbale
          */
-        if (str_contains($validations, "'required|image")) {
-            $updateValidations = str_replace("'required|image", "'nullable|image", $validations);
-        } else {
-            $updateValidations = $validations;
+        switch (str_contains($validations, "'required|image")) {
+            case true:
+                $updateValidations = str_replace("'required|image", "'nullable|image", $validations);
+                break;
+            default:
+                $updateValidations = $validations;
+                break;
+        }
+
+        switch (isset($uniqueValidation)) {
+            case true:
+                /**
+                 * Will generate something like:
+                 *
+                 * unique:users,email,' . $this->user->id
+                 */
+                $updateValidations = str_replace($uniqueValidation, $uniqueValidation . ",' . \$this->" . GeneratorUtils::singularCamelCase($model) . "->id", $validations);
+                break;
+            default:
+                $updateValidations = $validations;
+                break;
         }
 
         $updateRequestTemplate = str_replace(
@@ -193,18 +213,24 @@ class RequestGenerator
             GeneratorUtils::getTemplate('request')
         );
 
-        if ($path != '') {
-            $fullPath = app_path("/Http/Requests/$path");
+        /**
+         * Create a request class file.
+         */
+        switch ($path) {
+            case '':
+                $fullPath = app_path("/Http/Requests/$path");
 
-            GeneratorUtils::checkFolder($fullPath);
+                GeneratorUtils::checkFolder($fullPath);
 
-            file_put_contents("$fullPath/Store{$model}Request.php", $storeRequestTemplate);
-            file_put_contents("$fullPath/Update{$model}Request.php", $updateRequestTemplate);
-        } else {
-            GeneratorUtils::checkFolder(app_path('/Http/Requests'));
+                file_put_contents("$fullPath/Store{$model}Request.php", $storeRequestTemplate);
+                file_put_contents("$fullPath/Update{$model}Request.php", $updateRequestTemplate);
+                break;
+            default:
+                GeneratorUtils::checkFolder(app_path('/Http/Requests'));
 
-            file_put_contents(app_path("/Http/Requests/Store{$model}Request.php"), $storeRequestTemplate);
-            file_put_contents(app_path("/Http/Requests/Update{$model}Request.php"), $updateRequestTemplate);
+                file_put_contents(app_path("/Http/Requests/Store{$model}Request.php"), $storeRequestTemplate);
+                file_put_contents(app_path("/Http/Requests/Update{$model}Request.php"), $updateRequestTemplate);
+                break;
         }
     }
 }

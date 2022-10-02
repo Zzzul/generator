@@ -3,9 +3,9 @@
             <label for="{{fieldLowercase}}">{{ __('{{fieldUppercase}}') }}</label>
             <textarea name="{{fieldLowercase}}" id="{{fieldLowercase}}" class="form-control @error('{{fieldLowercase}}') is-invalid @enderror" placeholder="{{ __('{{fieldUppercase}}') }}"{{nullable}}>{{ isset(${{modelName}}) ? ${{modelName}}->{{fieldLowercase}} : old('{{fieldLowercase}}') }}</textarea>
             @error('{{fieldLowercase}}')
-                <div class="invalid-feedback">
+                <span class="text-danger">
                     {{ $message }}
-                </div>
+                </span>
             @enderror
         </div>
     </div>

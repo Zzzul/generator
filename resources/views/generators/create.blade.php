@@ -11,7 +11,7 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-8 order-md-1 order-last">
-                    <h3>{{ __('Module') }}</h3>
+                    <h3>{{ __('Generators') }}</h3>
                     <p class="text-subtitle text-muted">
                         {{ __('Create a new CRUD Module.') }}
                     </p>

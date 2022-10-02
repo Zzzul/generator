@@ -87,6 +87,8 @@ class UserController extends Controller
             $attr['avatar'] = $filename;
         }
 
+        $attr['password'] = bcrypt($request->password);
+
         $user = User::create($attr);
 
         $user->assignRole($request->role);
@@ -159,10 +161,13 @@ class UserController extends Controller
             $attr['avatar'] = $user->avatar;
         }
 
-        if (is_null($request->password)) {
-            unset($attr['password']);
-        } else {
-            $attr['password'] = bcrypt($request->password);
+        switch (is_null($request->password)) {
+            case true:
+                unset($attr['password']);
+                break;
+            default:
+                $attr['password'] = bcrypt($request->password);
+                break;
         }
 
         $user->update($attr);

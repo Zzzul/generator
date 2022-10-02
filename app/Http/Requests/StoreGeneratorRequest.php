@@ -33,6 +33,8 @@ class StoreGeneratorRequest extends FormRequest
             'foreign_ids.*' => ['nullable'],
             'min_lengths.*' => ['nullable'],
             'max_lengths.*' => ['nullable'],
+            'steps.*' => ['nullable'],
+            'default_values.*' => ['nullable'],
             'fields.*' => ['required', 'alpha_dash'],
             'requireds.*' => ['required', 'in:yes,no'],
             'mimes.*' => ['nullable', 'required_if:file_types.*,mimes'],
@@ -41,6 +43,8 @@ class StoreGeneratorRequest extends FormRequest
             'constrains.*' => ['nullable', 'required_if:column_types.*,foreignId'],
             'file_types.*' => ['nullable', 'required_if:input_types.*,file', 'in:image,mimes'],
             'column_types.*' => ['required', 'in:' . implode(',', config('generator.column_types'))],
+            'on_update_foreign.*' => ['nullable'],
+            'on_delete_foreign.*' => ['nullable'],
             'menu' => ['required_unless:header,new'],
             'header' => ['required'],
             'new_header' => ['required_if:header,new'],
@@ -48,8 +52,6 @@ class StoreGeneratorRequest extends FormRequest
             'new_menu' => ['required_if:header,new'],
             'new_route' => ['required_if:header,new'],
             'new_submenu' => ['nullable'],
-            'on_update_foreign' => ['nullable'],
-            'on_delete_foreign' => ['nullable'],
         ];
     }
 }

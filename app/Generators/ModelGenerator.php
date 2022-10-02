@@ -43,6 +43,12 @@ class ModelGenerator
                 $timeFormat = config('generator.format.time') ? config('generator.format.time') : 'H:i';
 
                 $casts .= "'" . str()->snake($value) . "' => 'datetime:$timeFormat', ";
+            } elseif ($request['input_types'][$i] == 'month') {
+                $castFormat = config('generator.format.month') ? config('generator.format.month') : 'M/Y';
+                $casts .= "'" . str()->snake($value) . "' => 'datetime:$castFormat', ";
+            } elseif ($request['input_types'][$i] == 'week') {
+                $castFormat = config('generator.format.week') ? config('generator.format.week') : 'Y-\WW';
+                $casts .= "'" . str()->snake($value) . "' => 'datetime:$castFormat', ";
             } elseif ($request['column_types'][$i] == 'year') {
                 $casts .= "'" . str()->snake($value) . "' => 'integer', ";
             } elseif ($request['column_types'][$i] == 'dateTime') {
@@ -69,7 +75,7 @@ class ModelGenerator
 
                 /**
                  * will generate something like:
-                 * \App\Models\Master\Product::class
+                 * \App\Models\Main\Product::class
                  *              or
                  *  \App\Models\Product::class
                  */
@@ -84,7 +90,7 @@ class ModelGenerator
                  *
                  * public function product()
                  * {
-                 *     return $this->belongsTo(\App\Models\Master\Product::class);
+                 *     return $this->belongsTo(\App\Models\Main\Product::class);
                  *                              or
                  *     return $this->belongsTo(\App\Models\Product::class);
                  * }
@@ -117,14 +123,15 @@ class ModelGenerator
             GeneratorUtils::getTemplate('model')
         );
 
-        if ($path != '') {
-            $fullPath = app_path("/Models/$path");
-
-            GeneratorUtils::checkFolder($fullPath);
-
-            file_put_contents($fullPath . "/$model.php", $template);
-        } else {
-            file_put_contents(app_path("/Models/$model.php"), $template);
+        switch ($path) {
+            case '':
+                file_put_contents(app_path("/Models/$model.php"), $template);
+                break;
+            default:
+                $fullPath = app_path("/Models/$path");
+                GeneratorUtils::checkFolder($fullPath);
+                file_put_contents($fullPath . "/$model.php", $template);
+                break;
         }
     }
 }
