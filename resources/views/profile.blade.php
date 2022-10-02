@@ -29,8 +29,7 @@
                     @if (session('status') == 'profile-information-updated')
                         <div class="alert alert-success alert-dismissible show fade">
                             {{ __('Profile information updated successfully.') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
 
@@ -49,10 +48,9 @@
                                         value="{{ old('email') ?? auth()->user()->email }}" required>
 
                                     @error('email', 'updateProfileInformation')
-                                        <div class="invalid-feedback">
-                                            <i class="bx bx-radio-circle"></i>
+                                        <span class="text-danger">
                                             {{ $message }}
-                                        </div>
+                                        </span>
                                     @enderror
                                 </div>
 
@@ -63,10 +61,9 @@
                                         id="name" placeholder="{{ __('Name') }}"
                                         value="{{ old('name') ?? auth()->user()->name }}" required>
                                     @error('name', 'updateProfileInformation')
-                                        <div class="invalid-feedback">
-                                            <i class="bx bx-radio-circle"></i>
+                                        <span class="text-danger">
                                             {{ $message }}
-                                        </div>
+                                        </span>
                                     @enderror
                                 </div>
 
@@ -77,7 +74,8 @@
                                                 <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim(auth()->user()->email))) }}&s=500"
                                                     alt="Avatar">
                                             @else
-                                                <img src="{{ asset('uploads/images/avatars/' . auth()->user()->avatar) }}" alt="Avatar">
+                                                <img src="{{ asset('uploads/images/avatars/' . auth()->user()->avatar) }}"
+                                                    alt="Avatar">
                                             @endif
                                         </div>
                                     </div>
@@ -90,10 +88,9 @@
                                                 id="avatar">
 
                                             @error('avatar', 'updateProfileInformation')
-                                                <div class="invalid-feedback">
-                                                    <i class="bx bx-radio-circle"></i>
+                                                <span class="text-danger">
                                                     {{ $message }}
-                                                </div>
+                                                </span>
                                             @enderror
                                         </div>
                                     </div>
@@ -120,8 +117,7 @@
                     @if (session('status') == 'password-updated')
                         <div class="alert alert-success alert-dismissible show fade">
                             {{ __('Password updated successfully.') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
 
@@ -136,10 +132,9 @@
                                         class="form-control @error('current_password', 'updatePassword') is-invalid @enderror"
                                         id="password" placeholder="Current Password" required>
                                     @error('current_password', 'updatePassword')
-                                        <div class="invalid-feedback">
-                                            <i class="bx bx-radio-circle"></i>
+                                        <span class="text-danger">
                                             {{ $message }}
-                                        </div>
+                                        </span>
                                     @enderror
                                 </div>
 
@@ -149,10 +144,9 @@
                                         class="form-control @error('password', 'updatePassword') is-invalid @enderror"
                                         id="password" placeholder="New Password" required>
                                     @error('password', 'updatePassword')
-                                        <div class="invalid-feedback">
-                                            <i class="bx bx-radio-circle"></i>
+                                        <span class="text-danger">
                                             {{ $message }}
-                                        </div>
+                                        </span>
                                     @enderror
                                 </div>
 

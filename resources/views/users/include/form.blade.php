@@ -6,9 +6,9 @@
                 placeholder="{{ __('Name') }}" value="{{ isset($user) ? $user->name : old('name') }}" required
                 autofocus>
             @error('name')
-                <div class="invalid-feedback">
+                <span class="text-danger">
                     {{ $message }}
-                </div>
+                </span>
             @enderror
         </div>
     </div>
@@ -19,9 +19,9 @@
             <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
                 placeholder="{{ __('Email') }}" value="{{ isset($user) ? $user->email : old('email') }}" required>
             @error('email')
-                <div class="invalid-feedback">
+                <span class="text-danger">
                     {{ $message }}
-                </div>
+                </span>
             @enderror
         </div>
     </div>
@@ -33,9 +33,9 @@
                 class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}"
                 {{ empty($user) ? 'required' : '' }}>
             @error('password')
-                <div class="invalid-feedback">
+                <span class="text-danger">
                     {{ $message }}
-                </div>
+                </span>
             @enderror
         </div>
     </div>
@@ -58,8 +58,7 @@
                         <option value="{{ $role->id }}">{{ $role->name }}</option>
                     @endforeach
                     @error('role')
-                        <div class="invalid-feedback">
-                            <i class="bx bx-radio-circle"></i>
+                        <span class="text-danger">
                             {{ $message }}
                         </div>
                     @enderror
@@ -72,9 +71,9 @@
                 <label for="avatar">{{ __('Avatar') }}</label>
                 <input type="file" name="avatar" id="avatar" class="form-control @error('avatar') is-invalid @enderror">
                 @error('avatar')
-                    <div class="invalid-feedback">
+                    <span class="text-danger">
                         {{ $message }}
-                    </div>
+                    </span>
                 @enderror
             </div>
         </div>
@@ -94,8 +93,7 @@
                         @endforeach
                     </select>
                     @error('role')
-                        <div class="invalid-feedback">
-                            <i class="bx bx-radio-circle"></i>
+                        <span class="text-danger">
                             {{ $message }}
                         </div>
                     @enderror
@@ -118,8 +116,7 @@
                     <label for="avatar">{{ __('Avatar') }}</label>
                     <input type="file" name="avatar" class="form-control @error('avatar') is-invalid @enderror" id="avatar">
                     @error('avatar')
-                        <div class="invalid-feedback">
-                            <i class="bx bx-radio-circle"></i>
+                        <span class="text-danger">
                             {{ $message }}
                         </div>
                     @enderror
