@@ -431,7 +431,7 @@ class FormViewGenerator
 
                     switch ($request['input_types'][$i]) {
                         case 'hidden':
-                            $template .= '<input type="hidden" name="' . $fieldSnakeCase . '">';
+                            $template .= '<input type="hidden" name="' . $fieldSnakeCase . '" value="'. $request['default_values'][$i] .'">';
                             break;
                         default:
                             $template .= str_replace(
