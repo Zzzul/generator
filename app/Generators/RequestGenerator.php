@@ -89,7 +89,7 @@ class RequestGenerator
                 $validations .= "|email|" . $uniqueValidation;
             }
 
-            if ($request['input_types'][$i] == 'string') {
+            if ($request['input_types'][$i] == 'text' || $request['input_types'][$i] == 'textarea') {
                 /**
                  * will generate like:
                  * 'name' => 'required|string',
@@ -97,12 +97,36 @@ class RequestGenerator
                 $validations .= "|string";
             }
 
-            if ($request['input_types'][$i] == 'number' || $request['column_types'][$i] == 'year') {
+            if ($request['input_types'][$i] == 'url') {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|url',
+                 */
+                $validations .= "|url";
+            }
+
+            if ($request['column_types'][$i] == 'boolean') {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|boolean',
+                 */
+                $validations .= "|boolean";
+            }
+
+            if ($request['input_types'][$i] == 'number' || $request['column_types'][$i] == 'year'|| $request['input_types'][$i] == 'range') {
                 /**
                  * will generate like:
                  * 'name' => 'required|numeric',
                  */
                 $validations .= "|numeric";
+            }
+
+            if ($request['input_types'][$i] == 'range' && $request['max_lengths'][$i] >= 0) {
+                /**
+                 * will generate like:
+                 * 'name' => 'numeric|between:1,10',
+                 */
+                $validations .= "|between:" . $request['min_lengths'][$i] .",". $request['max_lengths'][$i];
             }
 
             if ($request['input_types'][$i] == 'date') {
@@ -113,7 +137,7 @@ class RequestGenerator
                 $validations .= "|date";
             }
 
-            if ($request['min_lengths'][$i] && $request['min_lengths'][$i] >= 0) {
+            if ($request['min_lengths'][$i] && $request['input_types'][$i] !== 'range') {
                 /**
                  * will generate like:
                  * 'name' => 'required|min:5',
@@ -121,7 +145,7 @@ class RequestGenerator
                 $validations .= "|min:" . $request['min_lengths'][$i];
             }
 
-            if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0) {
+            if ($request['max_lengths'][$i] && $request['max_lengths'][$i] >= 0 && $request['input_types'][$i] !== 'range') {
                 /**
                  * will generate like:
                  * 'name' => 'required|max:30',
