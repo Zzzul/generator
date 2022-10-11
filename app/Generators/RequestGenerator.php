@@ -79,16 +79,6 @@ class RequestGenerator
                 $validations .= $in;
             }
 
-            if ($request['input_types'][$i] == 'email') {
-                $uniqueValidation = 'unique:' . GeneratorUtils::pluralSnakeCase($model) . ',' . GeneratorUtils::singularSnakeCase($field);
-
-                /**
-                 * will generate like:
-                 * 'name' => 'required|email',
-                 */
-                $validations .= "|email|" . $uniqueValidation;
-            }
-
             if ($request['input_types'][$i] == 'text' || $request['input_types'][$i] == 'textarea') {
                 /**
                  * will generate like:
@@ -153,6 +143,16 @@ class RequestGenerator
                 $validations .= "|max:" . $request['max_lengths'][$i];
             }
 
+            if ($request['input_types'][$i] == 'email') {
+                $uniqueValidation = 'unique:' . GeneratorUtils::pluralSnakeCase($model) . ',' . GeneratorUtils::singularSnakeCase($field);
+
+                /**
+                 * will generate like:
+                 * 'name' => 'required|email',
+                 */
+                $validations .= "|email|" . $uniqueValidation;
+            }
+
             if ($request['column_types'][$i] == 'foreignId') {
                 // remove '/' or sub folders
                 $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
@@ -186,6 +186,7 @@ class RequestGenerator
                 $validations .= "\n\t\t\t";
             }
         }
+        // end of foreach
 
         $storeRequestTemplate = str_replace(
             [
@@ -213,6 +214,18 @@ class RequestGenerator
                 break;
         }
 
+        if (isset($uniqueValidation)) {
+            /**
+             * Will generate something like:
+             *
+             * unique:users,email,' . $this->user->id
+             */
+            $updateValidations = str_replace($uniqueValidation, $uniqueValidation . ",' . \$this->" . GeneratorUtils::singularCamelCase($model) . "->id", $validations);
+
+            // change ->id', to ->id,
+            $updateValidations = str_replace("->id'", "->id", $updateValidations);
+        }
+
         $updateRequestTemplate = str_replace(
             [
                 '{{modelNamePascalCase}}',
@@ -226,15 +239,6 @@ class RequestGenerator
             ],
             GeneratorUtils::getTemplate('request')
         );
-
-        if (isset($uniqueValidation)) {
-            /**
-             * Will generate something like:
-             *
-             * unique:users,email,' . $this->user->id
-             */
-            $updateValidations = str_replace($uniqueValidation, $uniqueValidation . ",' . \$this->" . GeneratorUtils::singularCamelCase($model) . "->id", $validations);
-        }
 
         /**
          * Create a request class file.
