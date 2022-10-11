@@ -244,6 +244,7 @@ class ControllerGenerator
                 $passwordFieldUpdate = str_replace('$attr = $request->validated();', '', $passwordFieldUpdate);
 
                 $inputMonths = str_replace('$attr = $request->validated();', '', $inputMonths);
+                $updateDataAction = "\$"  .  $modelNameSingularCamelCase  .  "->update(\$attr);";
 
                 /**
                  * controller with upload file code

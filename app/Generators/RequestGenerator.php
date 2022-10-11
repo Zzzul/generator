@@ -2,6 +2,8 @@
 
 namespace App\Generators;
 
+use function PHPUnit\Framework\matches;
+
 class RequestGenerator
 {
     /**
@@ -35,10 +37,23 @@ class RequestGenerator
              * will generate like:
              * 'name' => 'required
              */
-            if ($request['requireds'][$i] == 'yes') {
-                $validations .= "'required";
-            } else {
-                $validations .= "'nullable";
+            match ($request['requireds'][$i]) {
+                'yes' => $validations .= "'required",
+                default => $validations .= "'nullable"
+            };
+
+            if ($request['input_types'][$i] == 'file' && $request['file_types'][$i] == 'image') {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|image|size:1024',
+                 */
+                $validations .= "|image|max:" . $request['files_sizes'][$i];
+            } elseif ($request['input_types'][$i] == 'file' && $request['file_types'][$i] == 'mimes') {
+                /**
+                 * will generate like:
+                 * 'name' => 'required|mimes|size:1024',
+                 */
+                $validations .= "|mimes:" . $request['mimes'][$i] . "|size:" . $request['files_sizes'][$i];
             }
 
             if ($request['column_types'][$i] == 'enum') {
@@ -98,20 +113,6 @@ class RequestGenerator
                 $validations .= "|date";
             }
 
-            if ($request['input_types'][$i] == 'file' && $request['file_types'][$i] == 'image') {
-                /**
-                 * will generate like:
-                 * 'name' => 'required|image|size:1024',
-                 */
-                $validations .= "|image|max:" . $request['files_sizes'][$i];
-            } elseif ($request['input_types'][$i] == 'file' && $request['file_types'][$i] == 'mimes') {
-                /**
-                 * will generate like:
-                 * 'name' => 'required|mimes|size:1024',
-                 */
-                $validations .= "|mimes:" . $request['mimes'][$i] . "|size:" . $request['files_sizes'][$i];
-            }
-
             if ($request['min_lengths'][$i] && $request['min_lengths'][$i] >= 0) {
                 /**
                  * will generate like:
@@ -133,18 +134,21 @@ class RequestGenerator
                 $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
                 $constrainpath = GeneratorUtils::getModelLocation($request['constrains'][$i]);
 
-                if ($constrainpath != '') {
-                    /**
-                     * will generate like:
-                     * 'name' => 'required|max:30|exists:App\Models\Master\Product,id',
-                     */
-                    $validations .= "|exists:App\Models\\" . str_replace('/', '\\', $constrainpath) . "\\" . GeneratorUtils::singularPascalCase($constrainModel) . ",id',";
-                } else {
-                    /**
-                     * will generate like:
-                     * 'name' => 'required|max:30|exists:App\Models\Product,id',
-                     */
-                    $validations .= "|exists:App\Models\\" . GeneratorUtils::singularPascalCase($constrainModel) . ",id',";
+                switch ($constrainpath != '') {
+                    case true:
+                        /**
+                         * will generate like:
+                         * 'name' => 'required|max:30|exists:App\Models\Master\Product,id',
+                         */
+                        $validations .= "|exists:App\Models\\" . str_replace('/', '\\', $constrainpath) . "\\" . GeneratorUtils::singularPascalCase($constrainModel) . ",id',";
+                        break;
+                    default:
+                        /**
+                         * will generate like:
+                         * 'name' => 'required|max:30|exists:App\Models\Product,id',
+                         */
+                        $validations .= "|exists:App\Models\\" . GeneratorUtils::singularPascalCase($constrainModel) . ",id',";
+                        break;
                 }
             } else {
                 /**
@@ -176,23 +180,9 @@ class RequestGenerator
         /**
          * on update request if any image validation, then set 'required' to nullbale
          */
-        switch (str_contains($validations, "'required|image")) {
+        switch(str_contains($storeRequestTemplate, "required|image")){
             case true:
-                $updateValidations = str_replace("'required|image", "'nullable|image", $validations);
-                break;
-            default:
-                $updateValidations = $validations;
-                break;
-        }
-
-        switch (isset($uniqueValidation)) {
-            case true:
-                /**
-                 * Will generate something like:
-                 *
-                 * unique:users,email,' . $this->user->id
-                 */
-                $updateValidations = str_replace($uniqueValidation, $uniqueValidation . ",' . \$this->" . GeneratorUtils::singularCamelCase($model) . "->id", $validations);
+                $updateValidations = str_replace("required|image", "nullable|image", $validations);
                 break;
             default:
                 $updateValidations = $validations;
@@ -213,23 +203,32 @@ class RequestGenerator
             GeneratorUtils::getTemplate('request')
         );
 
+        if (isset($uniqueValidation)) {
+            /**
+             * Will generate something like:
+             *
+             * unique:users,email,' . $this->user->id
+             */
+            $updateValidations = str_replace($uniqueValidation, $uniqueValidation . ",' . \$this->" . GeneratorUtils::singularCamelCase($model) . "->id", $validations);
+        }
+
         /**
          * Create a request class file.
          */
         switch ($path) {
             case '':
+                GeneratorUtils::checkFolder(app_path('/Http/Requests'));
+
+                file_put_contents(app_path("/Http/Requests/Store{$model}Request.php"), $storeRequestTemplate);
+                file_put_contents(app_path("/Http/Requests/Update{$model}Request.php"), $updateRequestTemplate);
+                break;
+            default:
                 $fullPath = app_path("/Http/Requests/$path");
 
                 GeneratorUtils::checkFolder($fullPath);
 
                 file_put_contents("$fullPath/Store{$model}Request.php", $storeRequestTemplate);
                 file_put_contents("$fullPath/Update{$model}Request.php", $updateRequestTemplate);
-                break;
-            default:
-                GeneratorUtils::checkFolder(app_path('/Http/Requests'));
-
-                file_put_contents(app_path("/Http/Requests/Store{$model}Request.php"), $storeRequestTemplate);
-                file_put_contents(app_path("/Http/Requests/Update{$model}Request.php"), $updateRequestTemplate);
                 break;
         }
     }
