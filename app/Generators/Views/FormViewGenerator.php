@@ -96,7 +96,7 @@ class FormViewGenerator
                                     $fieldSnakeCase,
                                     $options,
                                     $request['requireds'][$i] == 'yes' ? ' required' : '',
-                                    "{{ isset($". $modelNameSingularCamelCase .") && $". $modelNameSingularCamelCase ."->". $fieldSnakeCase ." ? $". $modelNameSingularCamelCase ."->". $fieldSnakeCase ." : old('". $fieldSnakeCase ."') }}"
+                                    "{{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " : old('" . $fieldSnakeCase . "') }}"
                                 ],
                                 GeneratorUtils::getTemplate('views/forms/datalist')
                             );
@@ -166,7 +166,7 @@ class FormViewGenerator
                                     GeneratorUtils::singularCamelCase($field),
                                     $options,
                                     $request['requireds'][$i] == 'yes' ? ' required' : '',
-                                    "{{ isset($". $modelNameSingularCamelCase .") && $". $modelNameSingularCamelCase ."->". $fieldSnakeCase ." ? $". $modelNameSingularCamelCase ."->". $fieldSnakeCase ." : old('". $fieldSnakeCase ."') }}"
+                                    "{{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " : old('" . $fieldSnakeCase . "') }}"
                                 ],
                                 GeneratorUtils::getTemplate('views/forms/datalist')
                             );
@@ -234,7 +234,7 @@ class FormViewGenerator
                                     $fieldSnakeCase,
                                     $options,
                                     $request['requireds'][$i] == 'yes' ? ' required' : '',
-                                    "{{ isset($". $modelNameSingularCamelCase .") && $". $modelNameSingularCamelCase ."->". $fieldSnakeCase ." ? $". $modelNameSingularCamelCase ."->". $fieldSnakeCase ." : old('". $fieldSnakeCase ."') }}"
+                                    "{{ isset($" . $modelNameSingularCamelCase . ") && $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " : old('" . $fieldSnakeCase . "') }}"
                                 ],
                                 GeneratorUtils::getTemplate('views/forms/datalist')
                             );
@@ -425,13 +425,16 @@ class FormViewGenerator
                              */
                             $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('Y-m') : old('$fieldSnakeCase') }}";
                             break;
+                        case 'password':
+                            $formatValue = "";
+                            break;
                         default:
                             break;
                     }
 
                     switch ($request['input_types'][$i]) {
                         case 'hidden':
-                            $template .= '<input type="hidden" name="' . $fieldSnakeCase . '" value="'. $request['default_values'][$i] .'">';
+                            $template .= '<input type="hidden" name="' . $fieldSnakeCase . '" value="' . $request['default_values'][$i] . '">';
                             break;
                         default:
                             $template .= str_replace(
@@ -453,7 +456,11 @@ class FormViewGenerator
                                     $modelNameSingularCamelCase,
                                     $request['input_types'][$i],
                                     $formatValue,
-                                    $request['requireds'][$i] == 'yes' ? ' required' : '',
+                                    $this->setRequiredOfInput(
+                                        required: $request['requireds'][$i],
+                                        input: $request['input_types'][$i],
+                                        model: $modelNameSingularCamelCase
+                                    ),
                                 ],
                                 GeneratorUtils::getTemplate('views/forms/input')
                             );
@@ -477,5 +484,31 @@ class FormViewGenerator
                 file_put_contents($fullPath . "/form.blade.php", $template);
                 break;
         }
+    }
+
+    /**
+     *  Set required of input, when input type password will generate a special code.
+     *
+     * @param string $required
+     * @param string $input
+     * @param string $model
+     * @return string
+     */
+    public function setRequiredOfInput(string $required, string $input, string $model): string
+    {
+        if ($required == 'yes' && $input == 'password') {
+            /**
+             * will generate something like:
+             *
+             * {{ empty($user) ? 'required' : '' }}
+             */
+            return "{{ empty(\$". $model .") ? ' required' : '' }}";
+        }
+
+        if ($required == 'yes') {
+            return ' required';
+        }
+
+        return '';
     }
 }

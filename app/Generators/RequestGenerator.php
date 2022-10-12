@@ -103,7 +103,7 @@ class RequestGenerator
                 $validations .= "|boolean";
             }
 
-            if ($request['input_types'][$i] == 'number' || $request['column_types'][$i] == 'year'|| $request['input_types'][$i] == 'range') {
+            if ($request['input_types'][$i] == 'number' || $request['column_types'][$i] == 'year' || $request['input_types'][$i] == 'range') {
                 /**
                  * will generate like:
                  * 'name' => 'required|numeric',
@@ -116,7 +116,7 @@ class RequestGenerator
                  * will generate like:
                  * 'name' => 'numeric|between:1,10',
                  */
-                $validations .= "|between:" . $request['min_lengths'][$i] .",". $request['max_lengths'][$i];
+                $validations .= "|between:" . $request['min_lengths'][$i] . "," . $request['max_lengths'][$i];
             }
 
             if ($request['input_types'][$i] == 'date') {
@@ -205,7 +205,7 @@ class RequestGenerator
         /**
          * on update request if any image validation, then set 'required' to nullbale
          */
-        switch(str_contains($storeRequestTemplate, "required|image")){
+        switch (str_contains($storeRequestTemplate, "required|image")) {
             case true:
                 $updateValidations = str_replace("required|image", "nullable|image", $validations);
                 break;
@@ -224,6 +224,23 @@ class RequestGenerator
 
             // change ->id', to ->id,
             $updateValidations = str_replace("->id'", "->id", $updateValidations);
+        }
+
+        if (in_array('password', $request['input_types'])) {
+            foreach ($request['input_types'] as $key => $input) {
+                if ($input == 'password' && $request['requireds'][$key] == 'yes') {
+                    /**
+                     * will generate something like:
+                     *
+                     * 'password' => 'required' to 'password' => 'nullable'
+                     */
+                    $updateValidations = str_replace(
+                        "'" . $request['fields'][$key] . "' => 'required",
+                        "'" . $request['fields'][$key] . "' => 'nullable",
+                        $updateValidations
+                    );
+                }
+            }
         }
 
         $updateRequestTemplate = str_replace(

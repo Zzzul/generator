@@ -52,7 +52,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="role">{{ __('Role') }}</label>
-                <select class="form-select" name="role" id="role" class="form-control">
+                <select class="form-select" name="role" id="role" class="form-control" required>
                     <option value="" selected disabled>-- Select role --</option>
                     @foreach ($roles as $role)
                         <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -69,7 +69,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="avatar">{{ __('Avatar') }}</label>
-                <input type="file" name="avatar" id="avatar" class="form-control @error('avatar') is-invalid @enderror">
+                <input type="file" name="avatar" id="avatar" class="form-control @error('avatar') is-invalid @enderror" required>
                 @error('avatar')
                     <span class="text-danger">
                         {{ $message }}
@@ -84,7 +84,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="role">{{ __('Role') }}</label>
-                    <select class="form-select" name="role" id="role" class="form-control">
+                    <select class="form-select" name="role" id="role" class="form-control" required>
                         <option value="" selected disabled>{{ __('-- Select role --') }}</option>
                         @foreach ($roles as $role)
                             <option value="{{ $role->id }}"

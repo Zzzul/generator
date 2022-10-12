@@ -3,7 +3,7 @@
         <div class="form-group">
             <label for="name">{{ __('Name') }}</label>
             <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
-                placeholder="{{ __('Name') }}" value="{{ isset($role) ? $role->name : old('name') }}" autofocus>
+                placeholder="{{ __('Name') }}" value="{{ isset($role) ? $role->name : old('name') }}" autofocus required>
             @error('name')
                 <span class="text-danger">
                     {{ $message }}
@@ -21,7 +21,7 @@
         @enderror
     </div>
 
-    @foreach (config('permission.list_permissions') as $permission)
+    @foreach(config('permission.list_permissions') as $permission)
         <div class="col-md-3">
             <div class="card border">
                 <div class="card-content">
