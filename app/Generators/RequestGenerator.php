@@ -2,8 +2,6 @@
 
 namespace App\Generators;
 
-use function PHPUnit\Framework\matches;
-
 class RequestGenerator
 {
     /**

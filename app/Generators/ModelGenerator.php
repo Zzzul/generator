@@ -20,90 +20,137 @@ class ModelGenerator
         $relations = "";
         $totalFields = count($request['fields']);
         $dateTimeFormat = config('generator.format.datetime') ? config('generator.format.datetime') : 'd/m/Y H:i';
+        $protectedHidden = "";
 
-        if ($path != '') {
-            $namespace = "namespace App\\Models\\$path;";
-        } else {
-            $namespace = "namespace App\\Models;";
-        }
-
-        foreach ($request['fields'] as $i => $value) {
-
-            if ($i + 1 != $totalFields) {
-                $fields .= "'" . str()->snake($value) . "', ";
-            } else {
-                $fields .= "'" . str()->snake($value) . "']";
-            }
-
-            if ($request['column_types'][$i] == 'date') {
-                $dateFormat = config('generator.format.date') ? config('generator.format.date') : 'd/m/Y';
-
-                $casts .= "'" . str()->snake($value) . "' => 'date:$dateFormat', ";
-            } elseif ($request['column_types'][$i] == 'time') {
-                $timeFormat = config('generator.format.time') ? config('generator.format.time') : 'H:i';
-
-                $casts .= "'" . str()->snake($value) . "' => 'datetime:$timeFormat', ";
-            } elseif ($request['input_types'][$i] == 'month') {
-                $castFormat = config('generator.format.month') ? config('generator.format.month') : 'M/Y';
-                $casts .= "'" . str()->snake($value) . "' => 'datetime:$castFormat', ";
-            } elseif ($request['input_types'][$i] == 'week') {
-                $castFormat = config('generator.format.week') ? config('generator.format.week') : 'Y-\WW';
-                $casts .= "'" . str()->snake($value) . "' => 'datetime:$castFormat', ";
-            } elseif ($request['column_types'][$i] == 'year') {
-                $casts .= "'" . str()->snake($value) . "' => 'integer', ";
-            } elseif ($request['column_types'][$i] == 'dateTime') {
-                $casts .= "'" . str()->snake($value) . "' => 'datetime:$dateTimeFormat', ";
-            } elseif (str_contains($request['column_types'][$i], 'integer')) {
-                $casts .= "'" . str()->snake($value) . "' => 'integer', ";
-            } elseif ($request['column_types'][$i] == 'float') {
-                $casts .= "'" . str()->snake($value) . "' => 'float', ";
-            } elseif ($request['column_types'][$i] == 'boolean') {
-                $casts .= "'" . str()->snake($value) . "' => 'boolean', ";
-            } elseif ($request['column_types'][$i] == 'double') {
-                $casts .= "'" . str()->snake($value) . "' => 'double', ";
-            } elseif (str_contains($request['column_types'][$i], 'string') || str_contains($request['column_types'][$i], 'text') || str_contains($request['column_types'][$i], 'char')) {
-                $casts .= "'" . str()->snake($value) . "' => 'string', ";
-            } elseif ($request['column_types'][$i] == 'foreignId') {
-                $constrainPath = GeneratorUtils::getModelLocation($request['constrains'][$i]);
-                $constrainName = GeneratorUtils::setModelName($request['constrains'][$i]);
-
-                $foreign_id = isset($request['foreign_ids'][$i]) ? ", '" . $request['foreign_ids'][$i] . "'" : '';
-
-                if ($i > 0) {
-                    $relations .= "\t";
-                }
-
-                /**
-                 * will generate something like:
-                 * \App\Models\Main\Product::class
-                 *              or
-                 *  \App\Models\Product::class
-                 */
-                if ($constrainPath != '') {
-                    $constrainPath = "\\App\\Models\\$constrainPath\\$constrainName";
-                } else {
-                    $constrainPath = "\\App\\Models\\$constrainName";
-                }
-
-                /**
-                 * will generate something like:
+        if (in_array('password', $request['input_types'])) {
+            $protectedHidden .= <<<PHP
+            /**
+                 * The attributes that should be hidden for serialization.
                  *
-                 * public function product()
-                 * {
-                 *     return $this->belongsTo(\App\Models\Main\Product::class);
-                 *                              or
-                 *     return $this->belongsTo(\App\Models\Product::class);
-                 * }
-                 */
-                $relations .= "public function " . str()->snake($constrainName) . "()\n\t{\n\t\treturn \$this->belongsTo(" . $constrainPath . "::class" . $foreign_id . ");\n\t}";
+                 * @var string[]
+                */
+                protected \$hidden = [
+            PHP;
+        }
 
-                if ($i + 1 != $totalFields) {
-                    $relations .= "\n\n";
-                }
+        switch ($path) {
+            case '':
+                $namespace = "namespace App\\Models;";
+                break;
+            default:
+                $namespace = "namespace App\\Models\\$path;";
+                break;
+        }
+
+        foreach ($request['fields'] as $i => $field) {
+            switch ($i + 1 != $totalFields) {
+                case true:
+                    $fields .= "'" . str()->snake($field) . "', ";
+                    break;
+                default:
+                    $fields .= "'" . str()->snake($field) . "']";
+                    break;
+            }
+
+            if ($request['input_types'][$i] == 'password') {
+                $protectedHidden .= "'" . str()->snake($field) . "', ";
+            }
+
+            switch ($request['column_types'][$i]) {
+                case 'date':
+                    $dateFormat = config('generator.format.date') ? config('generator.format.date') : 'd/m/Y';
+                    $casts .= "'" . str()->snake($field) . "' => 'date:$dateFormat', ";
+                    break;
+                case 'time':
+                    $timeFormat = config('generator.format.time') ? config('generator.format.time') : 'H:i';
+                    $casts .= "'" . str()->snake($field) . "' => 'datetime:$timeFormat', ";
+                    break;
+                case 'year':
+                    $casts .= "'" . str()->snake($field) . "' => 'integer', ";
+                    break;
+                case 'dateTime':
+                    $casts .= "'" . str()->snake($field) . "' => 'datetime:$dateTimeFormat', ";
+                    break;
+                case 'float':
+                    $casts .= "'" . str()->snake($field) . "' => 'float', ";
+                    break;
+                case 'boolean':
+                    $casts .= "'" . str()->snake($field) . "' => 'boolean', ";
+                    break;
+                case 'double':
+                    $casts .= "'" . str()->snake($field) . "' => 'double', ";
+                    break;
+                case 'foreignId':
+                    $constrainPath = GeneratorUtils::getModelLocation($request['constrains'][$i]);
+                    $constrainName = GeneratorUtils::setModelName($request['constrains'][$i]);
+
+                    $foreign_id = isset($request['foreign_ids'][$i]) ? ", '" . $request['foreign_ids'][$i] . "'" : '';
+
+                    if ($i > 0) {
+                        $relations .= "\t";
+                    }
+
+                    /**
+                     * will generate something like:
+                     * \App\Models\Main\Product::class
+                     *              or
+                     *  \App\Models\Product::class
+                     */
+                    if ($constrainPath != '') {
+                        $constrainPath = "\\App\\Models\\$constrainPath\\$constrainName";
+                    } else {
+                        $constrainPath = "\\App\\Models\\$constrainName";
+                    }
+
+                    /**
+                     * will generate something like:
+                     *
+                     * public function product()
+                     * {
+                     *     return $this->belongsTo(\App\Models\Main\Product::class);
+                     *                              or
+                     *     return $this->belongsTo(\App\Models\Product::class);
+                     * }
+                     */
+                    $relations .= "\n\tpublic function " . str()->snake($constrainName) . "()\n\t{\n\t\treturn \$this->belongsTo(" . $constrainPath . "::class" . $foreign_id . ");\n\t}";
+
+                    // if ($i + 1 != $totalFields) {
+                    //     $relations .= "\n";
+                    // }
+                    break;
+                default:
+                    break;
+            }
+
+            if ($request['input_types'][$i] == 'month') {
+                $castFormat = config('generator.format.month') ? config('generator.format.month') : 'M/Y';
+                $casts .= "'" . str()->snake($field) . "' => 'datetime:$castFormat', ";
+            }
+
+            if ($request['input_types'][$i] == 'week') {
+                $castFormat = config('generator.format.week') ? config('generator.format.week') : 'Y-\WW';
+                $casts .= "'" . str()->snake($field) . "' => 'datetime:$castFormat', ";
+            }
+
+            if (str_contains($request['column_types'][$i], 'integer')) {
+                $casts .= "'" . str()->snake($field) . "' => 'integer', ";
+            }
+
+            if (str_contains($request['column_types'][$i], 'string') || str_contains($request['column_types'][$i], 'text') || str_contains($request['column_types'][$i], 'char')) {
+                $casts .= "'" . str()->snake($field) . "' => 'string', ";
             }
         }
 
-        $casts .= "'created_at' => 'datetime:$dateTimeFormat', 'updated_at' => 'datetime:$dateTimeFormat']";
+        if($protectedHidden != ""){
+            // removoe "', " and then change to "'" in the of array for better code.
+            // $protectedHidden  = str_replace("', ", "'", $protectedHidden);
+            $protectedHidden = substr($protectedHidden, 0, -2);
+            $protectedHidden .= "];";
+        }
+
+        $casts .= <<<PHP
+        'created_at' => 'datetime:$dateTimeFormat', 'updated_at' => 'datetime:$dateTimeFormat']
+        PHP;
 
         $template = str_replace(
             [
@@ -111,14 +158,16 @@ class ModelGenerator
                 '{{fields}}',
                 '{{casts}}',
                 '{{relations}}',
-                '{{namespace}}'
+                '{{namespace}}',
+                '{{protectedHidden}}'
             ],
             [
                 $model,
                 $fields,
                 $casts,
                 $relations,
-                $namespace
+                $namespace,
+                $protectedHidden
             ],
             GeneratorUtils::getTemplate('model')
         );

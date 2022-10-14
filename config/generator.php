@@ -105,7 +105,7 @@ return [
         /**
          * Limit string on index view for any column type text or longtext.
          */
-        'limit_text' => 200,
+        'limit_text' => 100,
     ],
 
     /**
