@@ -398,6 +398,7 @@ class FormViewGenerator
                                         '{{nullable}}',
                                         '{{defaultImage}}',
                                         '{{uploadPathPublic}}',
+                                        '{{fieldKebabCase}}'
                                     ],
                                     [
                                         $modelNameSingularCamelCase,
@@ -407,6 +408,7 @@ class FormViewGenerator
                                         $request['requireds'][$i] == 'yes' ? ' required' : '',
                                         config('generator.image.default') ?? 'https://via.placeholder.com/350?text=No+Image+Avaiable',
                                         config('generator.image.path') == 'storage' ? "storage/uploads" : "uploads",
+                                        str()->kebab($field)
                                     ],
                                     GeneratorUtils::getTemplate('views/forms/image')
                                 );

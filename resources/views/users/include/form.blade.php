@@ -16,8 +16,9 @@
     <div class="col-md-6">
         <div class="form-group">
             <label for="email">{{ __('Email') }}</label>
-            <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
-                placeholder="{{ __('Email') }}" value="{{ isset($user) ? $user->email : old('email') }}" required>
+            <input type="email" name="email" id="email"
+                class="form-control @error('email') is-invalid @enderror" placeholder="{{ __('Email') }}"
+                value="{{ isset($user) ? $user->email : old('email') }}" required>
             @error('email')
                 <span class="text-danger">
                     {{ $message }}
@@ -37,6 +38,11 @@
                     {{ $message }}
                 </span>
             @enderror
+            @isset($user)
+                <div id="passwordHelpBlock" class="form-text">
+                    {{ __('Leave the password & password confirmation blank if you don`t want to change them.') }}
+                </div>
+            @endisset
         </div>
     </div>
 
@@ -60,7 +66,7 @@
                     @error('role')
                         <span class="text-danger">
                             {{ $message }}
-                        </div>
+                        </span>
                     @enderror
                 </select>
             </div>
@@ -69,7 +75,8 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="avatar">{{ __('Avatar') }}</label>
-                <input type="file" name="avatar" id="avatar" class="form-control @error('avatar') is-invalid @enderror" required>
+                <input type="file" name="avatar" id="avatar"
+                    class="form-control @error('avatar') is-invalid @enderror" required>
                 @error('avatar')
                     <span class="text-danger">
                         {{ $message }}
@@ -95,7 +102,7 @@
                     @error('role')
                         <span class="text-danger">
                             {{ $message }}
-                        </div>
+                        </span>
                     @enderror
                 </div>
             </div>
@@ -118,8 +125,13 @@
                     @error('avatar')
                         <span class="text-danger">
                             {{ $message }}
-                        </div>
+                        </span>
                     @enderror
+                    @if ($user->avatar == null)
+                        <div id="passwordHelpBlock" class="form-text">
+                            {{ __('Leave the avatar blank if you don`t want to change it.') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
