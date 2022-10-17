@@ -135,22 +135,34 @@
     }
 
     function setInputTypeDefaultValue(index) {
-        let checkColumnyType = $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-column-types`).val()
-        let inputTypeDefaultValue = 'text'
+        let checkColumnType = $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-column-types`).val()
+        let checkInputType = $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-input-types`).val()
 
         if (
-            checkColumnyType == 'integer' ||
-            checkColumnyType == 'bigInteger' ||
-            checkColumnyType == 'boolean' ||
-            checkColumnyType == 'decimal' ||
-            checkColumnyType == 'double' ||
-            checkColumnyType == 'float' ||
-            checkColumnyType == 'tinyInteger'
+            checkColumnType == 'integer' ||
+            checkColumnType == 'bigInteger' ||
+            checkColumnType == 'boolean' ||
+            checkColumnType == 'decimal' ||
+            checkColumnType == 'double' ||
+            checkColumnType == 'float' ||
+            checkColumnType == 'range' ||
+            checkColumnType == 'year' ||
+            checkColumnType == 'tinyInteger'
         ) {
-            inputTypeDefaultValue = 'number'
+            return 'number'
         }
 
-        return inputTypeDefaultValue
+        if(
+            checkInputType == 'text' ||
+            checkInputType == 'textarea' ||
+            checkInputType == 'file' ||
+            checkInputType == 'hidden' ||
+            checkInputType == 'no-input'
+        ){
+            return 'text'
+        }
+
+        return checkInputType
     }
 
     let rowDrag
