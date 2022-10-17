@@ -3,7 +3,7 @@
         <div class="form-group">
             <label for="name">{{ __('Name') }}</label>
             <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
-                placeholder="{{ __('Name') }}" value="{{ isset($role) ? $role->name : old('name') }}" autofocus required>
+                placeholder="{{ __('Name') }}" value="{{ (isset($role) ? $role->name : old('name')) ? old('name') : 'jaja' }}" autofocus required>
             @error('name')
                 <span class="text-danger">
                     {{ $message }}

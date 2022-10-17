@@ -291,12 +291,12 @@
         switchRequired.prop('checked', true)
         switchRequired.prop('disabled', false)
 
-        // $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
-        // $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
-        //     <div class="form-group form-default-value mt-4">
-        //         <input type="hidden" name="default_values[]">
-        //     </div>
-        // `)
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
+            <div class="form-group form-default-value mt-4">
+                <input type="hidden" name="default_values[]">
+            </div>
+        `)
 
         if ($(this).val() == 'file') {
             minLength.prop('readonly', true)

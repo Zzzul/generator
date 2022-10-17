@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', trans('Create Role'))
+@section('title', __('Create Role'))
 
 @section('content')
     <div class="page-heading">
@@ -32,7 +32,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('roles.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('roles.store') }}" method="POST">
                                 @csrf
                                 @method('POST')
 

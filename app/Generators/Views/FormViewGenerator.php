@@ -327,7 +327,11 @@ class FormViewGenerator
 
                     default:
                         // input form
-                        $formatValue = "{{ isset($$modelNameSingularCamelCase) ? $$modelNameSingularCamelCase->$fieldSnakeCase : old('$fieldSnakeCase') }}";
+                        if($request['default_values'][$i]){
+                            $formatValue =  "{{ (isset($$modelNameSingularCamelCase) ? $$modelNameSingularCamelCase->$fieldSnakeCase : old('$fieldSnakeCase')) ? old('$fieldSnakeCase') : '". $request['default_values'][$i] ."' }}";
+                        }else{
+                            $formatValue = "{{ isset($$modelNameSingularCamelCase) ? $$modelNameSingularCamelCase->$fieldSnakeCase : old('$fieldSnakeCase') }}";
+                        }
 
                         switch ($request['input_types'][$i]) {
                             case 'datetime-local':
