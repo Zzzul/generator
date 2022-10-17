@@ -90,7 +90,7 @@
         if ($(this).val() == 'enum') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()
 
@@ -109,7 +109,7 @@
         } else if ($(this).val() == 'date') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -117,18 +117,23 @@
                 <option value="month">Month</option>
             `)
         } else if ($(this).val() == 'time') {
-            removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            removeAllInputHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="time">Time</option>
             `)
+
+            // $(`.form-min-lengths:eq(${index})`).prop('readonly', true)
+            // $(`.form-max-lengths:eq(${index})`).prop('readonly', true)
+            // $(`.form-min-lengths:eq(${index})`).val('')
+            // $(`.form-max-lengths:eq(${index})`).val('')
         } else if ($(this).val() == 'year') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -138,7 +143,7 @@
         } else if ($(this).val() == 'dateTime') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -194,7 +199,7 @@
         ) {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -219,7 +224,7 @@
         ) {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -231,7 +236,7 @@
         } else if ($(this).val() == 'boolean') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -242,7 +247,7 @@
         } else {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -327,7 +332,6 @@
             $(this).val() == 'password' ||
             $(this).val() == 'number'
         ) {
-
             minLength.prop('readonly', true)
             maxLength.prop('readonly', true)
             minLength.val('')
@@ -335,7 +339,6 @@
 
             addInputTypeHidden(index)
         } else if ($(this).val() == 'text' || $(this).val() == 'tel') {
-
             minLength.prop('readonly', false)
             maxLength.prop('readonly', false)
 
@@ -374,6 +377,17 @@
 
             switchRequired.prop('checked', false)
             switchRequired.prop('disabled', true)
+            addInputTypeHidden(index)
+        }else if(
+            $(this).val() == 'time' ||
+            $(this).val() == 'week' ||
+            $(this).val() == 'color' ||
+            $(this).val() == 'datetime-local'
+        ){
+            minLength.prop('readonly', true)
+            maxLength.prop('readonly', true)
+            minLength.val('')
+            maxLength.val('')
             addInputTypeHidden(index)
         } else {
             addInputTypeHidden(index)

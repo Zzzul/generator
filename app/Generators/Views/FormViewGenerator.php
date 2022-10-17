@@ -327,9 +327,9 @@ class FormViewGenerator
 
                     default:
                         // input form
-                        if($request['default_values'][$i]){
-                            $formatValue =  "{{ (isset($$modelNameSingularCamelCase) ? $$modelNameSingularCamelCase->$fieldSnakeCase : old('$fieldSnakeCase')) ? old('$fieldSnakeCase') : '". $request['default_values'][$i] ."' }}";
-                        }else{
+                        if ($request['default_values'][$i]) {
+                            $formatValue =  "{{ (isset($$modelNameSingularCamelCase) ? $$modelNameSingularCamelCase->$fieldSnakeCase : old('$fieldSnakeCase')) ? old('$fieldSnakeCase') : '" . $request['default_values'][$i] . "' }}";
+                        } else {
                             $formatValue = "{{ isset($$modelNameSingularCamelCase) ? $$modelNameSingularCamelCase->$fieldSnakeCase : old('$fieldSnakeCase') }}";
                         }
 
@@ -341,6 +341,16 @@ class FormViewGenerator
                                  * {{ isset($book) && $book->datetime ? $book->datetime->format('Y-m-d\TH:i') : old('datetime') }}
                                  */
                                 $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('Y-m-d\TH:i') : old('$fieldSnakeCase') }}";
+
+                                $template .= $this->setInputTypeTemplate(
+                                    request: [
+                                        'input_types' => $request['input_types'][$i],
+                                        'requireds' => $request['requireds'][$i]
+                                    ],
+                                    model: $model,
+                                    field: $field,
+                                    formatValue: $formatValue
+                                );
                                 break;
                             case 'date':
                                 /**
@@ -349,6 +359,16 @@ class FormViewGenerator
                                  * {{ isset($book) && $book->date ? $book->date->format('Y-m-d') : old('date') }}
                                  */
                                 $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('Y-m-d') : old('$fieldSnakeCase') }}";
+
+                                $template .= $this->setInputTypeTemplate(
+                                    request: [
+                                        'input_types' => $request['input_types'][$i],
+                                        'requireds' => $request['requireds'][$i]
+                                    ],
+                                    model: $model,
+                                    field: $field,
+                                    formatValue: $formatValue
+                                );
                                 break;
                             case 'time':
                                 /**
@@ -365,6 +385,16 @@ class FormViewGenerator
                                  * {{ isset($book) ? $book->week->format('Y-\WW') : old('week') }}
                                  */
                                 $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('Y-\WW') : old('$fieldSnakeCase') }}";
+
+                                $template .= $this->setInputTypeTemplate(
+                                    request: [
+                                        'input_types' => $request['input_types'][$i],
+                                        'requireds' => $request['requireds'][$i]
+                                    ],
+                                    model: $model,
+                                    field: $field,
+                                    formatValue: $formatValue
+                                );
                                 break;
                             case 'month':
                                 /**
@@ -373,6 +403,16 @@ class FormViewGenerator
                                  * {{ isset($book) ? $book->month->format('Y-\WW') : old('month') }}
                                  */
                                 $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('Y-m') : old('$fieldSnakeCase') }}";
+
+                                $template .= $this->setInputTypeTemplate(
+                                    request: [
+                                        'input_types' => $request['input_types'][$i],
+                                        'requireds' => $request['requireds'][$i]
+                                    ],
+                                    model: $model,
+                                    field: $field,
+                                    formatValue: $formatValue
+                                );
                                 break;
                             case 'textarea':
                                 // textarea
@@ -461,28 +501,14 @@ class FormViewGenerator
                                 );
                                 break;
                             default:
-                                $template .= str_replace(
-                                    [
-                                        '{{fieldKebabCase}}',
-                                        '{{fieldUcWords}}',
-                                        '{{fieldSnakeCase}}',
-                                        '{{fieldCamelCase}}',
-                                        '{{modelName}}',
-                                        '{{type}}',
-                                        '{{value}}',
-                                        '{{nullable}}',
+                                $template .= $this->setInputTypeTemplate(
+                                    request: [
+                                        'input_types' => $request['input_types'][$i],
+                                        'requireds' => $request['requireds'][$i]
                                     ],
-                                    [
-                                        GeneratorUtils::singularKebabCase($field),
-                                        $fieldUcWords,
-                                        $fieldSnakeCase,
-                                        GeneratorUtils::singularCamelCase($field),
-                                        $modelNameSingularCamelCase,
-                                        $request['input_types'][$i],
-                                        $formatValue,
-                                        $request['requireds'][$i] == 'yes' ? ' required' : '',
-                                    ],
-                                    GeneratorUtils::getTemplate('views/forms/input')
+                                    model: $model,
+                                    field: $field,
+                                    formatValue: $formatValue
                                 );
                                 break;
                         }
@@ -505,5 +531,41 @@ class FormViewGenerator
                 file_put_contents($fullPath . "/form.blade.php", $template);
                 break;
         }
+    }
+
+    /**
+     * Set input type from .stub file.
+     *
+     * @param string $field
+     * @param array $request
+     * @param string $model
+     * @param string $formatValue
+     * @return string
+     */
+    public function setInputTypeTemplate(string $field, array $request, string $model, string $formatValue): string
+    {
+        return str_replace(
+            [
+                '{{fieldKebabCase}}',
+                '{{fieldUcWords}}',
+                '{{fieldSnakeCase}}',
+                '{{fieldCamelCase}}',
+                '{{modelName}}',
+                '{{type}}',
+                '{{value}}',
+                '{{nullable}}',
+            ],
+            [
+                GeneratorUtils::singularKebabCase($field),
+                GeneratorUtils::cleanSingularUcWords($field),
+                GeneratorUtils::singularSnakeCase($field),
+                GeneratorUtils::singularCamelCase($field),
+                GeneratorUtils::singularCamelCase($model),
+                $request['input_types'],
+                $formatValue,
+                $request['requireds'] == 'yes' ? ' required' : '',
+            ],
+            GeneratorUtils::getTemplate('views/forms/input')
+        );
     }
 }

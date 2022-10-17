@@ -1,16 +1,16 @@
 <script>
     function checkMinAndMaxLength(index) {
-        let dataType = $(`.form-data-types:eq(${index})`).val()
+        let columType = $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-column-types`).val()
         let minLength = $(`.form-min-lengths:eq(${index})`)
         let maxLength = $(`.form-max-lengths:eq(${index})`)
 
         if (
-            dataType == 'string' ||
-            dataType == 'text' ||
-            dataType == 'longText' ||
-            dataType == 'tinyText' ||
-            dataType == 'varchar' ||
-            dataType == 'char'
+            columType == 'string' ||
+            columType == 'text' ||
+            columType == 'longText' ||
+            columType == 'tinyText' ||
+            columType == 'varchar' ||
+            columType == 'char'
         ) {
             minLength.prop('readonly', false)
             maxLength.prop('readonly', false)
@@ -20,6 +20,8 @@
             minLength.val('')
             maxLength.val('')
         }
+
+        console.log("column type: ", columType)
     }
 
     function removeAllInputHidden(index) {
@@ -50,7 +52,7 @@
         )
     }
 
-    function addDataTypeHidden(index) {
+    function addColumTypeHidden(index) {
         $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
             <input type="hidden" name="select_options[]" class="form-option">
             <input type="hidden" name="constrains[]" class="form-constrain">
@@ -63,10 +65,10 @@
     }
 
     function getColumnTypes() {
-        let listDataTypes = {!! json_encode(config('generator.column_types')) !!}
+        let listColumTypes = {!! json_encode(config('generator.column_types')) !!}
         let optionTypes = ''
 
-        $(listDataTypes).each(function(i, val) {
+        $(listColumTypes).each(function(i, val) {
             optionTypes += `<option value="${val}">${capitalizeFirstLetter(val)}</option>`
         })
 
