@@ -58,8 +58,10 @@ class ModelGenerator
 
             switch ($request['column_types'][$i]) {
                 case 'date':
-                    $dateFormat = config('generator.format.date') ? config('generator.format.date') : 'd/m/Y';
-                    $casts .= "'" . str()->snake($field) . "' => 'date:$dateFormat', ";
+                    if ($request['input_types'][$i] != 'month') {
+                        $dateFormat = config('generator.format.date') ? config('generator.format.date') : 'd/m/Y';
+                        $casts .= "'" . str()->snake($field) . "' => 'date:$dateFormat', ";
+                    }
                     break;
                 case 'time':
                     $timeFormat = config('generator.format.time') ? config('generator.format.time') : 'H:i';
@@ -118,30 +120,34 @@ class ModelGenerator
                     //     $relations .= "\n";
                     // }
                     break;
-                default:
+            }
+
+            switch ($request['input_types'][$i]) {
+                case 'month':
+                    $castFormat = config('generator.format.month') ? config('generator.format.month') : 'm/Y';
+                    $casts .= "'" . str()->snake($field) . "' => 'date:$castFormat', ";
                     break;
-            }
-
-            if ($request['input_types'][$i] == 'month') {
-                $castFormat = config('generator.format.month') ? config('generator.format.month') : 'M/Y';
-                $casts .= "'" . str()->snake($field) . "' => 'datetime:$castFormat', ";
-            }
-
-            if ($request['input_types'][$i] == 'week') {
-                $castFormat = config('generator.format.week') ? config('generator.format.week') : 'Y-\WW';
-                $casts .= "'" . str()->snake($field) . "' => 'datetime:$castFormat', ";
+                case 'week':
+                    $casts .= "'" . str()->snake($field) . "' => 'date:Y-\WW', ";
+                    break;
             }
 
             if (str_contains($request['column_types'][$i], 'integer')) {
                 $casts .= "'" . str()->snake($field) . "' => 'integer', ";
             }
 
-            if (str_contains($request['column_types'][$i], 'string') || str_contains($request['column_types'][$i], 'text') || str_contains($request['column_types'][$i], 'char')) {
-                $casts .= "'" . str()->snake($field) . "' => 'string', ";
+            if (
+                str_contains($request['column_types'][$i], 'string') ||
+                str_contains($request['column_types'][$i], 'text') ||
+                str_contains($request['column_types'][$i], 'char')
+            ) {
+                if ($request['input_types'][$i] != 'week') {
+                    $casts .= "'" . str()->snake($field) . "' => 'string', ";
+                }
             }
         }
 
-        if($protectedHidden != ""){
+        if ($protectedHidden != "") {
             // removoe "', " and then change to "'" in the of array for better code.
             // $protectedHidden  = str_replace("', ", "'", $protectedHidden);
             $protectedHidden = substr($protectedHidden, 0, -2);

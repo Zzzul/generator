@@ -208,9 +208,9 @@ class ControllerGenerator
                     /**
                      * will generate something like:
                      *
-                     * $attr['month'] = \Carbon\Carbon::createFromFormat('Y-m', $attr['month'])->toDateTimeString();
+                     * $attr['month'] = $request->month ? \Carbon\Carbon::createFromFormat('Y-m', $request->month)->toDateTimeString() : null;
                      */
-                    $inputMonths .= "\t\t\$attr['" . str()->snake($request['fields'][$i]) . "'] = \Carbon\Carbon::createFromFormat('Y-m', \$attr['" . str()->snake($request['fields'][$i]) . "'])->toDateTimeString();\n";
+                    $inputMonths .= "\t\t\$attr['" . str()->snake($request['fields'][$i]) . "'] = \$request->" . str()->snake($request['fields'][$i]) . " ? \Carbon\Carbon::createFromFormat('Y-m', \$request->" . str()->snake($request['fields'][$i]) . ")->toDateTimeString() : null;\n";
                 }
             }
         }

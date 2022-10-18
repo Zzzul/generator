@@ -377,6 +377,16 @@ class FormViewGenerator
                                  * {{ isset($book) ? $book->time->format('H:i') : old('time') }}
                                  */
                                 $formatValue = "{{ isset($$modelNameSingularCamelCase) && $" . $modelNameSingularCamelCase . "->$fieldSnakeCase ? $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . "->format('H:i') : old('$fieldSnakeCase') }}";
+
+                                $template .= $this->setInputTypeTemplate(
+                                    request: [
+                                        'input_types' => $request['input_types'][$i],
+                                        'requireds' => $request['requireds'][$i]
+                                    ],
+                                    model: $model,
+                                    field: $field,
+                                    formatValue: $formatValue
+                                );
                                 break;
                             case 'week':
                                 /**

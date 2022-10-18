@@ -93,6 +93,11 @@ return [
         'date' => 'd/m/Y',
 
         /**
+         * If any time input type will cast and display used this format.
+         */
+        'month' => 'm/Y',
+
+        /**
          * If any time column type will cast and display used this format.
          */
         'time' => 'H:i',

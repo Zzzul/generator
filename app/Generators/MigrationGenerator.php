@@ -102,7 +102,14 @@ class MigrationGenerator
                  * will generate something like:
                  * $table->string('name', 30)->nullable() or $table->string('name')->nullable()
                  */
-                $setFields .= "->default('". $request['default_values'][$i] ."')";
+
+                $defaultValue = "'". $request['default_values'][$i] ."'";
+
+                if($request['input_types'][$i] == 'month'){
+                    $defaultValue = "\Carbon\Carbon::createFromFormat('Y-m', '". $request['default_values'][$i] ."')";
+                }
+
+                $setFields .= "->default($defaultValue)";
             }
 
             if ($request['input_types'][$i] === 'email') {
