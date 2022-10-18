@@ -2,6 +2,7 @@
 
 namespace App\Generators\Views;
 
+use App\Generators\ControllerGenerator;
 use App\Generators\GeneratorUtils;
 
 class FormViewGenerator
@@ -443,6 +444,12 @@ class FormViewGenerator
                                 );
                                 break;
                             case 'file':
+                                $defaultImage = (new ControllerGenerator)->setDefaultImage(
+                                    defaultValue: $request['default_values'][$i],
+                                    field: $field,
+                                    model: $model
+                                );
+
                                 $template .= str_replace(
                                     [
                                         '{{modelCamelCase}}',
@@ -450,9 +457,10 @@ class FormViewGenerator
                                         '{{fieldSnakeCase}}',
                                         '{{fieldUcWords}}',
                                         '{{nullable}}',
-                                        '{{defaultImage}}',
                                         '{{uploadPathPublic}}',
-                                        '{{fieldKebabCase}}'
+                                        '{{fieldKebabCase}}',
+                                        '{{defaultImage}}',
+                                        '{{defaultImageCodeForm}}',
                                     ],
                                     [
                                         $modelNameSingularCamelCase,
@@ -460,9 +468,10 @@ class FormViewGenerator
                                         str()->snake($field),
                                         $fieldUcWords,
                                         $request['requireds'][$i] == 'yes' ? ' required' : '',
-                                        config('generator.image.default') ?? 'https://via.placeholder.com/350?text=No+Image+Avaiable',
                                         config('generator.image.path') == 'storage' ? "storage/uploads" : "uploads",
-                                        str()->kebab($field)
+                                        str()->kebab($field),
+                                        $defaultImage['image'],
+                                        $defaultImage['code_form']
                                     ],
                                     GeneratorUtils::getTemplate('views/forms/image')
                                 );

@@ -2,7 +2,7 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-4 text-center">
-                    @if (${{modelCamelCase}}->{{fieldSnakeCase}} == null)
+                    @if ({{defaultImageCodeForm}})
                         <img src="{{defaultImage}}" alt="{{fieldUcWords}}" class="rounded mb-2 mt-2" alt="{{fieldUcWords}}" width="200" height="150" style="object-fit: cover">
                     @else
                         <img src="{{ asset('{{uploadPathPublic}}/{{fieldPluralSnakeCase}}/' . ${{modelCamelCase}}->{{fieldSnakeCase}}) }}" alt="{{fieldUcWords}}" class="rounded mb-2 mt-2" width="200" height="150" style="object-fit: cover">
@@ -19,11 +19,9 @@
                                 {{ $message }}
                            </span>
                         @enderror
-                        @if (${{modelCamelCase}}->{{fieldSnakeCase}} == null)
-                            <div id="{{fieldKebabCase}}HelpBlock" class="form-text">
-                                {{ __('Leave the {{fieldUcWords}} blank if you don`t want to change it.') }}
-                            </div>
-                        @endif
+                        <div id="{{fieldKebabCase}}HelpBlock" class="form-text">
+                            {{ __('Leave the {{fieldUcWords}} blank if you don`t want to change it.') }}
+                        </div>
                     </div>
                 </div>
             </div>

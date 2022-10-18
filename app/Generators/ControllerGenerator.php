@@ -57,7 +57,10 @@ class ControllerGenerator
         $relations = "";
         $addColumns = "";
 
-        if (in_array('text', $request['column_types']) || in_array('longText', $request['column_types'])) {
+        if (
+            in_array('text', $request['column_types']) ||
+            in_array('longText', $request['column_types'])
+        ) {
             $limitText = config('generator.format.limit_text') ? config('generator.format.limit_text') : 200;
 
             /**
@@ -191,7 +194,7 @@ class ControllerGenerator
         }
 
         /**
-         * Generate code for insert input type month to fields with datatype date.
+         * Generate code for insert input type month with datatype date.
          * by default will getting an error, cause invalid format.
          */
         $inputMonths = "";
@@ -227,13 +230,30 @@ class ControllerGenerator
 
                 foreach ($request['input_types'] as $i => $input) {
                     if ($input == 'file') {
-                        $indexCode .= $this->generateUploadFileCode($request['fields'][$i], 'index');
+                        $indexCode .= $this->generateUploadFileCode(
+                            field: $request['fields'][$i],
+                            path: 'index',
+                            defaultValue: $request['default_values'][$i],
+                            model: $modelNameSingularCamelCase
+                        );
 
-                        $storeCode .= $this->generateUploadFileCode($request['fields'][$i], 'store');
+                        $storeCode .= $this->generateUploadFileCode(
+                            field: $request['fields'][$i],
+                            path: 'store',
+                            model: $modelNameSingularCamelCase
+                        );
 
-                        $updateCode .= $this->generateUploadFileCode($request['fields'][$i], 'update', $modelNameSingularCamelCase);
+                        $updateCode .= $this->generateUploadFileCode(
+                            field: $request['fields'][$i],
+                            path: 'update',
+                            model: $modelNameSingularCamelCase
+                        );
 
-                        $deleteCode .= $this->generateUploadFileCode($request['fields'][$i], 'delete', $modelNameSingularCamelCase);
+                        $deleteCode .= $this->generateUploadFileCode(
+                            field: $request['fields'][$i],
+                            path: 'delete',
+                            model: $modelNameSingularCamelCase
+                        );
                     }
                 }
 
@@ -367,35 +387,42 @@ class ControllerGenerator
     /**
      * Generate an upload file code.
      *
-     * @param string $field,
-     * @param string $path,
-     * @param null|string $model,
+     * @param string $field
+     * @param string $path
+     * @param string $model
+     * @param ?string $defaultValue
      * @return string
      */
-    protected function generateUploadFileCode(string $field, string $path, null|string $model = null)
-    {
+    protected function generateUploadFileCode(
+        string $field,
+        string $path,
+        string $model,
+        ?string $defaultValue = null
+    ): string {
         $replaceString = [
             '{{fieldSnakeCase}}',
             '{{fieldPluralSnakeCase}}',
             '{{fieldPluralKebabCase}}',
-            '{{defaultImage}}',
             '{{uploadPath}}',
             '{{uploadPathPublic}}',
             '{{width}}',
             '{{height}}',
             '{{aspectRatio}}',
+            '{{defaultImageCode}}',
         ];
+
+        $setDefaultImage = $this->setDefaultImage(defaultValue: $defaultValue, field: $field, model: $model);
 
         $replaceWith = [
             str()->snake($field),
             GeneratorUtils::pluralSnakeCase($field),
             GeneratorUtils::pluralKebabCase($field),
-            config('generator.image.default') ? config('generator.image.default') : 'https://via.placeholder.com/350?text=No+Image+Avaiable',
             config('generator.image.path') == 'storage' ? "storage_path('app/public/uploads" : "public_path('uploads",
             config('generator.image.path') == 'storage' ? "storage/uploads" : "uploads",
             is_int(config('generator.image.width')) ? config('generator.image.width') : 500,
             is_int(config('generator.image.height')) ? config('generator.image.height') : 500,
             config('generator.image.aspect_ratio') ? "\n\t\t\t\t\$constraint->aspectRatio();" : '',
+            $setDefaultImage['code_index'],
         ];
 
         if ($model != null) {
@@ -419,5 +446,65 @@ class ControllerGenerator
                 );
                 break;
         }
+    }
+
+    /**
+     * Set default image.
+     *
+     * @param null|string $defaultValue,
+     * @param string $field
+     * @param string $model
+     * @return array
+     */
+    public function setDefaultImage(null|string $defaultValue, string $field, string $model): array
+    {
+        if ($defaultValue) {
+            return [
+                'image' => $defaultValue,
+                /**
+                 * Generated code:
+                 *
+                 *  if ($row->photo == null || $row->photo == $defaultImage = 'https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg') {
+                 *      return $defaultImage;
+                 */
+                'code_index' => "if (\$row->" . str()->snake($field) . " == null || \$row->" . str()->snake($field) . " == \$defaultImage = '" . $defaultValue . "') {
+                    return \$defaultImage;
+                }",
+                /**
+                 * Generated code:
+                 * $book->cover == null || $book->cover == 'https://via.placeholder.com/350?text=No+Image+Avaiable'"
+                 */
+                'code_form' => "$" . GeneratorUtils::singularCamelCase($model) . "->" . str()->snake($field) . " == null || $" . GeneratorUtils::singularCamelCase($model) . "->" . str()->snake($field) . " == '" . $defaultValue . "'",
+            ];
+        }
+
+        if (config('generator.image.default')) {
+            return [
+                'image' => config('generator.image.default'),
+                /**
+                 * Generated code:
+                 *
+                 *  if ($row->photo == null) {
+                 *      return 'https://via.placeholder.com/350?text=No+Image+Avaiable';
+                 */
+                'code_index' => "if (\$row->" . str()->snake($field) . " == null) {
+                    return '" . config('generator.image.default')  . "';
+                }",
+                /**
+                 * Generated code:
+                 *
+                 *  $book->photo == null
+                 */
+                'code_form' => "$" . GeneratorUtils::singularCamelCase($model) . "->" . str()->snake($field) . " == null",
+            ];
+        }
+
+        return [
+            'image' => 'https://via.placeholder.com/350?text=No+Image+Avaiable',
+            'code_index' => "if (\$row->" . str()->snake($field) . " == null) {
+                return 'https://via.placeholder.com/350?text=No+Image+Avaiable';
+            }",
+            'code_form' => "$" . GeneratorUtils::singularCamelCase($model) . "->" . str()->snake($field) . " == null",
+        ];
     }
 }

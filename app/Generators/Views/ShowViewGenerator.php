@@ -92,10 +92,12 @@ class ShowViewGenerator
                                         </tr>";
                         break;
                     default:
-                        $trs .= "<tr>
+                        if($request['file_types'][$i] != 'image'){
+                            $trs .= "<tr>
                                             <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
                                             <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " }}</td>
                                         </tr>";
+                        }
                         break;
                 }
 
