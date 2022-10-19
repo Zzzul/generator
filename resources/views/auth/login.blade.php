@@ -10,8 +10,8 @@
     <div class="row h-100">
         <div class="col-lg-6 col-12">
             <div id="auth-left">
-                <div class="auth-logo" >
-                    <a href="index.html">
+                <div class="auth-logo">
+                    <a href="/">
                         <img src="{{ asset('mazer') }}/images/logo/logo.svg" alt="Logo">
                     </a>
                 </div>

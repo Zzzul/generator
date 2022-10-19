@@ -11,7 +11,9 @@
         <div class="col-lg-7 col-12">
             <div id="auth-left">
                 <div class="auth-logo" class="mb-0">
-                    <a href="index.html"><img src="{{ asset('mazer') }}/images/logo/logo.png" alt="Logo"></a>
+                    <a href="/">
+                        <img src="{{ asset('mazer') }}/images/logo/logo.svg" alt="Logo">
+                    </a>
                 </div>
 
                 <h1 class="auth-title">{{ __('Two Factor Challenge.') }}</h1>

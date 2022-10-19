@@ -189,6 +189,14 @@
                         </div>
                     @endif
 
+                    @if (session('status') == 'recovery-codes-generated')
+                        <div class="alert alert-success alert-dismissible show fade">
+                            {{ __('Regenerated Recovery Codes Successfully.') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                    @endif
+
                     <div class="card">
                         <div class="card-body">
                             <form method="post" action="/user/two-factor-authentication">
