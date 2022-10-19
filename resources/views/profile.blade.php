@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', trans('Profile'))
+@section('title', __('Profile'))
 
 @section('content')
     <div class="page-heading">
@@ -13,26 +13,25 @@
                     </p>
                 </div>
                 <x-breadcrumb>
-                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/">{{ __('Dashboard') }}</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Profile</li>
                 </x-breadcrumb>
             </div>
         </div>
 
         <section class="section mt-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <x-alert></x-alert>
+                </div>
+            </div>
+
             {{-- Profile --}}
             <div class="row">
                 <div class="col-md-3">
                     <h4>{{ __('Profile') }}</h4>
                 </div>
                 <div class="col-md-9">
-                    @if (session('status') == 'profile-information-updated')
-                        <div class="alert alert-success alert-dismissible show fade">
-                            {{ __('Profile information updated successfully.') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-
                     <div class="card">
                         <div class="card-body">
                             <form action="{{ route('user-profile-information.update') }}" method="POST"
@@ -114,13 +113,6 @@
                 </div>
 
                 <div class="col-md-9">
-                    @if (session('status') == 'password-updated')
-                        <div class="alert alert-success alert-dismissible show fade">
-                            {{ __('Password updated successfully.') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-
                     <div class="card">
                         <div class="card-body">
                             <form method="POST" action="{{ route('user-password.update') }}">
@@ -173,30 +165,6 @@
                     <h4>{{ __('Two Factor Authentication') }}</h4>
                 </div>
                 <div class="col-md-9">
-                    @if (session('status') == 'two-factor-authentication-disabled')
-                        <div class="alert alert-success alert-dismissible show fade">
-                            {{ __('Two factor Authentication has been disabled.') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                        </div>
-                    @endif
-
-                    @if (session('status') == 'two-factor-authentication-enabled')
-                        <div class="alert alert-success alert-dismissible show fade">
-                            {{ __('Two factor Authentication has been enabled.') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                        </div>
-                    @endif
-
-                    @if (session('status') == 'recovery-codes-generated')
-                        <div class="alert alert-success alert-dismissible show fade">
-                            {{ __('Regenerated Recovery Codes Successfully.') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                        </div>
-                    @endif
-
                     <div class="card">
                         <div class="card-body">
                             <form method="post" action="/user/two-factor-authentication">

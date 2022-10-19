@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', trans('Detail Role'))
+@section('title', __('Detail Role'))
 
 @section('content')
     <div class="page-heading">
@@ -39,6 +39,16 @@
                                         <td>{{ $role->name }}</td>
                                     </tr>
                                     <tr>
+                                        <td class="fw-bold">{{ __('Permissions') }}</td>
+                                        <td>
+                                            <ul class="list-inline mb-0">
+                                                @foreach ($role->permissions as $permission)
+                                                    <li class="list-inline-item ">• {{ $permission->name }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td class="fw-bold">{{ __('Created at') }}</td>
                                         <td>{{ $role->created_at->format('d/m/Y H:i') }}</td>
                                     </tr>
@@ -48,8 +58,7 @@
                                     </tr>
                                 </table>
                             </div>
-
-                            <a href="{{ url()->previous() }}" class="btn btn-secondary">Back</a>
+                            <a href="{{ url()->previous() }}" class="btn btn-secondary">{{ __('Back') }}</a>
                         </div>
                     </div>
                 </div>

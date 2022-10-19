@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', trans('Create User'))
+@section('title', __('Create User'))
 
 @section('content')
     <div class="page-heading">
@@ -9,7 +9,7 @@
                 <div class="col-12 col-md-8 order-md-1 order-last">
                     <h3>{{ __('User') }}</h3>
                     <p class="text-subtitle text-muted">
-                        {{ __('Create an new user.') }}
+                        {{ __('Create a new user.') }}
                     </p>
                 </div>
 
@@ -38,7 +38,7 @@
 
                                 @include('users.include.form')
 
-                                <a href="{{ url()->previous() }}" class="btn btn-secondary">Back</a>
+                                <a href="{{ url()->previous() }}" class="btn btn-secondary">{{ __('Back') }}</a>
 
                                 <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
                             </form>

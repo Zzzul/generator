@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', trans('Edit User'))
+@section('title', __('Edit User'))
 
 @section('content')
     <div class="page-heading">

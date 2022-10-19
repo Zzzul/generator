@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', trans('Reset Password'))
+@section('title', __('Reset Password'))
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('mazer') }}/css/pages/auth.css">
