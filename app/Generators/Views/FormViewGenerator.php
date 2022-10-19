@@ -2,7 +2,6 @@
 
 namespace App\Generators\Views;
 
-use App\Generators\ControllerGenerator;
 use App\Generators\GeneratorUtils;
 
 class FormViewGenerator
@@ -444,8 +443,8 @@ class FormViewGenerator
                                 );
                                 break;
                             case 'file':
-                                $defaultImage = (new ControllerGenerator)->setDefaultImage(
-                                    defaultValue: $request['default_values'][$i],
+                                $default = GeneratorUtils::setDefaultImage(
+                                    default: $request['default_values'][$i],
                                     field: $field,
                                     model: $model
                                 );
@@ -470,8 +469,8 @@ class FormViewGenerator
                                         $request['requireds'][$i] == 'yes' ? ' required' : '',
                                         config('generator.image.path') == 'storage' ? "storage/uploads" : "uploads",
                                         str()->kebab($field),
-                                        $defaultImage['image'],
-                                        $defaultImage['code_form']
+                                        $default['image'],
+                                        $default['form_code']
                                     ],
                                     GeneratorUtils::getTemplate('views/forms/image')
                                 );

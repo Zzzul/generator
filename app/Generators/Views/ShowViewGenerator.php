@@ -34,14 +34,19 @@ class ShowViewGenerator
                 $fieldSnakeCase = str($field)->snake();
 
                 if (isset($request['file_types'][$i]) && $request['file_types'][$i] == 'image') {
-                    $defaultImage = config('generator.image.default') ? config('generator.image.default') : 'https://via.placeholder.com/350?text=No+Image+Avaiable';
+                    $default = GeneratorUtils::setDefaultImage(
+                        default: $request['default_values'][$i],
+                        field: $request['fields'][$i],
+                        model: $model
+                    );
+
                     $uploadPath =  config('generator.image.path') == 'storage' ? "storage/uploads/" : "uploads/";
 
                     $trs .= "<tr>
                                         <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
                                         <td>
-                                            @if ($" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " == null)
-                                            <img src=\"$defaultImage\" alt=\"$fieldUcWords\"  class=\"rounded\" width=\"200\" height=\"150\" style=\"object-fit: cover\">
+                                            @if (". $default['form_code'] .")
+                                            <img src=\"". $default['image'] ."\" alt=\"$fieldUcWords\"  class=\"rounded\" width=\"200\" height=\"150\" style=\"object-fit: cover\">
                                             @else
                                                 <img src=\"{{ asset('$uploadPath" . str($field)->plural()->snake() . "/' . $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . ") }}\" alt=\"$fieldUcWords\" class=\"rounded\" width=\"200\" height=\"150\" style=\"object-fit: cover\">
                                             @endif
@@ -68,7 +73,7 @@ class ShowViewGenerator
                     case 'date':
                         $dateFormat = config('generator.format.date') ? config('generator.format.date') : 'd/m/Y';
 
-                        if($request['input_types'][$i] == 'month'){
+                        if ($request['input_types'][$i] == 'month') {
                             $dateFormat = config('generator.format.month') ? config('generator.format.month') : 'm/Y';
                         }
 
@@ -92,7 +97,7 @@ class ShowViewGenerator
                                         </tr>";
                         break;
                     default:
-                        if($request['file_types'][$i] != 'image'){
+                        if ($request['file_types'][$i] != 'image') {
                             $trs .= "<tr>
                                             <td class=\"fw-bold\">{{ __('$fieldUcWords') }}</td>
                                             <td>{{ $" . $modelNameSingularCamelCase . "->" . $fieldSnakeCase . " }}</td>
@@ -126,6 +131,7 @@ class ShowViewGenerator
             ],
             GeneratorUtils::getTemplate('views/show')
         );
+
         switch ($path) {
             case '':
                 GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
