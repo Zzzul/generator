@@ -25,16 +25,11 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer([
-            'users.create',
-            'users.edit',
-        ], function ($view) {
+        View::composer(['users.create', 'users.edit'], function ($view) {
             return $view->with(
                 'roles',
                 Role::select('id','name')->get()
             );
         });
-
-        // don`t remove this comment, it will generate view composer
     }
 }

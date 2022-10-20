@@ -1,10 +1,6 @@
-View::composer([
-            '{{viewPath}}{{modelNamePluralKebabCase}}.create',
-            '{{viewPath}}{{modelNamePluralKebabCase}}.edit',
-        ], function ($view) {
+View::composer(['{{viewPath}}{{modelNamePluralKebabCase}}.create', '{{viewPath}}{{modelNamePluralKebabCase}}.edit'], function ($view) {
             return $view->with(
                 '{{constrainsPluralCamelCase}}',
                 {{relatedModelPath}}::select({{fieldsSelect}})->get()
             );
         });
-

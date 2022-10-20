@@ -31,7 +31,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="{{ str()->slug($list) }}"
                                     name="permissions[]" value="{{ $list }}"
-                                    {{ isset($role) && $role->hasPermissionTo($list) ? 'checked' : '' }} />
+                                    {{ isset($role) && $role->hasPermissionTo($list) ? 'checked' : '' }}/>
                                 <label class="form-check-label" for="{{ str()->slug($list) }}">
                                     {{ ucwords(__($list)) }}
                                 </label>
