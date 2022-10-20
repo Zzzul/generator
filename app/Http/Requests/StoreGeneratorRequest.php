@@ -50,7 +50,7 @@ class StoreGeneratorRequest extends FormRequest
             'new_header' => ['required_if:header,new'],
             'new_icon' => ['required_if:header,new'],
             'new_menu' => ['required_if:header,new'],
-            'new_route' => ['required_if:header,new'],
+            // 'new_route' => ['required_if:header,new'],
             'new_submenu' => ['nullable'],
         ];
     }

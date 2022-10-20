@@ -25,7 +25,7 @@ class FormViewGenerator
         foreach ($request['fields'] as $i => $field) {
 
             if ($request['input_types'][$i] !== 'no-input') {
-                $fieldSnakeCase = str()->snake($field);
+                $fieldSnakeCase = str($field)->snake();
                 $fieldUcWords = GeneratorUtils::cleanUcWords($field);
 
                 switch ($request['column_types'][$i]) {
@@ -138,7 +138,7 @@ class FormViewGenerator
                         break;
                     case 'foreignId':
                         // remove '/' or sub folders
-                        $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
+                        $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i], 'default');
 
                         $constrainSingularCamelCase = GeneratorUtils::singularCamelCase($constrainModel);
 
@@ -164,7 +164,7 @@ class FormViewGenerator
                                         '{{value}}',
                                     ],
                                     [
-                                        GeneratorUtils::singularKebabCase($field),
+                                        GeneratorUtils::KebabCase($field),
                                         $fieldSnakeCase,
                                         $fieldUcWords,
                                         GeneratorUtils::singularCamelCase($field),
@@ -180,17 +180,19 @@ class FormViewGenerator
                                 $template .= str_replace(
                                     [
                                         '{{fieldLowercase}}',
-                                        '{{fieldUppercase}}',
+                                        '{{fieldUcWords}}',
                                         '{{fieldSpaceLowercase}}',
                                         '{{options}}',
-                                        '{{nullable}}'
+                                        '{{nullable}}',
+                                        '{{fieldSnakeCase}}'
                                     ],
                                     [
-                                        $fieldSnakeCase,
-                                        GeneratorUtils::cleanSingularUcWords($constrainModel),
-                                        GeneratorUtils::cleanSingularLowerCase($constrainModel),
+                                        GeneratorUtils::singularKebabCase($field),
+                                        GeneratorUtils::cleanUcWords($field),
+                                        GeneratorUtils::cleanLowercase($field),
                                         $options,
                                         $request['requireds'][$i] == 'yes' ? ' required' : '',
+                                        $fieldSnakeCase
                                     ],
                                     GeneratorUtils::getTemplate('views/forms/select')
                                 );

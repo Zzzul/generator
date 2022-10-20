@@ -1,11 +1,11 @@
  	<div class="col-md-6">
         <div class="form-group">
-			<label for="{{fieldKebabCase}}" class="form-label">{{fieldUcWords}}</label>
+			<label for="{{fieldKebabCase}}" class="form-label">{{ __('{{fieldUcWords}}') }}</label>
 			<input class="form-control @error('{{fieldSnakeCase}}') is-invalid @enderror" name="{{fieldSnakeCase}}" list="{{fieldCamelCase}}Options" id="{{fieldKebabCase}}" placeholder="{{ __('Type to search...') }}" value="{{value}}" {{nullable}}>
 			<datalist id="{{fieldCamelCase}}Options">
-			  {{options}}
+		{{options}}
 			</datalist>
-		    @error('{{fieldSnakeCase}}')
+            @error('{{fieldSnakeCase}}')
                 <span class="text-danger">
                     {{ $message }}
                 </span>

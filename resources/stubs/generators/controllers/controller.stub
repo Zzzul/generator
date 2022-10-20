@@ -68,7 +68,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function show({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-        {{loadRelation}}return view('{{viewPath}}{{modelNamePluralKebabCase}}.show', compact('{{modelNameSpaceLowercase}}'));
+        {{loadRelation}}return view('{{viewPath}}{{modelNamePluralKebabCase}}.show', compact('{{modelNameSingularCamelCase}}'));
     }
 
     /**
@@ -79,7 +79,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
      */
     public function edit({{modelNameSingularPascalCase}} ${{modelNameSingularCamelCase}})
     {
-        {{loadRelation}}return view('{{viewPath}}{{modelNamePluralKebabCase}}.edit', compact('{{modelNameSpaceLowercase}}'));
+        {{loadRelation}}return view('{{viewPath}}{{modelNamePluralKebabCase}}.edit', compact('{{modelNameSingularCamelCase}}'));
     }
 
     /**

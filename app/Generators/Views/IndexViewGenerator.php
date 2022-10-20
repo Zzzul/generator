@@ -14,7 +14,7 @@ class IndexViewGenerator
      */
     public function generate(array $request)
     {
-        $model = GeneratorUtils::setModelName($request['model']);
+        $model = GeneratorUtils::setModelName($request['model'], 'default');
         $path = GeneratorUtils::getModelLocation($request['model']);
 
         $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($model);
@@ -65,9 +65,9 @@ class IndexViewGenerator
                     },";
                 } elseif ($request['column_types'][$i] == 'foreignId') {
                     // remove '/' or sub folders
-                    $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
+                    $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i], 'default');
 
-                    $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($constrainModel) . "') }}</th>";
+                    $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanUcWords($constrainModel) . "') }}</th>";
 
                     /**
                      * will generate something like:

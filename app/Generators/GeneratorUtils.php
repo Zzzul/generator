@@ -104,7 +104,18 @@ class GeneratorUtils
      */
     public static function pluralKebabCase(string $string): string
     {
-        return trim(str($string)->plural()->kebab());
+        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->kebab()->plural()->lower());
+    }
+
+    /**
+     * Convert string  kebab case, and lowercase.
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function kebabCase(string $string): string
+    {
+        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->kebab()->lower());
     }
 
     /**
@@ -115,7 +126,7 @@ class GeneratorUtils
      */
     public static function singularKebabCase(string $string): string
     {
-        return trim(str($string)->singular()->kebab());
+        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->kebab()->singular()->lower());
     }
 
     /**
@@ -127,6 +138,17 @@ class GeneratorUtils
     public static function cleanSingularLowerCase(string $string): string
     {
         return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->singular()->lower());
+    }
+
+    /**
+     * Remove special caracters, and lowercase.
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function cleanLowerCase(string $string): string
+    {
+        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->lower());
     }
 
     /**
@@ -159,7 +181,7 @@ class GeneratorUtils
      */
     public static function cleanUcWords(string $string): string
     {
-        return trim(ucwords(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string)));
+        return trim(ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))));
     }
 
     /**
@@ -243,9 +265,10 @@ class GeneratorUtils
      * Set model name from the latest of array(if exists).
      *
      * @param string $model
+     * @param string $style
      * @return string
      */
-    public static function setModelName(string $model): string
+    public static function setModelName(string $model, string $style = 'pascal case'): string
     {
         $arrModel = explode('/', $model);
         $totalArrModel = count($arrModel);
@@ -253,7 +276,12 @@ class GeneratorUtils
         /**
          * get the latest index value of array
          */
-        return GeneratorUtils::singularPascalCase($arrModel[$totalArrModel - 1]);
+
+        if ($style == 'pascal case') {
+            return GeneratorUtils::singularPascalCase($arrModel[$totalArrModel - 1]);
+        }
+
+        return $arrModel[$totalArrModel - 1];
     }
 
     /**

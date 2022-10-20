@@ -28,7 +28,7 @@ class ViewServiceProvider extends ServiceProvider
         View::composer(['users.create', 'users.edit'], function ($view) {
             return $view->with(
                 'roles',
-                Role::select('id','name')->get()
+                Role::select('id', 'name')->get()
             );
         });
     }

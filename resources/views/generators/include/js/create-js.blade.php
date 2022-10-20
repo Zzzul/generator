@@ -548,7 +548,7 @@
 
             colNewMenu.html(`
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="new-header">{{ __('Header') }}</label>
                             <input type="text" id="new-header" name="new_header" class="form-control"
@@ -556,7 +556,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group" id="input-new-menu">
                             <label for="new-menu">{{ __('New Menu') }}</label>
                             <input type="text" name="new_menu" id="new-menu" class="form-control"
@@ -565,16 +565,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="new-route">{{ __('Route') }}</label>
-                            <input type="text" id="new-route" name="new_route" class="form-control"
-                                placeholder="{{ __('New Route') }}" value="${setModelName($('#model').val())}" required>
-                            <small>{{ __('If null will used the model name, e.g.: "/products"') }}</small>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="new-icon">{{ __('Icon') }}</label>
                             <input type="text" id="new-icon" name="new_icon" class="form-control"
@@ -585,7 +576,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="new-submenu">{{ __('Submenu') }}</label>
                             <input type="text" id="new-submenu" name="new_submenu" class="form-control"
@@ -640,7 +631,7 @@
 
             colNewMenu.html(`
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group" id="input-new-menu">
                             <label for="new-menu">{{ __('New Menu') }}</label>
                             <input type="text" name="new_menu" id="new-menu" class="form-control"
@@ -649,16 +640,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="new-route">{{ __('Route') }}</label>
-                            <input type="text" id="new-route" name="new_route" class="form-control"
-                                placeholder="{{ __('New Route') }}" value="${setModelName($('#model').val())}" required>
-                            <small>{{ __('If null will used the model name, e.g.: "/products"') }}</small>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="new-icon">{{ __('Icon') }}</label>
                             <input type="text" id="new-icon" name="new_icon" class="form-control"
@@ -669,7 +651,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="new-submenu">{{ __('Submenu') }}</label>
                             <input type="text" id="new-submenu" name="new_submenu" class="form-control"

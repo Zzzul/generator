@@ -95,12 +95,13 @@
 
     function setModelName(string) {
         if (string != '') {
-            let split = string.split("/")
+            newString = string.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ' ');
+            let split = newString.split("/")
 
             if (split.length > 1) {
                 return convertToPlural(split[split.length - 1])
             } else {
-                return convertToPlural(string)
+                return convertToPlural(newString)
             }
         } else {
             return ''
@@ -109,12 +110,13 @@
 
     function setNewHeaderName(string) {
         if (string != '') {
+            newString = string.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ' ');
             let split = string.split("/")
 
             if (split.length > 1) {
                 return capitalizeFirstLetter(convertToPlural(split[0]))
             } else {
-                return capitalizeFirstLetter(convertToPlural(string))
+                return capitalizeFirstLetter(convertToPlural(newString))
             }
         } else {
             return ''
@@ -126,10 +128,16 @@
 
             let lastChar = string.substr(string.length - 1)
 
-            if (lastChar == 'y') {
-                return `${string.substr(0, string.length - 1)}ies`
-            } else {
-                return `${string}s`
+            switch (lastChar) {
+                case 'y':
+                    return `${string.substr(0, string.length - 1)}ies`
+                    break;
+                case 's':
+                    return `${string}`
+                    break;
+                default:
+                    return `${string}s`
+                    break;
             }
         } else {
             return ''
@@ -154,13 +162,13 @@
             return 'number'
         }
 
-        if(
+        if (
             checkInputType == 'text' ||
             checkInputType == 'textarea' ||
             checkInputType == 'file' ||
             checkInputType == 'hidden' ||
             checkInputType == 'no-input'
-        ){
+        ) {
             return 'text'
         }
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', trans('Detail of {{modelNamePluralUcWords}}'))
+@section('title', __('Detail of {{modelNamePluralUcWords}}'))
 
 @section('content')
     <div class="page-heading">
