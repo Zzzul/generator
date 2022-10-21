@@ -80,11 +80,17 @@
         switchRequired.prop('checked', true)
         switchRequired.prop('disabled', false)
 
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
+            <div class="form-group form-default-value mt-4">
+                <input type="hidden" name="default_values[]">
+            </div>
+        `)
 
         if ($(this).val() == 'enum') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-option`).remove()
 
@@ -103,7 +109,7 @@
         } else if ($(this).val() == 'date') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -111,18 +117,23 @@
                 <option value="month">Month</option>
             `)
         } else if ($(this).val() == 'time') {
-            removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            removeAllInputHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
                 <option value="time">Time</option>
             `)
+
+            // $(`.form-min-lengths:eq(${index})`).prop('readonly', true)
+            // $(`.form-max-lengths:eq(${index})`).prop('readonly', true)
+            // $(`.form-min-lengths:eq(${index})`).val('')
+            // $(`.form-max-lengths:eq(${index})`).val('')
         } else if ($(this).val() == 'year') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -132,7 +143,7 @@
         } else if ($(this).val() == 'dateTime') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -188,7 +199,7 @@
         ) {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -213,7 +224,7 @@
         ) {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -225,7 +236,7 @@
         } else if ($(this).val() == 'boolean') {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -236,7 +247,7 @@
         } else {
             removeAllInputHidden(index)
             checkMinAndMaxLength(index)
-            addDataTypeHidden(index)
+            addColumTypeHidden(index)
 
             $(`.form-input-types:eq(${index})`).html(`
                 <option value="" disabled selected>-- Select input type --</option>
@@ -258,16 +269,18 @@
         let index = $(this).parent().parent().parent().index()
         $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
 
+        let inputTypeDefaultValue = setInputTypeDefaultValue(index)
+
         if ($(this).is(':checked')) {
             $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
                 <div class="form-group form-default-value mt-4">
-                    <input type="hidden" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
+                    <input type="hidden" name="default_values[]">
                 </div>
             `)
         } else {
             $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
                 <div class="form-group form-default-value mt-4">
-                    <input type="text" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
+                    <input type="${inputTypeDefaultValue}" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
                 </div>
             `)
         }
@@ -282,6 +295,13 @@
         removeInputTypeHidden(index)
         switchRequired.prop('checked', true)
         switchRequired.prop('disabled', false)
+
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
+        $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
+            <div class="form-group form-default-value mt-4">
+                <input type="hidden" name="default_values[]">
+            </div>
+        `)
 
         if ($(this).val() == 'file') {
             minLength.prop('readonly', true)
@@ -312,7 +332,6 @@
             $(this).val() == 'password' ||
             $(this).val() == 'number'
         ) {
-
             minLength.prop('readonly', true)
             maxLength.prop('readonly', true)
             minLength.val('')
@@ -320,7 +339,6 @@
 
             addInputTypeHidden(index)
         } else if ($(this).val() == 'text' || $(this).val() == 'tel') {
-
             minLength.prop('readonly', false)
             maxLength.prop('readonly', false)
 
@@ -347,16 +365,29 @@
             minLength.val('')
             maxLength.val('')
 
+            let inputTypeDefaultValue = setInputTypeDefaultValue(index)
+
             $(`#tbl-field tbody tr:eq(${index}) td:eq(5) .form-default-value`).remove()
 
             $(`#tbl-field tbody tr:eq(${index}) td:eq(5)`).append(`
                 <div class="form-group form-default-value mt-4">
-                    <input type="text" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
+                    <input type="${inputTypeDefaultValue}" name="default_values[]" class="form-control" placeholder="Default Value (optional)">
                 </div>
             `)
 
             switchRequired.prop('checked', false)
             switchRequired.prop('disabled', true)
+            addInputTypeHidden(index)
+        }else if(
+            $(this).val() == 'time' ||
+            $(this).val() == 'week' ||
+            $(this).val() == 'color' ||
+            $(this).val() == 'datetime-local'
+        ){
+            minLength.prop('readonly', true)
+            maxLength.prop('readonly', true)
+            minLength.val('')
+            maxLength.val('')
             addInputTypeHidden(index)
         } else {
             addInputTypeHidden(index)
@@ -517,7 +548,7 @@
 
             colNewMenu.html(`
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="new-header">{{ __('Header') }}</label>
                             <input type="text" id="new-header" name="new_header" class="form-control"
@@ -525,7 +556,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group" id="input-new-menu">
                             <label for="new-menu">{{ __('New Menu') }}</label>
                             <input type="text" name="new_menu" id="new-menu" class="form-control"
@@ -534,16 +565,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="new-route">{{ __('Route') }}</label>
-                            <input type="text" id="new-route" name="new_route" class="form-control"
-                                placeholder="{{ __('New Route') }}" value="${setModelName($('#model').val())}" required>
-                            <small>{{ __('If null will used the model name, e.g.: "/products"') }}</small>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="new-icon">{{ __('Icon') }}</label>
                             <input type="text" id="new-icon" name="new_icon" class="form-control"
@@ -554,7 +576,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="new-submenu">{{ __('Submenu') }}</label>
                             <input type="text" id="new-submenu" name="new_submenu" class="form-control"
@@ -609,7 +631,7 @@
 
             colNewMenu.html(`
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group" id="input-new-menu">
                             <label for="new-menu">{{ __('New Menu') }}</label>
                             <input type="text" name="new_menu" id="new-menu" class="form-control"
@@ -618,16 +640,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="new-route">{{ __('Route') }}</label>
-                            <input type="text" id="new-route" name="new_route" class="form-control"
-                                placeholder="{{ __('New Route') }}" value="${setModelName($('#model').val())}" required>
-                            <small>{{ __('If null will used the model name, e.g.: "/products"') }}</small>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="new-icon">{{ __('Icon') }}</label>
                             <input type="text" id="new-icon" name="new_icon" class="form-control"
@@ -638,7 +651,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="new-submenu">{{ __('Submenu') }}</label>
                             <input type="text" id="new-submenu" name="new_submenu" class="form-control"

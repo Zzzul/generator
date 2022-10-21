@@ -123,7 +123,7 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
         } catch (\Throwable $th) {
             return redirect()
                 ->route('{{modelNamePluralKebabCase}}.index')
-                ->with('error', __('The {{modelNameSingularUcWords}} can`t be deleted because it is related to another table.'));
+                ->with('error', __('The {{modelNameSingularUcWords}} can`t be deleted because it`s related to another table.'));
         }
     }
 }

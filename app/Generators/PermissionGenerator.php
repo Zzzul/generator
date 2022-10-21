@@ -14,7 +14,7 @@ class PermissionGenerator
      */
     public function generate(array $request)
     {
-        $model = GeneratorUtils::setModelName($request['model']);
+        $model = GeneratorUtils::setModelName($request['model'], 'default');
         $modelNamePlural = GeneratorUtils::cleanPluralLowerCase($model);
         $modelNameSingular = GeneratorUtils::cleanSingularLowerCase($model);
 

@@ -1,7 +1,7 @@
     <div class="col-md-6">
         <div class="form-group">
-            <label for="{{fieldLowercase}}">{{ __('{{fieldUppercase}}') }}</label>
-            <select class="form-select @error('{{fieldSnakeCase}}') is-invalid @enderror" name="{{fieldLowercase}}" id="{{fieldLowercase}}" class="form-control"{{nullable}}>
+            <label for="{{fieldKebabCase}}">{{ __('{{fieldUcWords}}') }}</label>
+            <select class="form-select @error('{{fieldSnakeCase}}') is-invalid @enderror" name="{{fieldSnakeCase}}" id="{{fieldKebabCase}}" class="form-control"{{nullable}}>
                 <option value="" selected disabled>-- {{ __('Select {{fieldSpaceLowercase}}') }} --</option>
                 {{options}}
             </select>

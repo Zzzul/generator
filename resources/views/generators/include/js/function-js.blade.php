@@ -1,16 +1,16 @@
 <script>
     function checkMinAndMaxLength(index) {
-        let dataType = $(`.form-data-types:eq(${index})`).val()
+        let columType = $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-column-types`).val()
         let minLength = $(`.form-min-lengths:eq(${index})`)
         let maxLength = $(`.form-max-lengths:eq(${index})`)
 
         if (
-            dataType == 'string' ||
-            dataType == 'text' ||
-            dataType == 'longText' ||
-            dataType == 'tinyText' ||
-            dataType == 'varchar' ||
-            dataType == 'char'
+            columType == 'string' ||
+            columType == 'text' ||
+            columType == 'longText' ||
+            columType == 'tinyText' ||
+            columType == 'varchar' ||
+            columType == 'char'
         ) {
             minLength.prop('readonly', false)
             maxLength.prop('readonly', false)
@@ -20,6 +20,8 @@
             minLength.val('')
             maxLength.val('')
         }
+
+        console.log("column type: ", columType)
     }
 
     function removeAllInputHidden(index) {
@@ -50,7 +52,7 @@
         )
     }
 
-    function addDataTypeHidden(index) {
+    function addColumTypeHidden(index) {
         $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
             <input type="hidden" name="select_options[]" class="form-option">
             <input type="hidden" name="constrains[]" class="form-constrain">
@@ -63,10 +65,10 @@
     }
 
     function getColumnTypes() {
-        let listDataTypes = {!! json_encode(config('generator.column_types')) !!}
+        let listColumTypes = {!! json_encode(config('generator.column_types')) !!}
         let optionTypes = ''
 
-        $(listDataTypes).each(function(i, val) {
+        $(listColumTypes).each(function(i, val) {
             optionTypes += `<option value="${val}">${capitalizeFirstLetter(val)}</option>`
         })
 
@@ -82,9 +84,9 @@
 
         $('#tbl-field tbody tr').each(function(i) {
             $(this).find('td:nth-child(1)').html(no)
-            if(i < 1){
+            if (i < 1) {
                 $(`.btn-delete:eq(${i})`).prop('disabled', true)
-            }else{
+            } else {
                 $(`.btn-delete:eq(${i})`).prop('disabled', false)
             }
             no++
@@ -93,12 +95,13 @@
 
     function setModelName(string) {
         if (string != '') {
-            let split = string.split("/")
+            newString = string.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ' ');
+            let split = newString.split("/")
 
             if (split.length > 1) {
                 return convertToPlural(split[split.length - 1])
             } else {
-                return convertToPlural(string)
+                return convertToPlural(newString)
             }
         } else {
             return ''
@@ -107,12 +110,13 @@
 
     function setNewHeaderName(string) {
         if (string != '') {
+            newString = string.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, ' ');
             let split = string.split("/")
 
             if (split.length > 1) {
                 return capitalizeFirstLetter(convertToPlural(split[0]))
             } else {
-                return capitalizeFirstLetter(convertToPlural(string))
+                return capitalizeFirstLetter(convertToPlural(newString))
             }
         } else {
             return ''
@@ -124,14 +128,51 @@
 
             let lastChar = string.substr(string.length - 1)
 
-            if (lastChar == 'y') {
-                return `${string.substr(0, string.length - 1)}ies`
-            } else {
-                return `${string}s`
+            switch (lastChar) {
+                case 'y':
+                    return `${string.substr(0, string.length - 1)}ies`
+                    break;
+                case 's':
+                    return `${string}`
+                    break;
+                default:
+                    return `${string}s`
+                    break;
             }
         } else {
             return ''
         }
+    }
+
+    function setInputTypeDefaultValue(index) {
+        let checkColumnType = $(`#tbl-field tbody tr:eq(${index}) td:eq(2) .form-column-types`).val()
+        let checkInputType = $(`#tbl-field tbody tr:eq(${index}) td:eq(4) .form-input-types`).val()
+
+        if (
+            checkColumnType == 'integer' ||
+            checkColumnType == 'bigInteger' ||
+            checkColumnType == 'boolean' ||
+            checkColumnType == 'decimal' ||
+            checkColumnType == 'double' ||
+            checkColumnType == 'float' ||
+            checkColumnType == 'range' ||
+            checkColumnType == 'year' ||
+            checkColumnType == 'tinyInteger'
+        ) {
+            return 'number'
+        }
+
+        if (
+            checkInputType == 'text' ||
+            checkInputType == 'textarea' ||
+            checkInputType == 'file' ||
+            checkInputType == 'hidden' ||
+            checkInputType == 'no-input'
+        ) {
+            return 'text'
+        }
+
+        return checkInputType
     }
 
     let rowDrag

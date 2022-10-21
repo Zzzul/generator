@@ -21,9 +21,9 @@ class RouteGenerator
         $modelNamePluralLowercase = GeneratorUtils::pluralKebabCase($model);
 
         if ($path != '') {
-            $controllerClass = "\n\n" . "Route::resource('" . $modelNamePluralLowercase . "', App\Http\Controllers\\" . str_replace('/', '\\', $path) . "\\" . $modelNameSingularPascalCase . "Controller::class)->middleware('auth');";
+            $controllerClass = "\n" . "Route::resource('" . $modelNamePluralLowercase . "', App\Http\Controllers\\" . str_replace('/', '\\', $path) . "\\" . $modelNameSingularPascalCase . "Controller::class)->middleware('auth');";
         } else {
-            $controllerClass = "\n\n" . "Route::resource('" . $modelNamePluralLowercase . "', App\Http\Controllers\\" . $modelNameSingularPascalCase . "Controller::class)->middleware('auth');";
+            $controllerClass = "\n" . "Route::resource('" . $modelNamePluralLowercase . "', App\Http\Controllers\\" . $modelNameSingularPascalCase . "Controller::class)->middleware('auth');";
         }
 
         File::append(base_path('routes/web.php'), $controllerClass);

@@ -14,7 +14,7 @@ class IndexViewGenerator
      */
     public function generate(array $request)
     {
-        $model = GeneratorUtils::setModelName($request['model']);
+        $model = GeneratorUtils::setModelName($request['model'], 'default');
         $path = GeneratorUtils::getModelLocation($request['model']);
 
         $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($model);
@@ -27,31 +27,32 @@ class IndexViewGenerator
         $totalFields = count($request['fields']);
 
         foreach ($request['fields'] as $i => $field) {
-            /**
-             * will generate something like:
-             * <th>{{ __('Price') }}</th>
-             */
-            if ($request['column_types'][$i] != 'foreignId') {
-                $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanUcWords($field) . "') }}</th>";
-            }
-
-            if ($request['input_types'][$i] == 'file') {
+            if ($request['input_types'][$i] != 'password') {
                 /**
                  * will generate something like:
-                 * {
-                 *    data: 'photo',
-                 *    name: 'photo',
-                 *    orderable: false,
-                 *    searchable: false,
-                 *    render: function(data, type, full, meta) {
-                 *        return `<div class="avatar">
-                 *            <img src="${data}" alt="Photo">
-                 *        </div>`;
-                 *    }
-                 * },
+                 * <th>{{ __('Price') }}</th>
                  */
+                if ($request['column_types'][$i] != 'foreignId') {
+                    $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanUcWords($field) . "') }}</th>";
+                }
 
-                $tdColumns .=  "{
+                if ($request['input_types'][$i] == 'file') {
+                    /**
+                     * will generate something like:
+                     * {
+                     *    data: 'photo',
+                     *    name: 'photo',
+                     *    orderable: false,
+                     *    searchable: false,
+                     *    render: function(data, type, full, meta) {
+                     *        return `<div class="avatar">
+                     *            <img src="${data}" alt="Photo">
+                     *        </div>`;
+                     *    }
+                     * },
+                     */
+
+                    $tdColumns .=  "{
                     data: '" . str()->snake($field) . "',
                     name: '" . str()->snake($field) . "',
                     orderable: false,
@@ -62,49 +63,42 @@ class IndexViewGenerator
                         </div>`;
                         }
                     },";
-            } elseif ($request['column_types'][$i] == 'foreignId') {
-                // remove '/' or sub folders
-                $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i]);
+                } elseif ($request['column_types'][$i] == 'foreignId') {
+                    // remove '/' or sub folders
+                    $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i], 'default');
 
-                $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($constrainModel) . "') }}</th>";
+                    $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanUcWords($constrainModel) . "') }}</th>";
 
-                /**
-                 * will generate something like:
-                 * {
-                 *    data: 'user',
-                 *    name: 'user.name'
-                 * }
-                 */
-                $tdColumns .=  "{
+                    /**
+                     * will generate something like:
+                     * {
+                     *    data: 'user',
+                     *    name: 'user.name'
+                     * }
+                     */
+                    $tdColumns .=  "{
                     data: '" . GeneratorUtils::singularSnakeCase($constrainModel) . "',
                     name: '" . GeneratorUtils::singularSnakeCase($constrainModel) . "." . GeneratorUtils::getColumnAfterId($constrainModel) . "'
                 },";
-            } else {
-                /**
-                 * will generate something like:
-                 * {
-                 *    data: 'price',
-                 *    name: 'price'
-                 * }
-                 */
-                // $tdColumns .= "{
-                //     data: '" . str()->snake($field) . "',
-                //     name: '" . str()->snake($field) . "'
-                // },";
-
-                $tdColumns .=  "{
+                } else {
+                    /**
+                     * will generate something like:
+                     * {
+                     *    data: 'price',
+                     *    name: 'price'
+                     * }
+                     */
+                    $tdColumns .=  "{
                     data: '" . str()->snake($field) . "',
                     name: '" . str()->snake($field) . "',
-                    render: function(data, type, full, meta) {
-                        return data ? data : '-';
-                    }
                 },";
-            }
+                }
 
-            if ($i + 1 != $totalFields) {
-                // add new line and tab
-                $thColums .= "\n\t\t\t\t\t\t\t\t\t\t\t";
-                $tdColumns .= "\n\t\t\t\t";
+                if ($i + 1 != $totalFields) {
+                    // add new line and tab
+                    $thColums .= "\n\t\t\t\t\t\t\t\t\t\t\t";
+                    $tdColumns .= "\n\t\t\t\t";
+                }
             }
         }
 
@@ -128,16 +122,16 @@ class IndexViewGenerator
             GeneratorUtils::getTemplate('views/index')
         );
 
-        if ($path != '') {
-            $fullPath = resource_path("/views/" . strtolower($path) . "/$modelNamePluralKebabCase");
-
-            GeneratorUtils::checkFolder($fullPath);
-
-            file_put_contents($fullPath . "/index.blade.php", $template);
-        } else {
-            GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
-
-            file_put_contents(resource_path("/views/$modelNamePluralKebabCase/index.blade.php"), $template);
+        switch ($path) {
+            case '':
+                GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+                file_put_contents(resource_path("/views/$modelNamePluralKebabCase/index.blade.php"), $template);
+                break;
+            default:
+                $fullPath = resource_path("/views/" . strtolower($path) . "/$modelNamePluralKebabCase");
+                GeneratorUtils::checkFolder($fullPath);
+                file_put_contents($fullPath . "/index.blade.php", $template);
+                break;
         }
     }
 }

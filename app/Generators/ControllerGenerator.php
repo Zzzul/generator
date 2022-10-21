@@ -12,7 +12,7 @@ class ControllerGenerator
      */
     public function generate(array $request)
     {
-        $model = GeneratorUtils::setModelName($request['model']);
+        $model = GeneratorUtils::setModelName($request['model'], 'default');
         $path = GeneratorUtils::getModelLocation($request['model']);
 
         $modelNameSingularCamelCase = GeneratorUtils::singularCamelCase($model);
@@ -57,7 +57,10 @@ class ControllerGenerator
         $relations = "";
         $addColumns = "";
 
-        if (in_array('text', $request['column_types']) || in_array('longText', $request['column_types'])) {
+        if (
+            in_array('text', $request['column_types']) ||
+            in_array('longText', $request['column_types'])
+        ) {
             $limitText = config('generator.format.limit_text') ? config('generator.format.limit_text') : 200;
 
             /**
@@ -191,7 +194,7 @@ class ControllerGenerator
         }
 
         /**
-         * Generate code for insert input type month to fields with datatype date.
+         * Generate code for insert input type month with datatype date.
          * by default will getting an error, cause invalid format.
          */
         $inputMonths = "";
@@ -208,9 +211,9 @@ class ControllerGenerator
                     /**
                      * will generate something like:
                      *
-                     * $attr['month'] = \Carbon\Carbon::createFromFormat('Y-m', $attr['month'])->toDateTimeString();
+                     * $attr['month'] = $request->month ? \Carbon\Carbon::createFromFormat('Y-m', $request->month)->toDateTimeString() : null;
                      */
-                    $inputMonths .= "\t\t\$attr['" . str()->snake($request['fields'][$i]) . "'] = \Carbon\Carbon::createFromFormat('Y-m', \$attr['" . str()->snake($request['fields'][$i]) . "'])->toDateTimeString();\n";
+                    $inputMonths .= "\t\t\$attr['" . str()->snake($request['fields'][$i]) . "'] = \$request->" . str()->snake($request['fields'][$i]) . " ? \Carbon\Carbon::createFromFormat('Y-m', \$request->" . str()->snake($request['fields'][$i]) . ")->toDateTimeString() : null;\n";
                 }
             }
         }
@@ -227,13 +230,30 @@ class ControllerGenerator
 
                 foreach ($request['input_types'] as $i => $input) {
                     if ($input == 'file') {
-                        $indexCode .= $this->generateUploadFileCode($request['fields'][$i], 'index');
+                        $indexCode .= $this->generateUploadFileCode(
+                            field: $request['fields'][$i],
+                            path: 'index',
+                            defaultValue: $request['default_values'][$i],
+                            model: $modelNameSingularCamelCase
+                        );
 
-                        $storeCode .= $this->generateUploadFileCode($request['fields'][$i], 'store');
+                        $storeCode .= $this->generateUploadFileCode(
+                            field: $request['fields'][$i],
+                            path: 'store',
+                            model: $modelNameSingularCamelCase
+                        );
 
-                        $updateCode .= $this->generateUploadFileCode($request['fields'][$i], 'update', $modelNameSingularCamelCase);
+                        $updateCode .= $this->generateUploadFileCode(
+                            field: $request['fields'][$i],
+                            path: 'update',
+                            model: $modelNameSingularCamelCase
+                        );
 
-                        $deleteCode .= $this->generateUploadFileCode($request['fields'][$i], 'delete', $modelNameSingularCamelCase);
+                        $deleteCode .= $this->generateUploadFileCode(
+                            field: $request['fields'][$i],
+                            path: 'delete',
+                            model: $modelNameSingularCamelCase
+                        );
                     }
                 }
 
@@ -244,6 +264,7 @@ class ControllerGenerator
                 $passwordFieldUpdate = str_replace('$attr = $request->validated();', '', $passwordFieldUpdate);
 
                 $inputMonths = str_replace('$attr = $request->validated();', '', $inputMonths);
+                $updateDataAction = "\$"  .  $modelNameSingularCamelCase  .  "->update(\$attr);";
 
                 /**
                  * controller with upload file code
@@ -366,35 +387,38 @@ class ControllerGenerator
     /**
      * Generate an upload file code.
      *
-     * @param string $field,
-     * @param string $path,
-     * @param null|string $model,
+     * @param string $field
+     * @param string $path
+     * @param string $model
+     * @param ?string $defaultValue
      * @return string
      */
-    protected function generateUploadFileCode(string $field, string $path, null|string $model = null)
+    protected function generateUploadFileCode(string $field, string $path, string $model, ?string $defaultValue = null): string
     {
         $replaceString = [
             '{{fieldSnakeCase}}',
             '{{fieldPluralSnakeCase}}',
             '{{fieldPluralKebabCase}}',
-            '{{defaultImage}}',
             '{{uploadPath}}',
             '{{uploadPathPublic}}',
             '{{width}}',
             '{{height}}',
             '{{aspectRatio}}',
+            '{{defaultImageCode}}',
         ];
+
+        $default = GeneratorUtils::setDefaultImage(default: $defaultValue, field: $field, model: $model);
 
         $replaceWith = [
             str()->snake($field),
             GeneratorUtils::pluralSnakeCase($field),
             GeneratorUtils::pluralKebabCase($field),
-            config('generator.image.default') ? config('generator.image.default') : 'https://via.placeholder.com/350?text=No+Image+Avaiable',
             config('generator.image.path') == 'storage' ? "storage_path('app/public/uploads" : "public_path('uploads",
             config('generator.image.path') == 'storage' ? "storage/uploads" : "uploads",
             is_int(config('generator.image.width')) ? config('generator.image.width') : 500,
             is_int(config('generator.image.height')) ? config('generator.image.height') : 500,
             config('generator.image.aspect_ratio') ? "\n\t\t\t\t\$constraint->aspectRatio();" : '',
+            $default['index_code'],
         ];
 
         if ($model != null) {

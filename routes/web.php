@@ -23,3 +23,4 @@ Route::middleware(['auth', 'web'])->group(function () {
 });
 
 require_once __DIR__ . '/generator.php';
+

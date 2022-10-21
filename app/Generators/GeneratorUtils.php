@@ -12,7 +12,7 @@ class GeneratorUtils
      * @param string $path
      * @return string
      */
-    public static function getTemplate(string $path)
+    public static function getTemplate(string $path): string
     {
         return file_get_contents(resource_path("/stubs/generators/$path.stub"));
     }
@@ -21,12 +21,12 @@ class GeneratorUtils
      * Check folder if doesnt exist, then make folder.
      *
      * @param string $path
-     * @return mixed
+     * @return void
      */
-    public static function checkFolder(string $path)
+    public static function checkFolder(string $path): void
     {
         if (!file_exists($path)) {
-            return mkdir($path, 0777, true);
+            mkdir($path, 0777, true);
         }
     }
 
@@ -36,9 +36,9 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function singularPascalCase(string $string)
+    public static function singularPascalCase(string $string): string
     {
-        return trim(ucfirst(str($string)->singular()->camel()));
+        return ucfirst(str(GeneratorUtils::fromCamelCase($string))->singular()->camel());
     }
 
     /**
@@ -47,9 +47,9 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function pluralPascalCase(string $string)
+    public static function pluralPascalCase(string $string): string
     {
-        return trim(ucfirst(str($string)->plural()->camel()));
+        return ucfirst(str(GeneratorUtils::fromCamelCase($string))->plural()->camel());
     }
 
     /**
@@ -58,9 +58,9 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function pluralSnakeCase(string $string)
+    public static function pluralSnakeCase(string $string): string
     {
-        return trim(str($string)->plural()->snake()->lower());
+        return str(GeneratorUtils::fromCamelCase($string))->plural()->snake()->lower();
     }
 
     /**
@@ -69,9 +69,9 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function singularSnakeCase(string $string)
+    public static function singularSnakeCase(string $string): string
     {
-        return trim(str($string)->singular()->snake()->lower());
+        return str(GeneratorUtils::fromCamelCase($string))->singular()->snake()->lower();
     }
 
     /**
@@ -80,9 +80,9 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function pluralCamelCase(string $string)
+    public static function pluralCamelCase(string $string): string
     {
-        return trim(str($string)->plural()->camel());
+        return str(GeneratorUtils::fromCamelCase($string))->plural()->camel();
     }
 
     /**
@@ -91,9 +91,9 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function singularCamelCase(string $string)
+    public static function singularCamelCase(string $string): string
     {
-        return trim(str($string)->singular()->camel());
+        return str(GeneratorUtils::fromCamelCase($string))->singular()->camel();
     }
 
     /**
@@ -102,9 +102,20 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function pluralKebabCase(string $string)
+    public static function pluralKebabCase(string $string): string
     {
-        return trim(str($string)->plural()->kebab());
+        return str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->plural()->kebab()->lower();
+    }
+
+    /**
+     * Convert string kebab case, and lowercase.
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function kebabCase(string $string): string
+    {
+        return str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->kebab()->lower();
     }
 
     /**
@@ -113,9 +124,9 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function singularKebabCase(string $string)
+    public static function singularKebabCase(string $string): string
     {
-        return trim(str($string)->singular()->kebab());
+        return str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->singular()->kebab()->lower();
     }
 
     /**
@@ -124,9 +135,20 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function cleanSingularLowerCase(string $string)
+    public static function cleanSingularLowerCase(string $string): string
     {
-        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->singular()->lower());
+        return str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->singular()->lower();
+    }
+
+    /**
+     * Remove special caracters, and lowercase.
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function cleanLowerCase(string $string): string
+    {
+        return str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->lower();
     }
 
     /**
@@ -135,9 +157,9 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function cleanPluralUcWords(string $string)
+    public static function cleanPluralUcWords(string $string): string
     {
-        return trim(ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->plural()));
+        return ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->plural()->lower());
     }
 
     /**
@@ -146,9 +168,9 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function cleanSingularUcWords(string $string)
+    public static function cleanSingularUcWords(string $string): string
     {
-        return trim(ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->singular()));
+        return ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->singular()->lower());
     }
 
     /**
@@ -157,9 +179,9 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function cleanUcWords(string $string)
+    public static function cleanUcWords(string $string): string
     {
-        return trim(ucwords(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string)));
+        return ucwords(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)));
     }
 
     /**
@@ -168,9 +190,9 @@ class GeneratorUtils
      * @param string $string
      * @return string
      */
-    public static function cleanPluralLowerCase(string $string)
+    public static function cleanPluralLowerCase(string $string): string
     {
-        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->plural()->lower());
+        return str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->plural()->lower();
     }
 
     /**
@@ -179,7 +201,7 @@ class GeneratorUtils
      * @param string $table
      * @return string $column
      */
-    public static function getColumnAfterId(string $table)
+    public static function getColumnAfterId(string $table): string
     {
         $table = GeneratorUtils::pluralSnakeCase($table);
         $allColums = Schema::getColumnListing($table);
@@ -199,7 +221,7 @@ class GeneratorUtils
      * @param string $table
      * @return string $selectedField
      */
-    public static function selectColumnAfterIdAndIdItself(string $table)
+    public static function selectColumnAfterIdAndIdItself(string $table): string
     {
         $table = GeneratorUtils::pluralSnakeCase($table);
         $allColums = Schema::getColumnListing($table);
@@ -219,7 +241,7 @@ class GeneratorUtils
      * @param string $model
      * @return string $path
      */
-    public static function getModelLocation(string $model)
+    public static function getModelLocation(string $model): string
     {
         $arrModel = explode('/', $model);
         $totalArrModel = count($arrModel);
@@ -240,12 +262,25 @@ class GeneratorUtils
     }
 
     /**
+     * Converts camelCase string to have spaces between each.
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function fromCamelCase(string $string): string
+    {
+        $a = preg_split('/(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/x', $string);
+        return trim(implode(' ', $a));
+    }
+
+    /**
      * Set model name from the latest of array(if exists).
      *
      * @param string $model
+     * @param string $style
      * @return string
      */
-    public static function setModelName(string $model)
+    public static function setModelName(string $model, string $style = 'pascal case'): string
     {
         $arrModel = explode('/', $model);
         $totalArrModel = count($arrModel);
@@ -253,7 +288,12 @@ class GeneratorUtils
         /**
          * get the latest index value of array
          */
-        return GeneratorUtils::singularPascalCase($arrModel[$totalArrModel - 1]);
+
+        if ($style == 'pascal case') {
+            return GeneratorUtils::singularPascalCase($arrModel[$totalArrModel - 1]);
+        }
+
+        return $arrModel[$totalArrModel - 1];
     }
 
     /**
@@ -262,7 +302,7 @@ class GeneratorUtils
      * @param string|array $route
      * @return string
      */
-    public static function isActiveMenu(string|array $route)
+    public static function isActiveMenu(string|array $route): string
     {
         $activeClass = ' active';
 
@@ -282,7 +322,6 @@ class GeneratorUtils
             if (request()->segment(3) == str($route)->after('/')) {
                 return $activeClass;
             }
-
         }
 
         if (is_array($route)) {
@@ -308,5 +347,65 @@ class GeneratorUtils
         }
 
         return '';
+    }
+
+    /**
+     * Set default image and code.
+     *
+     * @param null|string $default,
+     * @param string $field
+     * @param string $model
+     * @return array
+     */
+    public static function setDefaultImage(null|string $default, string $field, string $model): array
+    {
+        if ($default) {
+            return [
+                'image' => $default,
+                /**
+                 * Generated code:
+                 *
+                 *  if ($row->photo == null || $row->photo == $defaultImage = 'https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg') {
+                 *      return $defaultImage;
+                 */
+                'index_code' => "if (\$row->" . str()->snake($field) . " == null || \$row->" . str()->snake($field) . " == \$defaultImage = '" . $default . "') {
+                    return \$defaultImage;
+                }",
+                /**
+                 * Generated code:
+                 * $book->cover == null || $book->cover == 'https://via.placeholder.com/350?text=No+Image+Avaiable'"
+                 */
+                'form_code' => "$" . GeneratorUtils::singularCamelCase($model) . "->" . str()->snake($field) . " == null || $" . GeneratorUtils::singularCamelCase($model) . "->" . str()->snake($field) . " == '" . $default . "'",
+            ];
+        }
+
+        if (config('generator.image.default')) {
+            return [
+                'image' => config('generator.image.default'),
+                /**
+                 * Generated code:
+                 *
+                 *  if ($row->photo == null) {
+                 *      return 'https://via.placeholder.com/350?text=No+Image+Avaiable';
+                 */
+                'index_code' => "if (\$row->" . str()->snake($field) . " == null) {
+                    return '" . config('generator.image.default')  . "';
+                }",
+                /**
+                 * Generated code:
+                 *
+                 *  $book->photo == null
+                 */
+                'form_code' => "$" . GeneratorUtils::singularCamelCase($model) . "->" . str()->snake($field) . " == null",
+            ];
+        }
+
+        return [
+            'image' => 'https://via.placeholder.com/350?text=No+Image+Avaiable',
+            'index_code' => "if (\$row->" . str()->snake($field) . " == null) {
+                return 'https://via.placeholder.com/350?text=No+Image+Avaiable';
+            }",
+            'form_code' => "$" . GeneratorUtils::singularCamelCase($model) . "->" . str()->snake($field) . " == null",
+        ];
     }
 }

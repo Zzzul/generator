@@ -14,7 +14,7 @@ class ActionViewGenerator
      */
     public function generate(array $request)
     {
-        $model = GeneratorUtils::setModelName($request['model']);
+        $model = GeneratorUtils::setModelName($request['model'], 'default');
         $path = GeneratorUtils::getModelLocation($request['model']);
 
         $modelNamePluralKebabCase = GeneratorUtils::pluralKebabCase($model);

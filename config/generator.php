@@ -1,8 +1,12 @@
 <?php
 
 return [
-    /**
-     * Its used for route and sidebar menu name.
+    /*
+    |--------------------------------------------------------------------------
+    | Generator Name
+    |--------------------------------------------------------------------------
+    |
+    | Its used for route and sidebar menu name.
      */
     'name' => 'generators',
 
@@ -89,6 +93,11 @@ return [
         'date' => 'd/m/Y',
 
         /**
+         * If any time input type will cast and display used this format.
+         */
+        'month' => 'm/Y',
+
+        /**
          * If any time column type will cast and display used this format.
          */
         'time' => 'H:i',
@@ -101,7 +110,7 @@ return [
         /**
          * Limit string on index view for any column type text or longtext.
          */
-        'limit_text' => 200,
+        'limit_text' => 100,
     ],
 
     /**
