@@ -53,18 +53,18 @@ class FormViewGenerator
 
                                 $template .= str_replace(
                                     [
-                                        '{{fieldLowercase}}',
-                                        '{{fieldUppercase}}',
-                                        '{{fieldSpaceLowercase}}',
+                                        '{{fieldUcWords}}',
+                                        '{{fieldKebabCase}}',
                                         '{{fieldSnakeCase}}',
+                                        '{{fieldSpaceLowercase}}',
                                         '{{options}}',
                                         '{{nullable}}'
                                     ],
                                     [
-                                        $fieldSnakeCase,
                                         $fieldUcWords,
-                                        GeneratorUtils::cleanSingularLowerCase($field),
+                                        GeneratorUtils::kebabCase($field),
                                         $fieldSnakeCase,
+                                        GeneratorUtils::cleanLowerCase($field),
                                         $options,
                                         $request['requireds'][$i] == 'yes' ? ' required' : '',
                                     ],
@@ -93,7 +93,7 @@ class FormViewGenerator
                                         '{{value}}',
                                     ],
                                     [
-                                        GeneratorUtils::singularKebabCase($field),
+                                        GeneratorUtils::kebabCase($field),
                                         GeneratorUtils::singularCamelCase($field),
                                         $fieldUcWords,
                                         $fieldSnakeCase,
@@ -179,7 +179,7 @@ class FormViewGenerator
                                 // select
                                 $template .= str_replace(
                                     [
-                                        '{{fieldLowercase}}',
+                                        '{{fieldKebabCase}}',
                                         '{{fieldUcWords}}',
                                         '{{fieldSpaceLowercase}}',
                                         '{{options}}',
@@ -188,8 +188,8 @@ class FormViewGenerator
                                     ],
                                     [
                                         GeneratorUtils::singularKebabCase($field),
-                                        GeneratorUtils::cleanUcWords($field),
-                                        GeneratorUtils::cleanLowercase($field),
+                                        GeneratorUtils::cleanUcWords($constrainModel),
+                                        GeneratorUtils::cleanLowercase($constrainModel),
                                         $options,
                                         $request['requireds'][$i] == 'yes' ? ' required' : '',
                                         $fieldSnakeCase
@@ -249,18 +249,18 @@ class FormViewGenerator
                             default:
                                 $template .= str_replace(
                                     [
-                                        '{{fieldLowercase}}',
-                                        '{{fieldUppercase}}',
-                                        '{{fieldSpaceLowercase}}',
+                                        '{{fieldUcWords}}',
+                                        '{{fieldKebabCase}}',
                                         '{{fieldSnakeCase}}',
+                                        '{{fieldSpaceLowercase}}',
                                         '{{options}}',
                                         '{{nullable}}'
                                     ],
                                     [
+                                        GeneratorUtils::cleanUcWords($field),
+                                        GeneratorUtils::kebabCase($field),
                                         $fieldSnakeCase,
-                                        GeneratorUtils::cleanSingularUcWords($field),
-                                        GeneratorUtils::cleanSingularLowerCase($field),
-                                        $fieldSnakeCase,
+                                        GeneratorUtils::cleanLowerCase($field),
                                         $options,
                                         $request['requireds'][$i] == 'yes' ? ' required' : '',
                                     ],
@@ -277,16 +277,18 @@ class FormViewGenerator
 
                                 $template .= str_replace(
                                     [
-                                        '{{fieldLowercase}}',
-                                        '{{fieldUppercase}}',
+                                        '{{fieldUcWords}}',
+                                        '{{fieldSnakeCase}}',
+                                        '{{fieldKebabCase}}',
                                         '{{fieldSpaceLowercase}}',
                                         '{{options}}',
                                         '{{nullable}}'
                                     ],
                                     [
+                                        GeneratorUtils::cleanUcWords($field),
                                         $fieldSnakeCase,
-                                        $fieldUcWords,
-                                        GeneratorUtils::cleanSingularLowerCase($field),
+                                        GeneratorUtils::kebabCase($field),
+                                        GeneratorUtils::cleanLowerCase($field),
                                         $options,
                                         $request['requireds'][$i] == 'yes' ? ' required' : '',
                                     ],
@@ -430,16 +432,19 @@ class FormViewGenerator
                                 // textarea
                                 $template .= str_replace(
                                     [
-                                        '{{fieldLowercase}}',
+                                        '{{fieldKebabCase}}',
                                         '{{fieldUppercase}}',
                                         '{{modelName}}',
-                                        '{{nullable}}'
+                                        '{{nullable}}',
+                                        '{{fieldSnakeCase}}'
+
                                     ],
                                     [
-                                        $fieldSnakeCase,
+                                        GeneratorUtils::kebabCase($field),
                                         $fieldUcWords,
                                         $modelNameSingularCamelCase,
                                         $request['requireds'][$i] == 'yes' ? ' required' : '',
+                                        $fieldSnakeCase
                                     ],
                                     GeneratorUtils::getTemplate('views/forms/textarea')
                                 );
@@ -577,7 +582,7 @@ class FormViewGenerator
             ],
             [
                 GeneratorUtils::singularKebabCase($field),
-                GeneratorUtils::cleanSingularUcWords($field),
+                GeneratorUtils::cleanUcWords($field),
                 GeneratorUtils::singularSnakeCase($field),
                 GeneratorUtils::singularCamelCase($field),
                 GeneratorUtils::singularCamelCase($model),

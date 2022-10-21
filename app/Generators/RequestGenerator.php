@@ -32,7 +32,7 @@ class RequestGenerator
              * will generate like:
              * 'name' =>
              */
-            $validations .= "'" . str()->snake($field) . "' => ";
+            $validations .= "'" . str($field)->snake() . "' => ";
 
             /**
              * will generate like:
@@ -187,16 +187,16 @@ class RequestGenerator
                     }
                     break;
                 default:
-                    /**
-                     * will generate like:
-                     * 'name' => 'required|max:30|exists:App\Models\Product,id',
-                     */
-                    $validations .= "',";
+                    // /**
+                    //  * will generate like:
+                    //  * 'name' => 'required|max:30|exists:App\Models\Product,id',
+                    //  */
+                    // $validations .= "',";
                     break;
             }
 
             if ($i + 1 != $totalFields) {
-                $validations .= "\n\t\t\t";
+                $validations .= "',\n\t\t\t";
             }
         }
         // end of foreach

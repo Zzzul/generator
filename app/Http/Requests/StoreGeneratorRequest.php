@@ -35,7 +35,7 @@ class StoreGeneratorRequest extends FormRequest
             'max_lengths.*' => ['nullable'],
             'steps.*' => ['nullable'],
             'default_values.*' => ['nullable'],
-            'fields.*' => ['required', 'alpha_dash'],
+            'fields.*' => ['required', 'regex:/^[A-Za-z_]+$/'],
             'requireds.*' => ['required', 'in:yes,no'],
             'mimes.*' => ['nullable', 'required_if:file_types.*,mimes'],
             'files_sizes.*' => ['nullable', 'required_if:input_types.*,file'],

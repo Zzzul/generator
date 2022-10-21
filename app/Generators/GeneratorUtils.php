@@ -38,7 +38,7 @@ class GeneratorUtils
      */
     public static function singularPascalCase(string $string): string
     {
-        return trim(ucfirst(str($string)->singular()->camel()));
+        return ucfirst(str(GeneratorUtils::fromCamelCase($string))->singular()->camel());
     }
 
     /**
@@ -49,7 +49,7 @@ class GeneratorUtils
      */
     public static function pluralPascalCase(string $string): string
     {
-        return trim(ucfirst(str($string)->plural()->camel()));
+        return ucfirst(str(GeneratorUtils::fromCamelCase($string))->plural()->camel());
     }
 
     /**
@@ -60,7 +60,7 @@ class GeneratorUtils
      */
     public static function pluralSnakeCase(string $string): string
     {
-        return trim(str($string)->plural()->snake()->lower());
+        return str(GeneratorUtils::fromCamelCase($string))->plural()->snake()->lower();
     }
 
     /**
@@ -71,7 +71,7 @@ class GeneratorUtils
      */
     public static function singularSnakeCase(string $string): string
     {
-        return trim(str($string)->singular()->snake()->lower());
+        return str(GeneratorUtils::fromCamelCase($string))->singular()->snake()->lower();
     }
 
     /**
@@ -82,7 +82,7 @@ class GeneratorUtils
      */
     public static function pluralCamelCase(string $string): string
     {
-        return trim(str($string)->plural()->camel());
+        return str(GeneratorUtils::fromCamelCase($string))->plural()->camel();
     }
 
     /**
@@ -93,7 +93,7 @@ class GeneratorUtils
      */
     public static function singularCamelCase(string $string): string
     {
-        return trim(str($string)->singular()->camel());
+        return str(GeneratorUtils::fromCamelCase($string))->singular()->camel();
     }
 
     /**
@@ -104,18 +104,18 @@ class GeneratorUtils
      */
     public static function pluralKebabCase(string $string): string
     {
-        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->kebab()->plural()->lower());
+        return str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->plural()->kebab()->lower();
     }
 
     /**
-     * Convert string  kebab case, and lowercase.
+     * Convert string kebab case, and lowercase.
      *
      * @param string $string
      * @return string
      */
     public static function kebabCase(string $string): string
     {
-        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->kebab()->lower());
+        return str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->kebab()->lower();
     }
 
     /**
@@ -126,7 +126,7 @@ class GeneratorUtils
      */
     public static function singularKebabCase(string $string): string
     {
-        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->kebab()->singular()->lower());
+        return str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->singular()->kebab()->lower();
     }
 
     /**
@@ -137,7 +137,7 @@ class GeneratorUtils
      */
     public static function cleanSingularLowerCase(string $string): string
     {
-        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->singular()->lower());
+        return str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->singular()->lower();
     }
 
     /**
@@ -148,7 +148,7 @@ class GeneratorUtils
      */
     public static function cleanLowerCase(string $string): string
     {
-        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->lower());
+        return str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->lower();
     }
 
     /**
@@ -159,7 +159,7 @@ class GeneratorUtils
      */
     public static function cleanPluralUcWords(string $string): string
     {
-        return trim(ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->plural()));
+        return ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->plural()->lower());
     }
 
     /**
@@ -170,7 +170,7 @@ class GeneratorUtils
      */
     public static function cleanSingularUcWords(string $string): string
     {
-        return trim(ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->singular()));
+        return ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->singular()->lower());
     }
 
     /**
@@ -181,7 +181,7 @@ class GeneratorUtils
      */
     public static function cleanUcWords(string $string): string
     {
-        return trim(ucwords(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))));
+        return ucwords(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)));
     }
 
     /**
@@ -192,7 +192,7 @@ class GeneratorUtils
      */
     public static function cleanPluralLowerCase(string $string): string
     {
-        return trim(str(preg_replace('/[^A-Za-z0-9() -]/', ' ', $string))->plural()->lower());
+        return str(preg_replace('/[^A-Za-z0-9() -]/', ' ', GeneratorUtils::fromCamelCase($string)))->plural()->lower();
     }
 
     /**
@@ -259,6 +259,18 @@ class GeneratorUtils
         }
 
         return $path;
+    }
+
+    /**
+     * Converts camelCase string to have spaces between each.
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function fromCamelCase(string $string): string
+    {
+        $a = preg_split('/(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/x', $string);
+        return trim(implode(' ', $a));
     }
 
     /**

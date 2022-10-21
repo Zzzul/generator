@@ -68,7 +68,7 @@ class ViewComposerGenerator
         }
         $path = app_path('Providers/ViewServiceProvider.php');
 
-        $viewProviderTemplate = substr(file_get_contents($path), 0, -5). "\n\t\t" . $template . "\t}\n}";
+        $viewProviderTemplate = substr(file_get_contents($path), 0, -6). "\n\t\t" . $template . "\t}\n}";
 
         file_put_contents($path, $viewProviderTemplate);
     }
