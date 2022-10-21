@@ -30,7 +30,6 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
                 ->toJson();
         }
 
-
         return view('{{viewPath}}{{modelNamePluralKebabCase}}.index');
     }
 
