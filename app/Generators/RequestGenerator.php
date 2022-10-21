@@ -80,11 +80,21 @@ class RequestGenerator
             }
 
             if ($request['input_types'][$i] == 'file' && $request['file_types'][$i] == 'image') {
+
+                $maxSize = 1024;
+                if(config('generator.image.size_max')){
+                    $maxSize = config('generator.image.size_max');
+                }
+
+                if($request['files_sizes'][$i]){
+                    $maxSize = $request['files_sizes'][$i];
+                }
+
                 /**
                  * will generate like:
-                 * 'name' => 'required|image|size:1024',
+                 * 'cover' => 'required|image|size:1024',
                  */
-                $validations .= "|image|max:" . $request['files_sizes'][$i];
+                $validations .= "|image|max:" . $maxSize;
             } elseif ($request['input_types'][$i] == 'file' && $request['file_types'][$i] == 'mimes') {
                 /**
                  * will generate like:
@@ -162,7 +172,7 @@ class RequestGenerator
                      * will generate like:
                      * 'name' => 'required|boolean',
                      */
-                    $validations .= "|boolean";
+                    $validations .= "|boolean',";
                     break;
                 case 'foreignId':
                     // remove '/' or sub folders
@@ -187,16 +197,16 @@ class RequestGenerator
                     }
                     break;
                 default:
-                    // /**
-                    //  * will generate like:
-                    //  * 'name' => 'required|max:30|exists:App\Models\Product,id',
-                    //  */
-                    // $validations .= "',";
+                    /**
+                     * will generate like:
+                     * 'name' => 'required|max:30|exists:App\Models\Product,id',
+                     */
+                    $validations .= "',";
                     break;
             }
 
             if ($i + 1 != $totalFields) {
-                $validations .= "',\n\t\t\t";
+                $validations .= "\n\t\t\t";
             }
         }
         // end of foreach
