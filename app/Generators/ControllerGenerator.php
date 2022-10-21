@@ -26,7 +26,7 @@ class ControllerGenerator
 
         switch ($path) {
             case '':
-                $namespace = "namespace App\Http\Controllers;\n\n";
+                $namespace = "namespace App\Http\Controllers;\n";
 
                 /**
                  * will generate something like:
@@ -97,24 +97,12 @@ class ControllerGenerator
                     $selectedColumns = GeneratorUtils::selectColumnAfterIdAndIdItself($constrainName);
                     $columnAfterId = GeneratorUtils::getColumnAfterId($constrainName);
 
-                    $relations .= "'$constrainSnakeCase:$selectedColumns'";
-
-                    if ($i + 1 < $countForeidnId) {
-                        /**
-                         * Will generate something like:
-                         *
-                         * 'category:id,name',
-                         */
-                        $relations .= ", ";
+                    if($countForeidnId + 1 < $i){
+                        $relations .= "'$constrainSnakeCase:$selectedColumns', ";
                         $query .= "'$constrainSnakeCase:$selectedColumns', ";
-                    } else {
-                        /**
-                         * Will generate something like:
-                         *
-                         * 'category:id,name');
-                         */
-                        $relations .= ");\n\n\t\t";
-                        $query .= "'$constrainSnakeCase:$selectedColumns')";
+                    }else{
+                        $relations .= "'$constrainSnakeCase:$selectedColumns'";
+                        $query .= "'$constrainSnakeCase:$selectedColumns'";
                     }
 
                     /**
@@ -125,10 +113,16 @@ class ControllerGenerator
                      * })
                      */
                     $addColumns .= "->addColumn('$constrainSnakeCase', function (\$row) {
-                    return \$row->" . $constrainSnakeCase . " ? \$row->" . $constrainSnakeCase . "->$columnAfterId : '-';
+                    return \$row->" . $constrainSnakeCase . " ? \$row->" . $constrainSnakeCase . "->$columnAfterId : '';
                 })";
                 }
             }
+
+            $query .= ")";
+            $relations .= ");\n\n\t\t";
+
+            $query = str_replace("''", "', '", $query);
+            $relations = str_replace("''", "', '", $relations);
         }
 
         /**
