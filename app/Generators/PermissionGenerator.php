@@ -18,7 +18,7 @@ class PermissionGenerator
         $modelNamePlural = GeneratorUtils::cleanPluralLowerCase($model);
         $modelNameSingular = GeneratorUtils::cleanSingularLowerCase($model);
 
-        $permissions = str_replace(
+        $stringPermissions = str_replace(
             [
                 '{',
                 '}',
@@ -33,7 +33,7 @@ class PermissionGenerator
                 " => ",
                 "'",
                 ', ',
-                "]], \n\t\t// Don't remove this comment, it will used as 'search param' to generate a new permission"
+                "]], \n\t\t"
             ],
             json_encode([
                 'group' => $modelNamePlural,
@@ -47,17 +47,8 @@ class PermissionGenerator
         );
 
         $path = config_path('permission.php');
-        $permissionFile = file_get_contents($path);
 
-        $newPermissionFile = str_replace(
-            [
-                "// Don't remove this comment, it will used as 'search param' to generate a new permission"
-            ],
-            [
-                $permissions
-            ],
-            $permissionFile
-        );
+        $newPermissionFile = substr(file_get_contents($path), 0, -6) .  $stringPermissions . "],];";
 
         file_put_contents($path, $newPermissionFile);
 

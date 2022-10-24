@@ -184,6 +184,5 @@ return [
                 'view test',
             ]
         ],
-        // Don't remove this comment, it will used as 'search param' to generate a new permission
     ],
 ];
