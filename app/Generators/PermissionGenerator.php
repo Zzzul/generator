@@ -38,10 +38,10 @@ class PermissionGenerator
             json_encode([
                 'group' => $modelNamePlural,
                 'lists' => [
-                    "view $modelNameSingular",
-                    "create $modelNameSingular",
-                    "edit $modelNameSingular",
-                    "delete $modelNameSingular",
+                    "$modelNameSingular view",
+                    "$modelNameSingular create",
+                    "$modelNameSingular edit",
+                    "$modelNameSingular delete",
                 ]
             ])
         );
@@ -65,16 +65,16 @@ class PermissionGenerator
     {
         $role = Role::findByName('admin');
 
-        Permission::create(['name' => "view $model"]);
-        Permission::create(['name' => "create $model"]);
-        Permission::create(['name' => "edit $model"]);
-        Permission::create(['name' => "delete $model"]);
+        Permission::create(['name' => "$model view"]);
+        Permission::create(['name' => "$model create"]);
+        Permission::create(['name' => "$model edit"]);
+        Permission::create(['name' => "$model delete"]);
 
         $role->givePermissionTo([
-            "view $model",
-            "create $model",
-            "edit $model",
-            "delete $model"
+            "$model view",
+            "$model create",
+            "$model edit",
+            "$model delete"
         ]);
     }
 }

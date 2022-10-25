@@ -114,14 +114,14 @@ return [
     ],
 
     /**
-     * It will used for generator to manage and show menus on sidebar views.
+     * It will used for generator to manage and showing menus on sidebar views.
      *
      * Example:
      * [
      *   'header' => 'Main',
      *
      *   // All permissions in menus[] and submenus[]
-     *   'permissions' => ['view test'],
+     *   'permissions' => ['test view'],
      *
      *   menus' => [
      *       [
@@ -133,13 +133,13 @@ return [
      *          'permission' => null,
      *
      *          // All permissions on submenus[] and will empty[] when submenus equals to []
-     *          'permissions' => ['view test'],
+     *          'permissions' => ['test view'],
      *
      *          'submenus' => [
      *                 [
      *                     'title' => 'Tests',
      *                     'route' => '/tests',
-     *                     'permission' => 'view test'
+     *                     'permission' => 'test view'
      *                  ]
      *               ],
      *           ],
@@ -151,51 +151,48 @@ return [
     'sidebars' => [
         [
             'header' => 'Main',
-            /**
-             * All permissions in menus[] and submenus[]
-             */
-            'permissions' => ['view test'],
+            'permissions' => ['test view'],
             'menus' => [
                 [
                     'title' => 'Main Data',
                     'icon' => '<i class="bi bi-collection-fill"></i>',
                     'route' => null,
                     'permission' => null,
-                    /**
-                     * All permissions on submenus[]
-                     */
-                    'permissions' => ['view test'],
+                    'permissions' => ['test view'],
                     'submenus' => [
                         [
                             'title' => 'Tests',
                             'route' => '/tests',
-                            'permission' => 'view test'
-                        ]
-                    ],
-                ],
-            ],
+                            'permission' => 'test view'
+                        ],
+                    ]
+                ]
+            ]
         ],
         [
             'header' => 'Users',
-            'permissions' => ['view user', 'view role & permission'],
+            'permissions' => [
+                'user view',
+                'role & permission view'
+            ],
             'menus' => [
                 [
                     'title' => 'Users',
                     'icon' => '<i class="bi bi-people-fill"></i>',
                     'route' => '/users',
-                    'permission' => 'view user',
+                    'permission' => 'user view',
                     'permissions' => [],
-                    'submenus' => [],
+                    'submenus' => []
                 ],
                 [
                     'title' => 'Roles & permissions',
                     'icon' => '<i class="bi bi-person-check-fill"></i>',
                     'route' => '/roles',
-                    'permission' => 'view role & permission',
+                    'permission' => 'role & permission view',
                     'permissions' => [],
-                    'submenus' => [],
+                    'submenus' => []
                 ]
-            ],
-        ],
-    ],
+            ]
+        ]
+    ]
 ];
