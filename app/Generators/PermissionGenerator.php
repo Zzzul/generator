@@ -48,20 +48,20 @@ class PermissionGenerator
 
         $path = config_path('permission.php');
 
-        $newPermissionFile = substr(file_get_contents($path), 0, -6) .  $stringPermissions . "],];";
+        $newPermissionFile = substr(file_get_contents($path), 0, -7) .  $stringPermissions . "],];";
 
         file_put_contents($path, $newPermissionFile);
 
-        $this->setRoleAndPermissions($modelNameSingular);
+        $this->insertRoleAndPermissions($modelNameSingular);
     }
 
     /**
-     * Give role admin new permissions.
+     * Insert new role & permissions then give an admin that permissions.
      *
      * @param array $request
      * @return void
      */
-    protected function setRoleAndPermissions(string $model)
+    protected function insertRoleAndPermissions(string $model)
     {
         $role = Role::findByName('admin');
 
