@@ -3,7 +3,8 @@
         <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="logo">
-                    <a href="/"><img src="{{ asset('mazer') }}/images/logo/logo.svg" alt="Logo" srcset=""></a>
+                    <a href="/"><img src="{{ asset('mazer') }}/images/logo/logo.svg" alt="Logo"
+                            srcset=""></a>
                 </div>
                 <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -61,7 +62,7 @@
                                 @canany($permissions)
                                     @if (empty($menu['submenus']))
                                         @can($menu['permission'])
-                                            <li class="sidebar-item{{ \App\Generators\GeneratorUtils::isActiveMenu($menu['route']) }}">
+                                            <li class="sidebar-item{{ App\Generators\GeneratorUtils::isActiveMenu($menu['route']) }}">
                                                 <a href="{{ $menu['route'] }}" class="sidebar-link">
                                                     {!! $menu['icon'] !!}
                                                     <span>{{ __($menu['title']) }}</span>
@@ -69,12 +70,12 @@
                                             </li>
                                         @endcan
                                     @else
-                                        <li class="sidebar-item has-sub{{ \App\Generators\GeneratorUtils::isActiveMenu($menu['permissions']) }}">
+                                        <li class="sidebar-item has-sub{{  App\Generators\GeneratorUtils::isActiveMenu($menu['permissions']) }}">
                                             <a href="#" class="sidebar-link">
                                                 {!! $menu['icon'] !!}
                                                 <span>{{ __($menu['title']) }}</span>
                                             </a>
-                                            <ul class="submenu ">
+                                            <ul class="submenu">
                                                 @canany($menu['permissions'])
                                                     @foreach ($menu['submenus'] as $submenu)
                                                         @can($submenu['permission'])

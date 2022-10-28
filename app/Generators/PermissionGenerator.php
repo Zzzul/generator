@@ -48,7 +48,7 @@ class PermissionGenerator
 
         $path = config_path('permission.php');
 
-        $newPermissionFile = substr(file_get_contents($path), 0, -7) .  $stringPermissions . "],];";
+        $newPermissionFile = substr(file_get_contents($path), 0, -8) .  $stringPermissions . "],];";
 
         file_put_contents($path, $newPermissionFile);
 

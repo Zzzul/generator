@@ -73,7 +73,26 @@
                         <div class="form-group">
                             <select name="column_types[]" class="form-select form-column-types" required>
                                 <option value="" disabled selected>--{{ __('Select column type') }}--</option>
-                                @foreach (config('generator.column_types') as $type)
+                                @foreach ([
+                                    'string',
+                                    'integer',
+                                    'text',
+                                    'bigInteger',
+                                    'boolean',
+                                    'char',
+                                    'date',
+                                    'time',
+                                    'year',
+                                    'dateTime',
+                                    'decimal',
+                                    'double',
+                                    'enum',
+                                    'float',
+                                    'foreignId',
+                                    'tinyInteger',
+                                    'tinyText',
+                                    'longText'
+                                ] as $type)
                                     <option value="{{ $type }}">{{ ucwords($type) }}</option>
                                 @endforeach
                             </select>

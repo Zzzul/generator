@@ -2,35 +2,11 @@
 
 return [
     /**
-     * All avaibale column type for migration.
-     */
-    'column_types' => [
-        'string',
-        'integer',
-        'text',
-        'bigInteger',
-        'boolean',
-        'char',
-        'date',
-        'time',
-        'year',
-        'dateTime',
-        'decimal',
-        'double',
-        'enum',
-        'float',
-        'foreignId',
-        'tinyInteger',
-        'tinyText',
-        'longText'
-    ],
-
-    /**
      * If any input file(image) as default will used options below.
      */
     'image' => [
         /**
-         * Path for image store into.
+         * Path for store the image.
          *
          * avaiable options:
          * 1. public
@@ -39,14 +15,12 @@ return [
         'path' => 'storage',
 
         /**
-         * Will used if image is nullable.
+         * Will used if image is nullable and default value is null.
          */
         'default' => 'https://via.placeholder.com/350?text=No+Image+Avaiable',
 
         /**
          * Crop the uploaded image using intervention image.
-         *
-         * when set to false will ignore config below(aspect_ratio, width, and height).
          */
         'crop' => true,
 
@@ -132,25 +106,29 @@ return [
      *       ],
      *  ],
      *
-     * This code below always change when you using a generator and maybe you must to lint or format the code.
+     * This code below always changes when you use a generator and maybe you must lint or format the code.
      */
     'sidebars' => [
         [
             'header' => 'Main',
-            'permissions' => ['test view'],
+            'permissions' => [
+                'test view'
+            ],
             'menus' => [
                 [
                     'title' => 'Main Data',
                     'icon' => '<i class="bi bi-collection-fill"></i>',
                     'route' => null,
                     'permission' => null,
-                    'permissions' => ['test view'],
+                    'permissions' => [
+                        'test view'
+                    ],
                     'submenus' => [
                         [
                             'title' => 'Tests',
                             'route' => '/tests',
                             'permission' => 'test view'
-                        ],
+                        ]
                     ]
                 ]
             ]
@@ -179,6 +157,6 @@ return [
                     'submenus' => []
                 ]
             ]
-        ]
+        ],
     ]
 ];

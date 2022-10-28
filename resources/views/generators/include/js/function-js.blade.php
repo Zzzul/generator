@@ -65,7 +65,27 @@
     }
 
     function getColumnTypes() {
-        let listColumTypes = {!! json_encode(config('generator.column_types')) !!}
+        let listColumTypes = [
+            'string',
+            'integer',
+            'text',
+            'bigInteger',
+            'boolean',
+            'char',
+            'date',
+            'time',
+            'year',
+            'dateTime',
+            'decimal',
+            'double',
+            'enum',
+            'float',
+            'foreignId',
+            'tinyInteger',
+            'tinyText',
+            'longText'
+        ]
+
         let optionTypes = ''
 
         $(listColumTypes).each(function(i, val) {
