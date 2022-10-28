@@ -96,15 +96,12 @@
                 @endforeach
 
                 @if (env('APP_ENV') === 'local')
-                @php
-                    $generator = str(config('generator.name'))->plural();
-                @endphp
-                    <li class="sidebar-title">{{ __(ucfirst($generator)) }}</li>
+                    <li class="sidebar-title">{{ __('Generators') }}</li>
 
-                    <li class="sidebar-item{{ request()->is($generator . '/create') ? ' active' : '' }}">
-                        <a class="sidebar-link" href="{{ route($generator . '.create') }}">
+                    <li class="sidebar-item{{ request()->is('generators/create') ? ' active' : '' }}">
+                        <a class="sidebar-link" href="{{ route('generators.create') }}">
                             <i class="bi bi-grid-fill"></i>
-                            <span> {{ __('CRUD ' . str($generator)->singular()->ucfirst()) }}</span>
+                            <span> {{ __('CRUD Generator') }}</span>
                         </a>
                     </li>
                 @endif

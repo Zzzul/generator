@@ -9,9 +9,7 @@ Route::middleware(['auth', 'web'])->group(function () {
     });
 
     Route::middleware('generator-local')->group(function () {
-        $generator = str(config('generator.name'))->plural();
-
-        Route::get("/$generator/get-sidebar-menus/{index}", [GeneratorController::class, 'getSidebarMenus'])->name("$generator.get-sidebar-menus");
-        Route::resource("/$generator", GeneratorController::class)->only('create', 'store');
+        Route::get("/generators/get-sidebar-menus/{index}", [GeneratorController::class, 'getSidebarMenus'])->name("generators.get-sidebar-menus");
+        Route::resource("/generators", GeneratorController::class)->only('create', 'store');
     });
 });

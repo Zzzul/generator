@@ -1,20 +1,6 @@
 <?php
 
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | Generator Name
-    |--------------------------------------------------------------------------
-    |
-    | Its used for route and sidebar menu name.
-     */
-    'name' => 'generators',
-
-    /**
-     * Set limit of fields in index view datatables, all fields can see in show page.
-     */
-    'limit_fields_datatable' => 6,
-
     /**
      * All avaibale column type for migration.
      */
@@ -93,17 +79,17 @@ return [
         'date' => 'd/m/Y',
 
         /**
-         * If any time input type will cast and display used this format.
+         * If any input type month will cast and display used this format.
          */
         'month' => 'm/Y',
 
         /**
-         * If any time column type will cast and display used this format.
+         * If any input type time will cast and display used this format.
          */
         'time' => 'H:i',
 
         /**
-         * If any datetime column type or datetime-local on input format will cast and display used this format.
+         * If any datetime column type or datetime-local on input, will cast and display used this format.
          */
         'datetime' => 'd/m/Y H:i',
 
