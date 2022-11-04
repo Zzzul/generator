@@ -162,10 +162,15 @@
             $(`#tbl-field tbody tr:eq(${index}) td:eq(2)`).append(`
                 <div class="form-group form-constrain mt-2">
                     <input type="text" name="constrains[]" class="form-control" placeholder="Constrain or related model name" required>
-                    <small class="text-secondary">Use '/' if related model at sub folder, e.g.: Main/Product.</small>
+                    <small class="text-secondary">
+                        <ul class="my-1 mx-2 p-0">
+                            <li>Use '/' if related model at sub folder, e.g.: Main/Product.</li>
+                            <li>Field name must be related model + "_id", e.g.: user_id</li>
+                        </ul>
+                    </small>
                 </div>
                 <div class="form-group form-foreign-id mt-2">
-                    <input type="text" name="foreign_ids[]" class="form-control" placeholder="Foreign key (optional)">
+                    <input type="hidden" name="foreign_ids[]" class="form-control" placeholder="Foreign key (optional)">
                 </div>
                 <div class="form-group form-on-update mt-2 form-on-update-foreign">
                     <select class="form-select" name="on_update_foreign[]" required>
