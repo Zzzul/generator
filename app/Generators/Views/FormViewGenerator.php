@@ -166,7 +166,7 @@ class FormViewGenerator
                                     [
                                         GeneratorUtils::KebabCase($field),
                                         $fieldSnakeCase,
-                                        $fieldUcWords,
+                                        GeneratorUtils::cleanUcWords($constrainModel),
                                         GeneratorUtils::singularCamelCase($field),
                                         $options,
                                         $request['requireds'][$i] == 'yes' ? ' required' : '',
