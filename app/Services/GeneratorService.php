@@ -31,7 +31,7 @@ class GeneratorService
      * @param array $request
      * @return void
      */
-    public function generateAll(array $request)
+    public function generateAll(array $request): void
     {
         (new ModelGenerator)->generate($request);
         (new MigrationGenerator)->generate($request);
@@ -54,6 +54,8 @@ class GeneratorService
         }
 
         Artisan::call('migrate');
+
+        $this->checkSidebarType();
     }
 
     /**
@@ -62,7 +64,7 @@ class GeneratorService
      * @param array $request
      * @return void
      */
-    public function onlyGenerateModelAndMigration(array $request)
+    public function onlyGenerateModelAndMigration(array $request): void
     {
         (new ModelGenerator)->generate($request);
 
@@ -73,12 +75,27 @@ class GeneratorService
      * Get sidebar menus by index.
      *
      * @param int $index
-     * @return \Illuminate\Http\Response
+     * @return array
      */
-    public function getSidebarMenusByIndex(int $index)
+    public function getSidebarMenusByIndex(int $index): array
     {
         abort_if(!request()->ajax(), Response::HTTP_FORBIDDEN);
 
         return config('generator.sidebars')[$index];
+    }
+
+    /**
+     * Check sidebar view.
+     *
+     * @return void
+     */
+    public function checkSidebarType(): void
+    {
+        $sidebar = file_get_contents(resource_path('views/layouts/sidebar.blade.php'));
+
+        /** if the sidebar is static, then must be regenerated to update new menus */
+        if (!str($sidebar)->contains("\$permissions = empty(\$menu['permission'])")) {
+            Artisan::call('generator:sidebar dynamic');
+        };
     }
 }

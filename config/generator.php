@@ -155,8 +155,8 @@ return [
                     'permission' => 'role & permission view',
                     'permissions' => [],
                     'submenus' => []
-                ]
+                ],
             ]
         ],
-    ]
+    ],
 ];

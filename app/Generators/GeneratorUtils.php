@@ -408,4 +408,15 @@ class GeneratorUtils
             'form_code' => "$" . GeneratorUtils::singularCamelCase($model) . "->" . str()->snake($field) . " == null",
         ];
     }
+
+    public static function convertArraySidebarToString(array $sidebars): string
+    {
+        $menu = "";
+
+        foreach ($sidebars as $key => $sidebar) {
+            $menu .= "'" . $sidebar . "', ";
+        }
+
+        return $menu;
+    }
 }
