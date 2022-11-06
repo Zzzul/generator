@@ -4,3 +4,4 @@ View::composer(['{{viewPath}}{{modelNamePluralKebabCase}}.create', '{{viewPath}}
                 {{relatedModelPath}}::select({{fieldsSelect}})->get()
             );
         });
+

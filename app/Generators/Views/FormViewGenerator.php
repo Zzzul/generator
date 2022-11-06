@@ -166,7 +166,7 @@ class FormViewGenerator
                                     [
                                         GeneratorUtils::KebabCase($field),
                                         $fieldSnakeCase,
-                                        $fieldUcWords,
+                                        GeneratorUtils::cleanSingularUcWords($constrainModel),
                                         GeneratorUtils::singularCamelCase($field),
                                         $options,
                                         $request['requireds'][$i] == 'yes' ? ' required' : '',
@@ -188,8 +188,8 @@ class FormViewGenerator
                                     ],
                                     [
                                         GeneratorUtils::singularKebabCase($field),
-                                        GeneratorUtils::cleanUcWords($constrainModel),
-                                        GeneratorUtils::cleanLowercase($constrainModel),
+                                        GeneratorUtils::cleanSingularUcWords($constrainModel),
+                                        GeneratorUtils::cleanSingularLowerCase($constrainModel),
                                         $options,
                                         $request['requireds'][$i] == 'yes' ? ' required' : '',
                                         $fieldSnakeCase

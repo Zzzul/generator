@@ -21,19 +21,19 @@
         @enderror
     </div>
 
-    @foreach(config('permission.list_permissions') as $permission)
+    @foreach(config('permission.permissions') as $permission)
         <div class="col-md-3">
             <div class="card border">
                 <div class="card-content">
                     <div class="card-body">
                         <h4 class="card-title">{{ ucwords($permission['group']) }}</h4>
-                        @foreach ($permission['lists'] as $list)
+                        @foreach ($permission['access'] as $access)
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="{{ str()->slug($list) }}"
-                                    name="permissions[]" value="{{ $list }}"
-                                    {{ isset($role) && $role->hasPermissionTo($list) ? 'checked' : '' }}/>
-                                <label class="form-check-label" for="{{ str()->slug($list) }}">
-                                    {{ ucwords(__($list)) }}
+                                <input class="form-check-input" type="checkbox" id="{{ str()->slug($access) }}"
+                                    name="permissions[]" value="{{ $access }}"
+                                    {{ isset($role) && $role->hasPermissionTo($access) ? 'checked' : '' }}/>
+                                <label class="form-check-label" for="{{ str()->slug($access) }}">
+                                    {{ ucwords(__($access)) }}
                                 </label>
                             </div>
                         @endforeach

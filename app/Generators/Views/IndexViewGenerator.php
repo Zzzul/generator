@@ -67,7 +67,7 @@ class IndexViewGenerator
                     // remove '/' or sub folders
                     $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i], 'default');
 
-                    $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanUcWords($constrainModel) . "') }}</th>";
+                    $thColums .= "<th>{{ __('" .  GeneratorUtils::cleanSingularUcWords($constrainModel) . "') }}</th>";
 
                     /**
                      * will generate something like:

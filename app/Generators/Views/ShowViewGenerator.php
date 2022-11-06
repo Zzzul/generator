@@ -66,7 +66,7 @@ class ShowViewGenerator
                         $constrainModel = GeneratorUtils::setModelName($request['constrains'][$i], 'default');
 
                         $trs .= "<tr>
-                                        <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanUcWords($constrainModel) . "') }}</td>
+                                        <td class=\"fw-bold\">{{ __('" . GeneratorUtils::cleanSingularUcWords($constrainModel) . "') }}</td>
                                         <td>{{ $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($constrainModel) . " ? $" . $modelNameSingularCamelCase . "->" . GeneratorUtils::singularSnakeCase($constrainModel) . "->" . GeneratorUtils::getColumnAfterId($constrainModel) . " : '' }}</td>
                                     </tr>";
                         break;

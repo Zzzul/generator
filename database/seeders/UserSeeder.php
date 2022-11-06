@@ -22,6 +22,6 @@ class UserSeeder extends Seeder
             'remember_token' => \Str::random(10),
         ]);
 
-        User::factory()->count(500)->create();
+        User::factory()->count(100)->create();
     }
 }

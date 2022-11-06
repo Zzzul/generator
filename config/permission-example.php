@@ -163,27 +163,26 @@ return [
         [
             'group' => 'users',
             'lists' => [
-                'view user',
-                'create user',
-                'edit user',
-                'delete user',
+                'user view',
+                'user create',
+                'user edit',
+                'user delete',
             ]
         ],
         [
             'group' => 'roles & permissions',
             'lists' => [
-                'view role & permission',
-                'create role & permission',
-                'edit role & permission',
-                'delete role & permission',
+                'role & permission view',
+                'role & permission create',
+                'role & permission edit',
+                'role & permission delete',
             ]
         ],
         [
             'group' => 'test',
             'lists' => [
-                'view test',
+                'test view',
             ]
         ],
-        // Don't remove this comment, it will used as 'search param' to generate a new permission
     ],
 ];

@@ -8,13 +8,8 @@ use App\Http\Controllers\{
 };
 
 Route::middleware(['auth', 'web'])->group(function () {
-    Route::get('/', function () {
-        return view('dashboard');
-    });
-
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
+    Route::get('/', fn () => view('dashboard'));
+    Route::get('/dashboard', fn () => view('dashboard'));
 
     Route::get('/profile', ProfileController::class)->name('profile');
 
@@ -23,4 +18,3 @@ Route::middleware(['auth', 'web'])->group(function () {
 });
 
 require_once __DIR__ . '/generator.php';
-

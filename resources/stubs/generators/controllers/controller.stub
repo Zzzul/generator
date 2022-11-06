@@ -9,10 +9,10 @@ class {{modelNameSingularPascalCase}}Controller extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:view {{modelNameSpaceLowercase}}')->only('index', 'show');
-        $this->middleware('permission:create {{modelNameSpaceLowercase}}')->only('create', 'store');
-        $this->middleware('permission:edit {{modelNameSpaceLowercase}}')->only('edit', 'update');
-        $this->middleware('permission:delete {{modelNameSpaceLowercase}}')->only('destroy');
+        $this->middleware('permission:{{modelNameSpaceLowercase}} view')->only('index', 'show');
+        $this->middleware('permission:{{modelNameSpaceLowercase}} create')->only('create', 'store');
+        $this->middleware('permission:{{modelNameSpaceLowercase}} edit')->only('edit', 'update');
+        $this->middleware('permission:{{modelNameSpaceLowercase}} delete')->only('destroy');
     }
 
     /**

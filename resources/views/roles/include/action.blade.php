@@ -3,13 +3,13 @@
         <i class="fa fa-eye"></i>
     </a>
 
-    @can('edit role & permission')
+    @can('role & permission edit')
         <a href="{{ route('roles.edit', $model->id) }}" class="btn btn-outline-primary btn-sm">
             <i class="fa fa-pencil-alt"></i>
         </a>
     @endcan
 
-    @can('delete role & permission')
+    @can('role & permission delete')
         <form action="{{ route('roles.destroy', $model->id) }}" method="post" class="d-inline"
             onsubmit="return confirm('Are you sure to delete this record?')">
             @csrf
