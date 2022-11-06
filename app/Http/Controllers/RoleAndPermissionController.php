@@ -10,10 +10,10 @@ class RoleAndPermissionController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:view role & permission')->only('index', 'show');
-        $this->middleware('permission:create role & permission')->only('create', 'store');
-        $this->middleware('permission:edit role & permission')->only('edit', 'update');
-        $this->middleware('permission:delete role & permission')->only('delete');
+        $this->middleware('permission:role & permission view')->only('index', 'show');
+        $this->middleware('permission:role & permission create')->only('create', 'store');
+        $this->middleware('permission:role & permission edit')->only('edit', 'update');
+        $this->middleware('permission:role & permission delete')->only('delete');
     }
 
     /**

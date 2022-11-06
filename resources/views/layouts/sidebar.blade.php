@@ -79,7 +79,7 @@
                                                 @canany($menu['permissions'])
                                                     @foreach ($menu['submenus'] as $submenu)
                                                         @can($submenu['permission'])
-                                                            <li class="submenu-item">
+                                                            <li class="submenu-item{{  App\Generators\GeneratorUtils::isActiveMenu($submenu['route']) }}">
                                                                 <a href="{{ $submenu['route'] }}">
                                                                     {{ __($submenu['title']) }}
                                                                 </a>
