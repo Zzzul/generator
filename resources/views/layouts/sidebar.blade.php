@@ -3,8 +3,9 @@
         <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="logo">
-                    <a href="/"><img src="{{ asset('mazer') }}/images/logo/logo.svg" alt="Logo"
-                            srcset=""></a>
+                    <a href="/">
+                        <img src="{{ asset('mazer') }}/images/logo/logo.svg" alt="Logo">
+                    </a>
                 </div>
                 <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -24,7 +25,7 @@
                         </g>
                     </svg>
                     <div class="form-check form-switch fs-6">
-                        <input class="form-check-input  me-0" type="checkbox" id="toggle-dark">
+                        <input class="form-check-input me-0" type="checkbox" id="toggle-dark">
                         <label class="form-check-label"></label>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -35,7 +36,7 @@
                         </path>
                     </svg>
                 </div>
-                <div class="sidebar-toggler  x">
+                <div class="sidebar-toggler x">
                     <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
                 </div>
             </div>
@@ -63,7 +64,7 @@
                                     @if (empty($menu['submenus']))
                                         @can($menu['permission'])
                                             <li class="sidebar-item{{ App\Generators\GeneratorUtils::isActiveMenu($menu['route']) }}">
-                                                <a href="{{ $menu['route'] }}" class="sidebar-link">
+                                                <a href="{{ route(str($menu['route'])->remove('/')->plural() . '.index') }}" class="sidebar-link">
                                                     {!! $menu['icon'] !!}
                                                     <span>{{ __($menu['title']) }}</span>
                                                 </a>
@@ -80,7 +81,7 @@
                                                     @foreach ($menu['submenus'] as $submenu)
                                                         @can($submenu['permission'])
                                                             <li class="submenu-item{{  App\Generators\GeneratorUtils::isActiveMenu($submenu['route']) }}">
-                                                                <a href="{{ $submenu['route'] }}">
+                                                                <a href="{{ route(str($submenu['route'])->remove('/')->plural() . '.index') }}">
                                                                     {{ __($submenu['title']) }}
                                                                 </a>
                                                             </li>

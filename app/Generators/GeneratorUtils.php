@@ -326,7 +326,7 @@ class GeneratorUtils
 
         if (is_array($route)) {
             foreach ($route as $value) {
-                $actualRoute = str($value)->remove('view ')->plural();
+                $actualRoute = str($value)->remove(' view')->plural();
 
                 if (request()->is(substr($actualRoute . '*', 1))) {
                     return $activeClass;
@@ -350,7 +350,7 @@ class GeneratorUtils
     }
 
     /**
-     * Set default image and code.
+     * Set default image and code to controller.
      *
      * @param null|string $default,
      * @param string $field
@@ -409,11 +409,17 @@ class GeneratorUtils
         ];
     }
 
+    /**
+     * Convert array from config to string like array.
+     *
+     * @param array $idebars
+     * @return string
+     */
     public static function convertArraySidebarToString(array $sidebars): string
     {
         $menu = "";
 
-        foreach ($sidebars as $key => $sidebar) {
+        foreach ($sidebars as $sidebar) {
             $menu .= "'" . $sidebar . "', ";
         }
 

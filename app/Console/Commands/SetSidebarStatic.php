@@ -68,7 +68,7 @@ class SetSidebarStatic extends Command
                                 $sidebarCode .= "
                                 @can('" . $menu['permission'] . "')
                                     <li class=\"sidebar-item{{ App\Generators\GeneratorUtils::isActiveMenu('" . $menu['route'] . "') }}\">
-                                        <a href=\"" . $menu['route'] . "\" class=\"sidebar-link\">
+                                    <a href=\"{{ route('". str($menu['route'])->remove('/')->plural() . '.index' ."') }}\" class=\"sidebar-link\">
                                             " . $menu['icon'] . "
                                             <span>{{ __('" . $menu['title'] . "') }}</span>
                                         </a>
@@ -87,26 +87,15 @@ class SetSidebarStatic extends Command
                                     $sidebarCode .= "
                                     @can('" . $submenu['permission'] . "')
                                         <li class=\"submenu-item\">
-                                            <a href=\"" . $submenu['route'] . "\">{{ __('" . $submenu['title'] . "') }}</a>
+                                        <a href=\"{{ route('". str($submenu['route'])->remove('/')->plural() . '.index' ."') }}\">{{ __('" . $submenu['title'] . "') }}</a>
                                         </li>
                                     @endcan\n";
                                 }
 
-                                // if (count($sidebar['menus']) == $key + 1) {
                                 $sidebarCode .= "\n\t@endcanany\n</ul>\n\t</li>\n";
-                                // }
-
-                                // $sidebarCode .= "</ul>\n\t</li>\n";
                             }
-
-                            // if (count($sidebar['menus']) == $key + 1) {
-                            //     $sidebarCode .= "\n\t@endcanany\n";
-                            // }
                         }
-
-                        // if ($i + 1 == count($sidebar['permissions'])) {
-                            $sidebarCode .= "@endcanany\n";
-                        // }
+                        $sidebarCode .= "@endcanany\n";
                     }
                 endforeach;
 
