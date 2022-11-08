@@ -1,5 +1,5 @@
-https://user-images.githubusercontent.com/62506582/162600284-aa8fe74e-5dca-4d8d-a7bd-b4f907d45958.mp4
 
+https://user-images.githubusercontent.com/62506582/200510814-9b2ca922-bd35-4e02-a236-047c4b7b118d.mp4
 
 <p align="center">Laravel starter app and CRUD generator.</p>
 
@@ -16,17 +16,27 @@ https://user-images.githubusercontent.com/62506582/162600284-aa8fe74e-5dca-4d8d-
 
 ## Table of Contents
 1. [Requirements](#requirements)
-2. [Features](#features)
-3. [Setup](#setup)
-4. [Usage](#usage)
-5. [Examples](#examples)
-6. [Screenshots](#screenshots)
-7. [License](#license)
-8. [Support](#support)
+2. [What's inside?](#what-inside) 
+3. [Features](#features)
+4. [Setup](#setup)
+5. [Usage](#usage)
+6. [Examples](#examples)
+7. [Screenshots](#screenshots)
+8. [License](#license)
+9. [Support](#support)
 
 ## Requirements
-- Laravel ^9.x - [Laravel 9](https://laravel.com/docs/9.x)
-- PHP ^8.1 - [PHP 8.1](https://www.php.net/releases/8.1/en.php)
+- [PHP ^8.1](https://www.php.net/releases/8.1/en.php)
+
+<h2 id="what-inside">What's inside?</h2>
+
+- [Laravel - ^9.x](https://laravel.com/)
+- [Laravel Forify - 1^.x](https://laravel.com/docs/9.x/fortify)
+- [Laravel Debugbar - ^3.x](https://github.com/barryvdh/laravel-debugbar)
+- [Spatie permission - ^5.x](https://github.com/spatie/laravel-permission)
+- [Yajra datatable - ^9.x](https://yajrabox.com/docs/laravel-datatables/master/installation)
+- [intervention Image - ^2.x](https://image.intervention.io/v2)
+- [Mazer template - 2^.x](https://github.com/zuramai/mazer/)
 
 ## Features
 - [x] Authentication ([Laravel Fortify](https://laravel.com/docs/9.x/fortify))
@@ -35,7 +45,7 @@ https://user-images.githubusercontent.com/62506582/162600284-aa8fe74e-5dca-4d8d-
     - Forgot Password
     - 2FA Authentication
     - Update profile information 
-- [x] Roles and permissions ([Spatie Permissions](https://spatie.be/docs/laravel-permission/v5/introduction))
+- [x] Roles and permissions ([Spatie Permission](https://spatie.be/docs/laravel-permission/v5/introduction))
 - [x] CRUD User
 - [x] CRUD Generator
     - Support more than [15 column type migration](https://laravel.com/docs/9.x/migrations#available-column-types), like string, char, date, year, etc.
@@ -43,16 +53,14 @@ https://user-images.githubusercontent.com/62506582/162600284-aa8fe74e-5dca-4d8d-
     - BelongsTo relation
     - Model casting
     - Upload image
-    - Dynamic sidebar menus
-    - Input type supported
-        - Text, email, file, number, date, time, datetime-local, select, radio, textarea
-    - Request validations
-        - Required, in, image, min, max, string, email, number, date, exists, nullable 
+    - Support [HTML 5 Input](https://developer.mozilla.org/en-US/docs/Learn/Forms/HTML5_input_types)
+    - Request validations supported: 
+        - Required, in, image, min, max, string, email, number, date, exists, nullable, unique, comfirmed
 
 ## Setup
 1. Clone or download from [Releases](https://github.com/Zzzul/generator/releases)
 ```shell
-git clone https://github.com/Zzzul/generator
+git clone https://github.com/Zzzul/generator.git
 ```
 
 2. Install laravel dependency
@@ -99,7 +107,6 @@ Login
 - Email: admin@example.com
 - Password: password
 
-
 ## Examples
 Below are some codes that generate by the generator
 
@@ -112,12 +119,9 @@ Below are some codes that generate by the generator
 
 ## Screenshots
 <img width="960" alt="login page" src="https://user-images.githubusercontent.com/62506582/163182274-c1a3166e-c053-450b-bf1d-15199b6e96c5.PNG">
-<img width="960" alt="two factor challenge" src="https://user-images.githubusercontent.com/62506582/163182365-9ed55487-eff0-4db5-bf93-8d096c011286.PNG">
-<img width="960" alt="profile page" src="https://user-images.githubusercontent.com/62506582/163182371-9165eef5-0c78-47ce-91e3-08e3eced3b5f.PNG">
-<img width="960" alt="profile page" src="https://user-images.githubusercontent.com/62506582/163182653-04584888-837c-46fd-9406-8dc440aeba7e.png">
-<img width="960" alt="role page" src="https://user-images.githubusercontent.com/62506582/163182402-24ac870a-d4e1-4511-ad44-4c744f93c6ed.PNG">
-<img width="960" alt="crud generator page" src="https://user-images.githubusercontent.com/62506582/164592245-09b67c17-f738-4e44-8951-e75a34b01287.png">
-
+<img width="960" alt="User page" src="https://user-images.githubusercontent.com/62506582/200516201-ccae0800-ddad-4cbf-b758-75140ecf63b3.png">
+<img width="960" alt="crud generator page" src="https://user-images.githubusercontent.com/62506582/200515820-dc106ad3-de65-4004-9263-cf776ddf6861.png">
+<img width="960" alt="Profile page" src="https://user-images.githubusercontent.com/62506582/200516440-a729fb0d-9d98-49b3-b615-3c50f0e147f7.png">
 
 ## License
 [MIT License](./LICENSE)
