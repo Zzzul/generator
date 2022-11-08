@@ -471,12 +471,12 @@
         btnSave.text('Loading...')
         btnAdd.text('Loading...')
 
-        // $(`#form-generator input,
-        //     #form-generator select,
-        //     #form-generator checkbox,
-        //     #form-generator radio,
-        //     #form-generator button
-        // `).attr('disabled', true)
+        $(`#form-generator input,
+            #form-generator select,
+            #form-generator checkbox,
+            #form-generator radio,
+            #form-generator button
+        `).attr('disabled', true)
 
         $.ajax({
             type: 'POST',
@@ -497,7 +497,7 @@
                     title: 'Success',
                     text: 'Module generated successfully!'
                 }).then(function() {
-                    // window.location = '{{ route('generators.create') }}'
+                    window.location = '{{ route('generators.create') }}'
                 })
             },
             error: function(xhr, status, response) {
