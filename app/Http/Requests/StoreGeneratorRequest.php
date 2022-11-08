@@ -42,7 +42,9 @@ class StoreGeneratorRequest extends FormRequest
             'float',
             'foreignId',
             'tinyInteger',
+            'mediumInteger',
             'tinyText',
+            'mediumText',
             'longText'
         ];
 

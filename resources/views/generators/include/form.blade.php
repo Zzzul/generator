@@ -66,33 +66,15 @@
                     <td>1</td>
                     <td>
                         <div class="form-group">
-                            <input type="text" name="fields[]" class="form-control" placeholder="{{ __('Field Name') }}" required>
+                            <input type="text" name="fields[]" class="form-control"
+                                placeholder="{{ __('Field Name') }}" required>
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
                             <select name="column_types[]" class="form-select form-column-types" required>
                                 <option value="" disabled selected>--{{ __('Select column type') }}--</option>
-                                @foreach ([
-                                    'string',
-                                    'integer',
-                                    'text',
-                                    'bigInteger',
-                                    'boolean',
-                                    'char',
-                                    'date',
-                                    'time',
-                                    'year',
-                                    'dateTime',
-                                    'decimal',
-                                    'double',
-                                    'enum',
-                                    'float',
-                                    'foreignId',
-                                    'tinyInteger',
-                                    'tinyText',
-                                    'longText'
-                                ] as $type)
+                                @foreach (['string', 'integer', 'text', 'bigInteger', 'boolean', 'char', 'date', 'time', 'year', 'dateTime', 'decimal', 'double', 'enum', 'float', 'foreignId', 'tinyInteger', 'mediumInteger', 'tinyText', 'mediumText', 'longText'] as $type)
                                     <option value="{{ $type }}">{{ ucwords($type) }}</option>
                                 @endforeach
                             </select>
@@ -131,9 +113,11 @@
                     </td>
                     <td class="mt-0 pt-0">
                         <div class="form-check form-switch form-control-lg">
-                            <input class="form-check-input switch-requireds" type="checkbox" id="switch-1" name="requireds[]" checked>
+                            <input class="form-check-input switch-requireds" type="checkbox" id="switch-1"
+                                name="requireds[]" checked>
                         </div>
-                        <input type="hidden" name="default_values[]" class="form-default-value" placeholder="{{ __('Default Value (optional)') }}">
+                        <input type="hidden" name="default_values[]" class="form-default-value"
+                            placeholder="{{ __('Default Value (optional)') }}">
                     </td>
                     <td>
                         <button type="button" class="btn btn-outline-danger btn-sm btn-delete" disabled>

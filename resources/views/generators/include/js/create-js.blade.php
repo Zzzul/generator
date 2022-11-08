@@ -199,6 +199,7 @@
         } else if (
             $(this).val() == 'text' ||
             $(this).val() == 'longText' ||
+            $(this).val() == 'mediumText' ||
             $(this).val() == 'tinyText' ||
             $(this).val() == 'string'
         ) {
@@ -221,6 +222,7 @@
             `)
         } else if (
             $(this).val() == 'integer' ||
+            $(this).val() == 'mediumInteger' ||
             $(this).val() == 'bigInteger' ||
             $(this).val() == 'decimal' ||
             $(this).val() == 'double' ||
