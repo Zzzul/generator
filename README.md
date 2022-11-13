@@ -31,12 +31,12 @@ https://user-images.githubusercontent.com/62506582/200510814-9b2ca922-bd35-4e02-
 <h2 id="what-inside">What's inside?</h2>
 
 - [Laravel - ^9.x](https://laravel.com/)
-- [Laravel Forify - 1^.x](https://laravel.com/docs/9.x/fortify)
+- [Laravel Forify - ^1.x](https://laravel.com/docs/9.x/fortify)
 - [Laravel Debugbar - ^3.x](https://github.com/barryvdh/laravel-debugbar)
 - [Spatie permission - ^5.x](https://github.com/spatie/laravel-permission)
 - [Yajra datatable - ^9.x](https://yajrabox.com/docs/laravel-datatables/master/installation)
 - [intervention Image - ^2.x](https://image.intervention.io/v2)
-- [Mazer template - 2^.x](https://github.com/zuramai/mazer/)
+- [Mazer template - ^2.x](https://github.com/zuramai/mazer/)
 
 ## Features
 - [x] Authentication ([Laravel Fortify](https://laravel.com/docs/9.x/fortify))
