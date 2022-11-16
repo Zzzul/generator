@@ -20,9 +20,8 @@ https://user-images.githubusercontent.com/62506582/200510814-9b2ca922-bd35-4e02-
 3. [Features](#features)
 4. [Setup](#setup)
 5. [Usage](#usage)
-6. [Screenshots](#screenshots)
-7. [License](#license)
-8. [Support](#support)
+6. [License](#license)
+7. [Support](#support)
 
 ## Requirements
 - [PHP ^8.1](https://www.php.net/releases/8.1/en.php)
