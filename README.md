@@ -20,10 +20,9 @@ https://user-images.githubusercontent.com/62506582/200510814-9b2ca922-bd35-4e02-
 3. [Features](#features)
 4. [Setup](#setup)
 5. [Usage](#usage)
-6. [Examples](#examples)
-7. [Screenshots](#screenshots)
-8. [License](#license)
-9. [Support](#support)
+6. [Screenshots](#screenshots)
+7. [License](#license)
+8. [Support](#support)
 
 ## Requirements
 - [PHP ^8.1](https://www.php.net/releases/8.1/en.php)
@@ -55,7 +54,7 @@ https://user-images.githubusercontent.com/62506582/200510814-9b2ca922-bd35-4e02-
     - Upload image
     - Support [HTML 5 Input](https://developer.mozilla.org/en-US/docs/Learn/Forms/HTML5_input_types)
     - Request validations supported: 
-        - Required, in, image, min, max, string, email, number, date, exists, nullable, unique, comfirmed
+        - required, in, image, min, max, string, email, number, date, exists, nullable, unique, comfirmed
 
 ## Setup
 1. Clone or download from [Releases](https://github.com/Zzzul/generator/releases)
@@ -106,22 +105,6 @@ Go to ```/generators/create```
 Login
 - Email: admin@example.com
 - Password: password
-
-## Examples
-Below are some codes that generate by the generator
-
-<img width="960" alt="controller" src="https://user-images.githubusercontent.com/62506582/162600665-00405a4d-00e2-4c30-88da-74a2f447946a.PNG">
-<img width="960" alt="model" src="https://user-images.githubusercontent.com/62506582/162600670-d8bd61a4-cc73-4f8b-8e4d-dabd353ff48d.PNG">
-<img width="960" alt="migration" src="https://user-images.githubusercontent.com/62506582/162600667-9686c556-f5b3-4067-bf58-f6f295d360c6.PNG">
-<img width="960" alt="blade" src="https://user-images.githubusercontent.com/62506582/162600663-5c26a238-633a-4c14-8bb0-acc6d917d221.PNG">
-
-*Some code may not format perfectly, but you can format the code manually or using a formatter.
-
-## Screenshots
-<img width="960" alt="login page" src="https://user-images.githubusercontent.com/62506582/163182274-c1a3166e-c053-450b-bf1d-15199b6e96c5.PNG">
-<img width="960" alt="User page" src="https://user-images.githubusercontent.com/62506582/200516201-ccae0800-ddad-4cbf-b758-75140ecf63b3.png">
-<img width="960" alt="crud generator page" src="https://user-images.githubusercontent.com/62506582/200515820-dc106ad3-de65-4004-9263-cf776ddf6861.png">
-<img width="960" alt="Profile page" src="https://user-images.githubusercontent.com/62506582/200516440-a729fb0d-9d98-49b3-b615-3c50f0e147f7.png">
 
 ## License
 [MIT License](./LICENSE)
