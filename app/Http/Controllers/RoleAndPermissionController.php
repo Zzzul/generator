@@ -10,10 +10,10 @@ class RoleAndPermissionController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:view role & permission')->only('index', 'show');
-        $this->middleware('permission:create role & permission')->only('create', 'store');
-        $this->middleware('permission:edit role & permission')->only('edit', 'update');
-        $this->middleware('permission:delete role & permission')->only('delete');
+        $this->middleware('permission:role & permission view')->only('index', 'show');
+        $this->middleware('permission:role & permission create')->only('create', 'store');
+        $this->middleware('permission:role & permission edit')->only('edit', 'update');
+        $this->middleware('permission:role & permission delete')->only('delete');
     }
 
     /**
@@ -73,9 +73,9 @@ class RoleAndPermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
-        $role = Role::findOrFail($id);
+        $role = Role::with('permissions')->findOrFail($id);
 
         return view('roles.show', compact('role'));
     }
@@ -86,7 +86,7 @@ class RoleAndPermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         $role = Role::with('permissions')->findOrFail($id);
 
@@ -119,7 +119,7 @@ class RoleAndPermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $role = Role::withCount('users')->findOrFail($id);
 

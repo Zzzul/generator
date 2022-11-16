@@ -6,9 +6,9 @@
                 placeholder="{{ __('Name') }}" value="{{ isset($user) ? $user->name : old('name') }}" required
                 autofocus>
             @error('name')
-                <div class="invalid-feedback">
+                <span class="text-danger">
                     {{ $message }}
-                </div>
+                </span>
             @enderror
         </div>
     </div>
@@ -16,12 +16,13 @@
     <div class="col-md-6">
         <div class="form-group">
             <label for="email">{{ __('Email') }}</label>
-            <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
-                placeholder="{{ __('Email') }}" value="{{ isset($user) ? $user->email : old('email') }}" required>
+            <input type="email" name="email" id="email"
+                class="form-control @error('email') is-invalid @enderror" placeholder="{{ __('Email') }}"
+                value="{{ isset($user) ? $user->email : old('email') }}" required>
             @error('email')
-                <div class="invalid-feedback">
+                <span class="text-danger">
                     {{ $message }}
-                </div>
+                </span>
             @enderror
         </div>
     </div>
@@ -33,10 +34,15 @@
                 class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}"
                 {{ empty($user) ? 'required' : '' }}>
             @error('password')
-                <div class="invalid-feedback">
+                <span class="text-danger">
                     {{ $message }}
-                </div>
+                </span>
             @enderror
+            @isset($user)
+                <div id="passwordHelpBlock" class="form-text">
+                    {{ __('Leave the password & password confirmation blank if you don`t want to change them.') }}
+                </div>
+            @endisset
         </div>
     </div>
 
@@ -52,16 +58,15 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="role">{{ __('Role') }}</label>
-                <select class="form-select" name="role" id="role" class="form-control">
+                <select class="form-select" name="role" id="role" class="form-control" required>
                     <option value="" selected disabled>-- Select role --</option>
                     @foreach ($roles as $role)
                         <option value="{{ $role->id }}">{{ $role->name }}</option>
                     @endforeach
                     @error('role')
-                        <div class="invalid-feedback">
-                            <i class="bx bx-radio-circle"></i>
+                        <span class="text-danger">
                             {{ $message }}
-                        </div>
+                        </span>
                     @enderror
                 </select>
             </div>
@@ -70,11 +75,12 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="avatar">{{ __('Avatar') }}</label>
-                <input type="file" name="avatar" id="avatar" class="form-control @error('avatar') is-invalid @enderror">
+                <input type="file" name="avatar" id="avatar"
+                    class="form-control @error('avatar') is-invalid @enderror" required>
                 @error('avatar')
-                    <div class="invalid-feedback">
+                    <span class="text-danger">
                         {{ $message }}
-                    </div>
+                    </span>
                 @enderror
             </div>
         </div>
@@ -85,7 +91,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="role">{{ __('Role') }}</label>
-                    <select class="form-select" name="role" id="role" class="form-control">
+                    <select class="form-select" name="role" id="role" class="form-control" required>
                         <option value="" selected disabled>{{ __('-- Select role --') }}</option>
                         @foreach ($roles as $role)
                             <option value="{{ $role->id }}"
@@ -94,10 +100,9 @@
                         @endforeach
                     </select>
                     @error('role')
-                        <div class="invalid-feedback">
-                            <i class="bx bx-radio-circle"></i>
+                        <span class="text-danger">
                             {{ $message }}
-                        </div>
+                        </span>
                     @enderror
                 </div>
             </div>
@@ -118,11 +123,15 @@
                     <label for="avatar">{{ __('Avatar') }}</label>
                     <input type="file" name="avatar" class="form-control @error('avatar') is-invalid @enderror" id="avatar">
                     @error('avatar')
-                        <div class="invalid-feedback">
-                            <i class="bx bx-radio-circle"></i>
+                        <span class="text-danger">
                             {{ $message }}
-                        </div>
+                        </span>
                     @enderror
+                    @if ($user->avatar == null)
+                        <div id="passwordHelpBlock" class="form-text">
+                            {{ __('Leave the avatar blank if you don`t want to change it.') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', trans('Sign Up'))
+@section('title', __('Sign Up'))
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('mazer') }}/css/pages/auth.css">
@@ -10,6 +10,10 @@
     <div class="row h-100">
         <div class="col-lg-7 col-12">
             <div id="auth-left">
+                <div class="auth-logo" class="mb-0">
+                    <a href="/"><img src="{{ asset('mazer') }}/images/logo/logo.svg" alt="Logo"></a>
+                </div>
+
                 <h1 class="auth-title">{{ __('Sign Up.') }}</h1>
                 <p class="auth-subtitle mb-3">{{ __('Input your data to register to our website.') }}</p>
 

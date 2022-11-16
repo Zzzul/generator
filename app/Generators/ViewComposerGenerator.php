@@ -66,17 +66,9 @@ class ViewComposerGenerator
                 );
             }
         }
-
-        $template .= "\t\t// don`t remove this comment, it will generate view composer";
-
         $path = app_path('Providers/ViewServiceProvider.php');
-        $viewProviderFile = file_get_contents($path);
 
-        $viewProviderTemplate = str_replace(
-            '// don`t remove this comment, it will generate view composer',
-            $template,
-            $viewProviderFile
-        );
+        $viewProviderTemplate = substr(file_get_contents($path), 0, -6). "\n\n\t\t" . $template . "\t}\n}";
 
         file_put_contents($path, $viewProviderTemplate);
     }

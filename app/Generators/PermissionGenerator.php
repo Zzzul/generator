@@ -14,11 +14,11 @@ class PermissionGenerator
      */
     public function generate(array $request)
     {
-        $model = GeneratorUtils::setModelName($request['model']);
+        $model = GeneratorUtils::setModelName($request['model'], 'default');
         $modelNamePlural = GeneratorUtils::cleanPluralLowerCase($model);
         $modelNameSingular = GeneratorUtils::cleanSingularLowerCase($model);
 
-        $permissions = str_replace(
+        $stringPermissions = str_replace(
             [
                 '{',
                 '}',
@@ -33,57 +33,48 @@ class PermissionGenerator
                 " => ",
                 "'",
                 ', ',
-                "]], \n\t\t// Don't remove this comment, it will used as 'search param' to generate a new permission"
+                "]], \n\t\t"
             ],
             json_encode([
                 'group' => $modelNamePlural,
                 'lists' => [
-                    "view $modelNameSingular",
-                    "create $modelNameSingular",
-                    "edit $modelNameSingular",
-                    "delete $modelNameSingular",
+                    "$modelNameSingular view",
+                    "$modelNameSingular create",
+                    "$modelNameSingular edit",
+                    "$modelNameSingular delete",
                 ]
             ])
         );
 
         $path = config_path('permission.php');
-        $permissionFile = file_get_contents($path);
 
-        $newPermissionFile = str_replace(
-            [
-                "// Don't remove this comment, it will used as 'search param' to generate a new permission"
-            ],
-            [
-                $permissions
-            ],
-            $permissionFile
-        );
+        $newPermissionFile = substr(file_get_contents($path), 0, -8) .  $stringPermissions . "],];";
 
         file_put_contents($path, $newPermissionFile);
 
-        $this->setRoleAndPermissions($modelNameSingular);
+        $this->insertRoleAndPermissions($modelNameSingular);
     }
 
     /**
-     * Give role admin new permissions.
+     * Insert new role & permissions then give an admin that permissions.
      *
      * @param array $request
      * @return void
      */
-    protected function setRoleAndPermissions(string $model)
+    protected function insertRoleAndPermissions(string $model)
     {
         $role = Role::findByName('admin');
 
-        Permission::create(['name' => "view $model"]);
-        Permission::create(['name' => "create $model"]);
-        Permission::create(['name' => "edit $model"]);
-        Permission::create(['name' => "delete $model"]);
+        Permission::create(['name' => "$model view"]);
+        Permission::create(['name' => "$model create"]);
+        Permission::create(['name' => "$model edit"]);
+        Permission::create(['name' => "$model delete"]);
 
         $role->givePermissionTo([
-            "view $model",
-            "create $model",
-            "edit $model",
-            "delete $model"
+            "$model view",
+            "$model create",
+            "$model edit",
+            "$model delete"
         ]);
     }
 }

@@ -18,10 +18,10 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:view user')->only('index', 'show');
-        $this->middleware('permission:create user')->only('create', 'store');
-        $this->middleware('permission:edit user')->only('edit', 'update');
-        $this->middleware('permission:delete user')->only('destroy');
+        $this->middleware('permission:user view')->only('index', 'show');
+        $this->middleware('permission:user create')->only('create', 'store');
+        $this->middleware('permission:user edit')->only('edit', 'update');
+        $this->middleware('permission:user delete')->only('destroy');
     }
 
     /**
@@ -86,6 +86,8 @@ class UserController extends Controller
 
             $attr['avatar'] = $filename;
         }
+
+        $attr['password'] = bcrypt($request->password);
 
         $user = User::create($attr);
 
@@ -159,10 +161,13 @@ class UserController extends Controller
             $attr['avatar'] = $user->avatar;
         }
 
-        if (is_null($request->password)) {
-            unset($attr['password']);
-        } else {
-            $attr['password'] = bcrypt($request->password);
+        switch (is_null($request->password)) {
+            case true:
+                unset($attr['password']);
+                break;
+            default:
+                $attr['password'] = bcrypt($request->password);
+                break;
         }
 
         $user->update($attr);

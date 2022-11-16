@@ -14,7 +14,7 @@ class CreateViewGenerator
      */
     public function generate(array $request)
     {
-        $model = GeneratorUtils::setModelName($request['model']);
+        $model = GeneratorUtils::setModelName($request['model'], 'default');
         $path = GeneratorUtils::getModelLocation($request['model']);
 
         $modelNamePluralUcWords = GeneratorUtils::cleanPluralUcWords($model);
@@ -39,16 +39,16 @@ class CreateViewGenerator
             GeneratorUtils::getTemplate('views/create')
         );
 
-        if ($path != '') {
-            $fullPath = resource_path("/views/" . strtolower($path) . "/$modelNamePluralKebabCase");
-
-            GeneratorUtils::checkFolder($fullPath);
-
-            file_put_contents($fullPath . "/create.blade.php", $template);
-        } else {
-            GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
-
-            file_put_contents(resource_path("/views/$modelNamePluralKebabCase/create.blade.php"), $template);
+        switch ($path) {
+            case '':
+                GeneratorUtils::checkFolder(resource_path("/views/$modelNamePluralKebabCase"));
+                file_put_contents(resource_path("/views/$modelNamePluralKebabCase/create.blade.php"), $template);
+                break;
+            default:
+                $fullPath = resource_path("/views/" . strtolower($path) . "/$modelNamePluralKebabCase");
+                GeneratorUtils::checkFolder($fullPath);
+                file_put_contents($fullPath . "/create.blade.php", $template);
+                break;
         }
     }
 }

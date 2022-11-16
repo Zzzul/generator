@@ -1,0 +1,11 @@
+ 	<div class="col-md-6">
+        <div class="form-group">
+        	<label for="{{fieldKebabCase}}" class="form-label">{{ __('{{fieldUcWords}}') }}</label>
+			<input type="range" name="{{fieldSnakeCase}}" class="form-range @error('{{fieldSnakeCase}}') is-invalid @enderror" min="{{min}}" max="{{max}}" {{step}} id="{{fieldKebabCase}}" {{nullable}}>
+            @error('{{fieldSnakeCase}}')
+                <span class="text-danger">
+                    {{ $message }}
+                </span>
+            @enderror
+		</div>
+	</div>

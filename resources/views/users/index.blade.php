@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', trans('Users'))
+@section('title', __('Users'))
 
 @section('content')
     <div class="page-heading">
@@ -22,7 +22,7 @@
         <section class="section">
             <x-alert></x-alert>
 
-            @can('create user')
+            @can('user create')
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">
                         <i class="fas fa-plus"></i>

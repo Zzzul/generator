@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', trans('Forgot Password'))
+@section('title', __('Forgot Password'))
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('mazer') }}/css/pages/auth.css">
@@ -11,27 +11,30 @@
         <div class="col-lg-7 col-12">
             <div id="auth-left">
                 <div class="auth-logo" class="mb-0">
-                        <a href="index.html"><img src="{{ asset('mazer') }}/images/logo/logo.png" alt="Logo"></a>
-                    </div>
+                    <a href="/"><img src="{{ asset('mazer') }}/images/logo/logo.svg" alt="Logo"></a>
+                </div>
 
                 <h1 class="auth-title">{{ __('Forgot Password.') }}</h1>
 
-                <p class="auth-subtitle mb-3">{{ __('Enter your email and we\'ll send your a link to reset your password.') }}</p>
+                <p class="auth-subtitle mb-3">
+                    {{ __('Enter your email and we\'ll send your a link to reset your password.') }}</p>
 
                 @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible show fade">
                         <ul class="ms-0 mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li><p>{{ $error }}</p></li>
-                        @endforeach
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            @foreach ($errors->all() as $error)
+                                <li>
+                                    <p>{{ $error }}</p>
+                                </li>
+                            @endforeach
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </ul>
                     </div>
                 @endif
 
                 @if (session('status'))
                     <div class="alert alert-success alert-dismissible show fade">
-                         {{ session('status') }}
+                        {{ session('status') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
@@ -47,7 +50,8 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-primary btn-block btn-lg shadow-lg mt-3">{{ __('Send Password Reset Link') }}</button>
+                    <button
+                        class="btn btn-primary btn-block btn-lg shadow-lg mt-3">{{ __('Send Password Reset Link') }}</button>
                 </form>
 
                 <div class="text-center mt-4 text-lg fs-4">
