@@ -7,7 +7,7 @@ https://user-images.githubusercontent.com/62506582/200510814-9b2ca922-bd35-4e02-
 
 [![All Contributors](https://img.shields.io/github/contributors/Zzzul/generator?style=flat-square)](https://github.com/Zzzul/generator/graphs/contributors)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Zzzul/generator.svg?style=flat-square)
-[![License](https://img.shields.io/github/license/zuramai/mazer.svg?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/github/license/Zzzul/generator.svg?style=flat-square)](LICENSE)
 [![Issues](https://img.shields.io/github/issues/Zzzul/generator?style=flat-square)](Issues)
 [![Forks](https://img.shields.io/github/forks/Zzzul/generator?style=flat-square)](Forks)
 [![Stars](https://img.shields.io/github/stars/Zzzul/generator?style=flat-square)](Stars)
@@ -32,9 +32,10 @@ https://user-images.githubusercontent.com/62506582/200510814-9b2ca922-bd35-4e02-
 - [Laravel Forify - ^1.x](https://laravel.com/docs/9.x/fortify)
 - [Laravel Debugbar - ^3.x](https://github.com/barryvdh/laravel-debugbar)
 - [Spatie permission - ^5.x](https://github.com/spatie/laravel-permission)
-- [Yajra datatable - ^9.x](https://yajrabox.com/docs/laravel-datatables/master/installation)
-- [intervention Image - ^2.x](https://image.intervention.io/v2)
+- [Yajra datatable - ^10.x](https://yajrabox.com/docs/laravel-datatables/master/installation)
+- [Intervention Image - ^2.x](https://image.intervention.io/v2)
 - [Mazer template - ^2.x](https://github.com/zuramai/mazer/)
+- [Generator - ^0.1.x](https://github.com/Zzzul/generator-src/)
 
 ## Features
 - [x] Authentication ([Laravel Fortify](https://laravel.com/docs/9.x/fortify))
@@ -50,58 +51,63 @@ https://user-images.githubusercontent.com/62506582/200510814-9b2ca922-bd35-4e02-
     - Datatables ([Yajra datatables](https://github.com/yajra/laravel-datatables))
     - BelongsTo relation
     - Model casting
-    - Upload image
+    - Image upload ([Intervention Image](https://image.intervention.io/v2))
     - Support [HTML 5 Input](https://developer.mozilla.org/en-US/docs/Learn/Forms/HTML5_input_types)
     - Request validations supported: 
         - required, in, image, min, max, string, email, number, date, exists, nullable, unique, comfirmed
 
 ## Setup
 1. Clone or download from [Releases](https://github.com/Zzzul/generator/releases)
-```shell
+```bash
 git clone https://github.com/Zzzul/generator.git
 ```
 
-2. Install laravel dependency
-```sh
+2. CD into `/generator`
+```shell 
+cd generator
+```
+
+3. Install Laravel dependency
+```shell
 composer install
 ```
 
-3. Create copy of ```.env```
-```sh
+4. Create copy of ```.env```
+```shell
 cp .env.example .env
 ```
 
-4. Generate laravel key
-```sh
+5. Generate laravel key
+```shell
 php artisan key:generate
 ```
 
-5. Set database name and account in ```.env```
-```sh
+6. Set database name and account in ```.env```
+```shell
 DB_DATABASE=generator
 DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-6.  Run Laravel migrate and seeder
-```sh
+7.  Run Laravel migrate and seeder
+```shell
 php artisan migrate --seed
 ``` 
 
-7. Create the symbolic link
-```sh
+8. Create the symbolic link
+```shell
 php artisan storage:link
 ``` 
 
-8. Start development server
-```sh
+9. Start development server
+```shell
 php artisan serve
 ``` 
 
 ## Usage
 Go to ```/generators/create```
 
-Login
+Account
 - Email: admin@example.com
 - Password: password
 
