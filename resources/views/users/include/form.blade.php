@@ -76,7 +76,7 @@
             <div class="form-group">
                 <label for="avatar">{{ __('Avatar') }}</label>
                 <input type="file" name="avatar" id="avatar"
-                    class="form-control @error('avatar') is-invalid @enderror" required>
+                    class="form-control @error('avatar') is-invalid @enderror">
                 @error('avatar')
                     <span class="text-danger">
                         {{ $message }}
