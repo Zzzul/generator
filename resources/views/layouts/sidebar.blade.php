@@ -63,7 +63,7 @@
                                 @canany($permissions)
                                     @if (empty($menu['submenus']))
                                         @can($menu['permission'])
-                                            <li class="sidebar-item{{ App\Generators\GeneratorUtils::isActiveMenu($menu['route']) }}">
+                                            <li class="sidebar-item{{ is_active_menu($menu['route']) }}">
                                                 <a href="{{ route(str($menu['route'])->remove('/')->plural() . '.index') }}" class="sidebar-link">
                                                     {!! $menu['icon'] !!}
                                                     <span>{{ __($menu['title']) }}</span>
@@ -71,7 +71,7 @@
                                             </li>
                                         @endcan
                                     @else
-                                        <li class="sidebar-item has-sub{{  App\Generators\GeneratorUtils::isActiveMenu($menu['permissions']) }}">
+                                        <li class="sidebar-item has-sub{{ is_active_menu($menu['permissions']) }}">
                                             <a href="#" class="sidebar-link">
                                                 {!! $menu['icon'] !!}
                                                 <span>{{ __($menu['title']) }}</span>
@@ -80,7 +80,7 @@
                                                 @canany($menu['permissions'])
                                                     @foreach ($menu['submenus'] as $submenu)
                                                         @can($submenu['permission'])
-                                                            <li class="submenu-item{{  App\Generators\GeneratorUtils::isActiveMenu($submenu['route']) }}">
+                                                            <li class="submenu-item{{  is_active_menu($submenu['route']) }}">
                                                                 <a href="{{ route(str($submenu['route'])->remove('/')->plural() . '.index') }}">
                                                                     {{ __($submenu['title']) }}
                                                                 </a>

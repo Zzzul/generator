@@ -95,7 +95,7 @@ class UserController extends Controller
 
         return redirect()
             ->route('users.index')
-            ->with('success', __('User created successfully.'));
+            ->with('success', __('The user was created successfully.'));
     }
 
     /**
@@ -176,7 +176,7 @@ class UserController extends Controller
 
         return redirect()
             ->route('users.index')
-            ->with('success', __('User updated successfully.'));
+            ->with('success', __('The user was updated successfully.'));
     }
 
     /**
@@ -195,6 +195,6 @@ class UserController extends Controller
 
         return redirect()
             ->route('users.index')
-            ->with('success', __('User deleted successfully.'));
+            ->with('success', __('The user was deleted successfully.'));
     }
 }
