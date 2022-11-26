@@ -1,5 +1,0 @@
-    $path = {{uploadPath}}/{{fieldPluralSnakeCase}}/');
-
-            if (${{modelNameSingularCamelCase}}->{{fieldSnakeCase}} != null && file_exists($path . ${{modelNameSingularCamelCase}}->{{fieldSnakeCase}})) {
-                unlink($path . ${{modelNameSingularCamelCase}}->{{fieldSnakeCase}});
-            }

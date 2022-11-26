@@ -64,7 +64,7 @@ class RoleAndPermissionController extends Controller
 
         return redirect()
             ->route('roles.index')
-            ->with('success', __('Role created successfully.'));
+            ->with('success', __('The role was created successfully.'));
     }
 
     /**
@@ -110,7 +110,7 @@ class RoleAndPermissionController extends Controller
 
         return redirect()
             ->route('roles.index')
-            ->with('success', __('Role updated successfully.'));
+            ->with('success', __('The role was updated successfully.'));
     }
 
     /**
@@ -129,7 +129,7 @@ class RoleAndPermissionController extends Controller
 
             return redirect()
                 ->route('roles.index')
-                ->with('success', __('Role deleted successfully.'));
+                ->with('success', __('The role was deleted successfully.'));
         } else {
             return redirect()
                 ->route('roles.index')
